@@ -2,9 +2,9 @@ import pandas as pd
 import janitor
 import os
 from dotenv import load_dotenv
-from cc_api.cc_api_client import call_cc_api
-from cc_api.classifications_extractor import build_classifications_tables
-from cc_api.areas_extractor import build_areas_tables
+from .cc_api.cc_api_client import call_cc_api
+from .cc_api.classifications_extractor import build_classifications_tables
+from .cc_api.areas_extractor import build_areas_tables
 
 #get key from env
 load_dotenv()
@@ -19,7 +19,7 @@ def get_funder_data():
 		}
 	operation = ["allcharitydetailsV2", "charityoverview", "charitygoverningdocument"]
 	# c_nums, _ = get_sample()
-	c_nums = ["285696"]
+	c_nums = ["1015792", "1168435", "1113488"]
 	charity_data = {}
 	columns = ["reg_charity_number", "charity_name", "web", "activities", "charitable_objects", "latest_income", "latest_expenditure", "who_what_where", "CharityAoOCountryContinent", "CharityAoOLocalAuthority", "CharityAoORegion"]
 	df_rows = []
