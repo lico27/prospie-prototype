@@ -1,43 +1,31 @@
 import pandas as pd
-import urllib.request
-import json
 import janitor
+import os
+from dotenv import load_dotenv
+from cc_api.cc_api_client import call_cc_api
 from cc_api.classifications_extractor import build_classifications_tables
 from cc_api.areas_extractor import build_areas_tables
 
-def get_prototype_data(operation, hdr, c_nums, charity_data, columns, df_rows):
+#get key from env
+load_dotenv()
+api_key = os.getenv("API_KEY")
 
-	#collect all data for selected charities
-	for num in c_nums:
-		charity_data[num] = {}
+def get_prototype_data():
 
-		#get data from each api operation
-		for op in operation:
-			url = f"https://api.charitycommission.gov.uk/register/api/{op}/{num}/0"
-			try:
-				req = urllib.request.Request(url, headers=hdr)
-				req.get_method = lambda: 'GET'
-				response = urllib.request.urlopen(req)
-				
-				data = json.load(response)
-				response.close()
-				
-				#get relevant columns from operation and add to charity data
-				for col in columns:
-					if col in data and data[col] is not None:
-						charity_data[num][col] = data[col]
-															
-			except Exception as e:
-				print(f"Error with {op}/{num}: {e}")
+	#define api variables
+	hdr ={
+		"Cache-Control": "no-cache",
+		"Ocp-Apim-Subscription-Key": f"{api_key}",
+		}
+	operation = ["allcharitydetailsV2", "charityoverview", "charitygoverningdocument"]
+	# c_nums, _ = get_sample()
+	c_nums = [225859, 210928, 239754, 1185248, 1173390, 1156861, 1132685, 1166968, 1134632]
+	charity_data = {}
+	columns = ["reg_charity_number", "charity_name", "web", "activities", "charitable_objects", "latest_income", "latest_expenditure", "who_what_where", "CharityAoOCountryContinent", "CharityAoOLocalAuthority", "CharityAoORegion"]
+	df_rows = []
 
-	#get relevant data and combine into one row per charity
-	for num, data in charity_data.items():
-		row = {col: data.get(col, None) for col in columns}
-		row['reg_charity_number'] = num
-		df_rows.append(row)
-
-	#convert to dataframe
-	df = pd.DataFrame(df_rows)
+	#call api
+	df = call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows)
 
 	#rename columns to match schema
 	df = df.rename(columns={
