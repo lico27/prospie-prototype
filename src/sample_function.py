@@ -7,7 +7,7 @@ def get_sample():
 
     target = 500
     total = 15271
-    file_names = ["data/0-49k.csv", "data/50k-99k.csv", "data/100k-199k.csv", "data/200k-499k.csv", "data/500k-1m.csv", "data/1m.csv"]
+    file_names = ["./data/0-49k.csv", "./data/50k-99k.csv", "./data/100k-199k.csv", "./data/200k-499k.csv", "./data/500k-1m.csv", "./data/1m.csv"]
     dataframes = {}
     sample_sizes = {}
     df_all = pd.DataFrame()
