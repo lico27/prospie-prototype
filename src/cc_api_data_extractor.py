@@ -1,39 +1,65 @@
 import pandas as pd
 import urllib.request
 import json
+import janitor
+from cc_api.classifications_extractor import build_classifications_tables
+from cc_api.areas_extractor import build_areas_tables
 
 def get_prototype_data(operation, hdr, c_nums, charity_data, columns, df_rows):
 
-					#collect all data for selected charities
-					for num in c_nums:
-									charity_data[num] = {}
+	#collect all data for selected charities
+	for num in c_nums:
+		charity_data[num] = {}
 
-									#get data from each api operation
-									for op in operation:
-													url = f"https://api.charitycommission.gov.uk/register/api/{op}/{num}/0"
-													try:
-																	req = urllib.request.Request(url, headers=hdr)
-																	req.get_method = lambda: 'GET'
-																	response = urllib.request.urlopen(req)
-																	
-																	data = json.load(response)
-																	response.close()
-																	
-																	#get relevant columns from operation and add to charity data
-																	for col in columns:
-																					if col in data and data[col] is not None:
-																									charity_data[num][col] = data[col]
-																									
-													except Exception as e:
-																	print(f"Error with {op}/{num}: {e}")
+		#get data from each api operation
+		for op in operation:
+			url = f"https://api.charitycommission.gov.uk/register/api/{op}/{num}/0"
+			try:
+				req = urllib.request.Request(url, headers=hdr)
+				req.get_method = lambda: 'GET'
+				response = urllib.request.urlopen(req)
+				
+				data = json.load(response)
+				response.close()
+				
+				#get relevant columns from operation and add to charity data
+				for col in columns:
+					if col in data and data[col] is not None:
+						charity_data[num][col] = data[col]
+															
+			except Exception as e:
+				print(f"Error with {op}/{num}: {e}")
 
-					#get relevant data and combine into one row per charity
-					for num, data in charity_data.items():
-									row = {col: data.get(col, None) for col in columns}
-									row['reg_charity_number'] = num
-									df_rows.append(row)
+	#get relevant data and combine into one row per charity
+	for num, data in charity_data.items():
+		row = {col: data.get(col, None) for col in columns}
+		row['reg_charity_number'] = num
+		df_rows.append(row)
 
-					#convert to dataframe
-					df = pd.DataFrame(df_rows)
+	#convert to dataframe
+	df = pd.DataFrame(df_rows)
 
-					return df
+	#rename columns to match schema
+	df = df.rename(columns={
+		"reg_charity_number": "registered_num",
+		"charity_name": "name",
+		"web": "website",
+		"charitable_objects": "objectives",
+		"latest_income": "income",
+		"latest_expenditure": "expenditure",
+		"who_what_where": "classifications",
+		"CharityAoOCountryContinent": "country_continent",
+		"CharityAoOLocalAuthority": "local_authority",
+		"CharityAoORegion": "region"
+	})
+
+	#build funders table
+	funders = df.drop(columns=["classifications", "country_continent", "local_authority", "region"])
+
+	#build beneficiaries and causes tables and join tables
+	beneficiaries, funder_beneficiaries, causes, funder_causes = build_classifications_tables(df)
+	
+	#build areas table and join table
+	funder_areas, areas = build_areas_tables(df)	
+
+	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas

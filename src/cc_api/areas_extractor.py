@@ -58,11 +58,12 @@ def build_areas_tables(df):
 
 	# Create unique areas table (no registered_num, no duplicates)
 	areas = all_areas[["area_name", "area_type"]].drop_duplicates().reset_index(drop=True)
+	areas = areas.rename(columns={"area_type": "area_level"})
 	areas["area_id"] = range(401, 401 + len(areas))
 
 	# Create funder_areas by merging back
 	funder_areas = all_areas.merge(
-		areas, 
+		areas.rename(columns={"area_level": "area_type"}),
 		on=["area_name", "area_type"]
 	)[["registered_num", "area_id"]]
       
