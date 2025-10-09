@@ -10,7 +10,7 @@ from cc_api.areas_extractor import build_areas_tables
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
-def get_prototype_data():
+def get_funder_data():
 
 	#define api variables
 	hdr ={
@@ -19,7 +19,7 @@ def get_prototype_data():
 		}
 	operation = ["allcharitydetailsV2", "charityoverview", "charitygoverningdocument"]
 	# c_nums, _ = get_sample()
-	c_nums = [225859, 210928, 239754, 1185248, 1173390, 1156861, 1132685, 1166968, 1134632]
+	c_nums = ["285696"]
 	charity_data = {}
 	columns = ["reg_charity_number", "charity_name", "web", "activities", "charitable_objects", "latest_income", "latest_expenditure", "who_what_where", "CharityAoOCountryContinent", "CharityAoOLocalAuthority", "CharityAoORegion"]
 	df_rows = []
@@ -50,4 +50,4 @@ def get_prototype_data():
 	#build areas table and join table
 	funder_areas, areas = build_areas_tables(df)	
 
-	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas
+	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, c_nums
