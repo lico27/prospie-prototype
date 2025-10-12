@@ -47,12 +47,12 @@ def clean_data(tables, title_cols, sentence_cols, int_cols):
         #change to title case for relevant columns
         for col in title_cols:
             if col in tables[i].columns:
-                tables[i].loc[:, col] = tables[i][col].str.title()
+                tables[i].loc[:, col] = tables[i][col].str.strip().str.title()
         
         #change to sentence case for relevant columns
         for col in sentence_cols:
             if col in tables[i].columns:
-                tables[i].loc[:, col] = tables[i][col].str.capitalize()
+                tables[i].loc[:, col] = tables[i][col].str.strip().str.capitalize()
 
         #change to int for relevant columns
         for col in int_cols:
