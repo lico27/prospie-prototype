@@ -1,5 +1,5 @@
 import pandas as pd
-from src.transformations import transform_classification_table, transform_join_tables
+from src.helper_functions import transform_classification_table, transform_join_tables
 
 def build_classifications_tables(df):
 

@@ -21,3 +21,22 @@ def transform_join_tables(df, classification_type, id_col):
     return df[df["classification_type"] == classification_type
         ].drop(columns=["classification_type", "classification_desc"]
         ).rename(columns={"classification_code": id_col})
+
+def ensure_area_columns(df_exploded, col_name, expected_cols):
+
+    """
+    Ensures columns are present and normalised.
+    """
+
+    normalised_df = pd.json_normalize(df_exploded[col_name])
+    
+    for col in expected_cols:
+        if col not in normalised_df.columns:
+            normalised_df[col] = None
+    
+    normalised_df = normalised_df.reindex(columns=expected_cols)
+    normalised_df.columns = ["area_" + col for col in normalised_df.columns]
+    
+    return normalised_df
+
+

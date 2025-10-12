@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from .api_clients import call_cc_api
 from .cc_api.classifications_extractor import build_classifications_tables
-from .cc_api.areas_extractor import build_areas_tables
+from .cc_api.funder_areas_extractor import build_areas_tables
 
 #get key from env
 load_dotenv()
