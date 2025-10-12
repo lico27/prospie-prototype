@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from .api_clients import call_cc_api
 from .cc_api.classifications_extractor import build_classifications_tables
 from .cc_api.funder_areas_extractor import build_areas_tables
+from .cc_api.areas_table_builder import transform_area_columns
 from .sample_function import get_sample
 
 #get key from env
@@ -62,17 +63,35 @@ def get_funder_data():
 	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, c_nums
 
 
-def get_recipient_data(df):
+def get_recipient_data(recipient_grants, areas, funder_areas):
 
 	#convert recipients to list
-	c_nums = list(df[df["recipient_id"].str.isdigit()]["recipient_id"])
+	c_nums = list(recipient_grants[recipient_grants["recipient_id"].str.isdigit()]["recipient_id"])
 
 	c_nums = c_nums[:5] #remove this
 
-	df = extract_cc_data(c_nums)
+	recipient_df = extract_cc_data(c_nums)
+
+	#rename and prepare for area extraction
+	recipient_df = recipient_df.rename(columns={
+		"reg_charity_number": "registered_num",
+		"CharityAoOCountryContinent": "country_continent",
+		"CharityAoOLocalAuthority": "local_authority",
+		"CharityAoORegion": "region"
+	})
+
+	#extract area names from recipient data
+	_, recipient_all_areas = transform_area_columns(recipient_df)
+	recipient_all_areas = recipient_all_areas.drop_duplicates()
+
+	#merge with existing areas table to get area IDs
+	recipient_areas = recipient_all_areas.merge(
+		areas.rename(columns={"area_level": "area_type"}),
+		on=["area_name", "area_type"]
+	)[["registered_num", "area_id"]].drop_duplicates()
 
 	#build recipient table
-	recipients = df[["reg_charity_number", "charity_name", "activities"]]
-	recipients = recipients.rename(columns={"reg_charity_number": "recipient_id"})
-	
-	return recipients
+	recipients = recipient_df[["registered_num", "charity_name", "activities"]]
+	recipients = recipients.rename(columns={"registered_num": "recipient_id", "charity_name": "name"})
+
+	return recipients, recipient_areas

@@ -10,8 +10,8 @@ def get_data():
 	grants, funder_grants, recipient_grants = get_grant_data(c_nums)
 
 	#call charity commission api and extract data to build tables for recipients
-	recipients = get_recipient_data(recipient_grants)
+	recipients, recipient_areas = get_recipient_data(recipient_grants, areas, funder_areas)
 
 	#check data types, clean data
 
-	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, grants, funder_grants, recipient_grants, recipients
+	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, grants, funder_grants, recipient_grants, recipients, recipient_areas
