@@ -1,9 +1,9 @@
 import pandas as pd
-from giving360_api.giving360_api_client import get_grant_data
+from .api_clients import call_360_api
 
 c_nums = ["1015792"] #, "1168435", "1113488"] #remember to remove this
 
-grants = get_grant_data(c_nums)
+grants = call_360_api(c_nums)
 grants_sample = grants[:5]
 for grant in grants_sample:
         print(grant["data"]["fundingOrganization"][0]["name"] + " gave " + str(grant["data"]["amountAwarded"]) + " to " + grant["data"]["recipientOrganization"][0]["name"])

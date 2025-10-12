@@ -2,7 +2,7 @@ import pandas as pd
 import janitor
 import os
 from dotenv import load_dotenv
-from .cc_api.cc_api_client import call_cc_api
+from .api_clients import call_cc_api
 from .cc_api.classifications_extractor import build_classifications_tables
 from .cc_api.areas_extractor import build_areas_tables
 
