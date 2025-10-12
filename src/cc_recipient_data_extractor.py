@@ -3,20 +3,17 @@ import janitor
 import os
 from dotenv import load_dotenv
 from .api_clients import call_cc_api
-from .cc_api.classifications_extractor import build_classifications_tables
-from .cc_api.areas_extractor import build_areas_tables
 
 #get key from env
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
-def get_funder_data():
+def get_recipient_data():
 
 	"""
 	Gets data from the Charity Commission API.
-	Returns dataframes to be piped to database, containing information about funders, the areas where they work, and the beneficiaries and causes that they support.
+	Returns dataframes to be piped to database, containing information about previous recipients of grants.
 	Also builds join tables to deal with many-to-many relationships in the database.
-	Also returns list of charity numbers used to fetch the data.
 	"""
 	
 	try:
@@ -29,7 +26,7 @@ def get_funder_data():
 		# c_nums, _ = get_sample()
 		c_nums = ["1015792", "1168435", "239754", "265281", "287535", "1185673", "1197528", "1051202"]
 		charity_data = {}
-		columns = ["reg_charity_number", "charity_name", "web", "activities", "charitable_objects", "latest_income", "latest_expenditure", "who_what_where", "CharityAoOCountryContinent", "CharityAoOLocalAuthority", "CharityAoORegion"]
+		columns = ["reg_charity_number", "charity_name", "activities", "CharityAoOCountryContinent", "CharityAoOLocalAuthority", "CharityAoORegion"]
 		df_rows = []
 
 		#call api
@@ -39,11 +36,6 @@ def get_funder_data():
 		df = df.rename(columns={
 			"reg_charity_number": "registered_num",
 			"charity_name": "name",
-			"web": "website",
-			"charitable_objects": "objectives",
-			"latest_income": "income",
-			"latest_expenditure": "expenditure",
-			"who_what_where": "classifications",
 			"CharityAoOCountryContinent": "country_continent",
 			"CharityAoOLocalAuthority": "local_authority",
 			"CharityAoORegion": "region"

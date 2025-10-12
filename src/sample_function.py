@@ -1,6 +1,7 @@
 import pandas as pd
 
 def get_sample():
+    
     """
     Gets data from CSVs and calculates sizes for proportional sampling. Gets sample of charity numbers to use for prototype.
     """

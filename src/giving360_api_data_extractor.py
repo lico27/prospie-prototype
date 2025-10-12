@@ -13,7 +13,7 @@ def get_grant_data(c_nums):
                 #call api and normalise data from lists into required columns
                 grants = call_360_api(c_nums)
                 df = pd.json_normalize(grants)
-                grant_columns = ["grant_id", "data.title", "data.description", "data.amountAwarded", "data.currency", "data.awardDate", "data.recipientOrganization"]
+                grant_columns = ["grant_id", "funder_registered_num", "data.title", "data.description", "data.amountAwarded", "data.currency", "data.awardDate", "data.recipientOrganization"]
                 grant_df = df[grant_columns]
         except Exception as e:
                 print(f"Error with initial API call: {e}")
@@ -45,8 +45,10 @@ def get_grant_data(c_nums):
                                         "recipient_charityNumber": "recipient_charity_number",
                                         "recipient_companyNumber": "recipient_company_number"
                                         })
+                funder_grants = grant_df[["grant_id", "funder_registered_num"]].rename(columns={"funder_registered_num": "registered_num"})
+
         except Exception as e:
-                print(f"Error finalising grants table: {e}")
+                print(f"Error building tables: {e}")
                 raise
 
-        return grants
+        return grants, funder_grants

@@ -73,6 +73,10 @@ def call_360_api(c_nums):
                 r.raise_for_status()
                 
                 data = r.json()
+                
+                for grant in data["results"]:
+                    grant["funder_registered_num"] = num
+                
                 grants.extend(data["results"])
                 url = data["next"]
                 
