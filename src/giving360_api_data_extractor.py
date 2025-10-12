@@ -34,21 +34,26 @@ def get_grant_data(c_nums):
                 raise
 
         try:
-                #finalise and tidy table
-                grants = grants[["grant_id", "data.title", "data.description", "data.amountAwarded", "data.currency", "data.awardDate", "recipient_charityNumber", "recipient_companyNumber"]]
+                #finalise and tidy grants table
+                grants = grants[["grant_id", "data.title", "data.description", "data.amountAwarded", "data.currency", "data.awardDate", "recipient_id"]]
                 grants.loc[:, 'data.awardDate'] = grants['data.awardDate'].astype(str).str.strip().str[:4]
                 grants = grants.rename(columns={"data.title": "grant_title",
-                                        "data.description": "grant_desc",
-                                        "data.amountAwarded": "amount",
-                                        "data.currency": "currency",
-                                        "data.awardDate": "year",
-                                        "recipient_charityNumber": "recipient_charity_number",
-                                        "recipient_companyNumber": "recipient_company_number"
-                                        })
+                                                "data.description": "grant_desc",
+                                                "data.amountAwarded": "amount",
+                                                "data.currency": "currency",
+                                                "data.awardDate": "year"
+                                                })
+                grants["recipient_id"] = grants["recipient_id"].str.replace("^GB-CHC-", "", regex=True)
+
+                #build join tables
                 funder_grants = grant_df[["grant_id", "funder_registered_num"]].rename(columns={"funder_registered_num": "registered_num"})
+                grant_recipients = grants[["grant_id", "recipient_id"]]
+
+                #drop unnecessary column
+                grants = grants.drop(columns=["recipient_id"])
 
         except Exception as e:
                 print(f"Error building tables: {e}")
                 raise
 
-        return grants, funder_grants
+        return grants, funder_grants, grant_recipients

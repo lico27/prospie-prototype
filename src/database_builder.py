@@ -7,8 +7,8 @@ def get_data():
 	funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, c_nums = get_funder_data()
 
 	# call giving360 api and extract data
-	grants, funder_grants = get_grant_data(c_nums)
+	grants, funder_grants, grant_recipients = get_grant_data(c_nums)
 
 	#check data types, clean data
 
-	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, grants, funder_grants
+	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, grants, funder_grants, grant_recipients
