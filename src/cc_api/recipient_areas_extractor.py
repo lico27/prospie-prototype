@@ -12,7 +12,7 @@ def build_areas_tables(df):
     funder_areas = all_areas.merge(
         areas.rename(columns={"area_level": "area_type"}),
         on=["area_name", "area_type"]
-    )[["registered_num", "area_id"]]
+    )[["registered_num", "area_id"]].drop_duplicates()
       
     return funder_areas, areas
 

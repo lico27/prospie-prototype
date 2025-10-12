@@ -47,7 +47,7 @@ def get_grant_data(c_nums):
 
                 #build join tables
                 funder_grants = grant_df[["grant_id", "funder_registered_num"]].rename(columns={"funder_registered_num": "registered_num"})
-                grant_recipients = grants[["grant_id", "recipient_id"]]
+                recipient_grants = grants[["grant_id", "recipient_id"]]
 
                 #drop unnecessary column
                 grants = grants.drop(columns=["recipient_id"])
@@ -56,4 +56,4 @@ def get_grant_data(c_nums):
                 print(f"Error building tables: {e}")
                 raise
 
-        return grants, funder_grants, grant_recipients
+        return grants, funder_grants, recipient_grants
