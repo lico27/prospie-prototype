@@ -1,5 +1,6 @@
 import pandas as pd
-from .api_clients import call_360_api
+from src.api_clients import call_360_api
+from src.helper_functions import clean_data
 
 def get_grant_data(c_nums):
 
@@ -55,5 +56,10 @@ def get_grant_data(c_nums):
         except Exception as e:
                 print(f"Error building tables: {e}")
                 raise
+
+        #clean data
+        g360_tables = [grants, funder_grants, recipient_grants]
+        clean_tables_grants = clean_data(g360_tables, ["grant_title"], ["grant_desc"], ["year"])
+        grants, funder_grants, recipient_grants = clean_tables_grants
 
         return grants, funder_grants, recipient_grants

@@ -2,11 +2,12 @@ import pandas as pd
 import janitor
 import os
 from dotenv import load_dotenv
-from .api_clients import call_cc_api
-from .cc_api.classifications_extractor import build_classifications_tables
-from .cc_api.funder_areas_extractor import build_areas_tables
-from .cc_api.areas_table_builder import transform_area_columns
-from .sample_function import get_sample
+from src.api_clients import call_cc_api
+from src.cc_api.classifications_extractor import build_classifications_tables
+from src.cc_api.funder_areas_extractor import build_areas_tables
+from src.cc_api.areas_table_builder import transform_area_columns
+from src.sample_function import get_sample
+from src.helper_functions import clean_data
 
 #get key from env
 load_dotenv()
@@ -58,12 +59,16 @@ def get_funder_data():
 	beneficiaries, funder_beneficiaries, causes, funder_causes = build_classifications_tables(df)
 	
 	#build areas table and join table
-	funder_areas, areas = build_areas_tables(df)	
+	funder_areas, areas = build_areas_tables(df)
 
-	return funders, funder_beneficiaries, beneficiaries, funder_causes, causes, funder_areas, areas, c_nums
+	#clean data
+	cc_funder_tables = [funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas]
+	clean_tables_funders = clean_data(cc_funder_tables, ["name"], ["activities", "objectives"], [])
+	funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas = clean_tables_funders  	
 
+	return funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas, c_nums
 
-def get_recipient_data(recipient_grants, areas, funder_areas):
+def get_recipient_data(recipient_grants, areas):
 
 	#convert recipients to list
 	c_nums = list(recipient_grants[recipient_grants["recipient_id"].str.isdigit()]["recipient_id"])
@@ -93,5 +98,10 @@ def get_recipient_data(recipient_grants, areas, funder_areas):
 	#build recipient table
 	recipients = recipient_df[["registered_num", "charity_name", "activities"]]
 	recipients = recipients.rename(columns={"registered_num": "recipient_id", "charity_name": "name"})
+
+	#clean data
+	cc_recipient_tables = [recipients, recipient_areas]
+	clean_tables_recipients = clean_data(cc_recipient_tables, ["name"], ["activities"], [])
+	recipients, recipient_areas = clean_tables_recipients
 
 	return recipients, recipient_areas

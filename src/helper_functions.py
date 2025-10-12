@@ -39,4 +39,24 @@ def ensure_area_columns(df_exploded, col_name, expected_cols):
     
     return normalised_df
 
+def clean_data(tables, title_cols, sentence_cols, int_cols):
+    for i in range(len(tables)):
+        #convert nans into json-readable nulls
+        tables[i] = tables[i].where(pd.notnull(tables[i]), None)
+        
+        #change to title case for relevant columns
+        for col in title_cols:
+            if col in tables[i].columns:
+                tables[i].loc[:, col] = tables[i][col].str.title()
+        
+        #change to sentence case for relevant columns
+        for col in sentence_cols:
+            if col in tables[i].columns:
+                tables[i].loc[:, col] = tables[i][col].str.capitalize()
 
+        #change to int for relevant columns
+        for col in int_cols:
+            if col in tables[i].columns:
+                tables[i].loc[:, col] = tables[i][col].astype(int)
+    
+    return tables

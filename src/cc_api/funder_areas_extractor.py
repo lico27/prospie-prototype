@@ -1,5 +1,5 @@
 import pandas as pd
-from .areas_table_builder import transform_area_columns
+from src.cc_api.areas_table_builder import transform_area_columns
 
 def build_areas_tables(df):
 
