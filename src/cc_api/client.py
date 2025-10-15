@@ -1,8 +1,12 @@
 import urllib.request
 import json
-import time
-import requests
+import os
 import pandas as pd
+from dotenv import load_dotenv
+
+#get key from env
+load_dotenv()
+api_key = os.getenv("API_KEY")
 
 def call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows):
 
@@ -31,15 +35,15 @@ def call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows):
 				req = urllib.request.Request(url, headers=hdr)
 				req.get_method = lambda: 'GET'
 				response = urllib.request.urlopen(req)
-				
+
 				data = json.load(response)
 				response.close()
-				
+
 				#get relevant columns from operation and add to charity data
 				for col in columns:
 					if col in data and data[col] is not None:
 						charity_data[num][col] = data[col]
-															
+
 			except Exception as e:
 				print(f"Error with {op}/{num}: {e}")
 
@@ -58,34 +62,19 @@ def call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows):
 
 	return df
 
-def call_360_api(c_nums):
+def extract_cc_data(c_nums):
 
-    API_URL = "https://api.threesixtygiving.org/api/v1/"
-    grants = []
-        
-    for num in c_nums:
-        org_id = "GB-CHC-" + num
-        url = API_URL + "org/" + org_id + "/grants_made/"
-        
-        try:
-            while url is not None:
-                r = requests.get(url, headers={"Accept": "application/json"})
-                r.raise_for_status()
-                
-                data = r.json()
-                
-                for grant in data["results"]:
-                    grant["funder_registered_num"] = num
-                
-                grants.extend(data["results"])
-                url = data["next"]
-                
-                time.sleep(0.6)
-                
-        except requests.exceptions.HTTPError as e:
-            continue
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching grants for {num}: {e}")
-            continue
-    
-    return grants
+	#define api variables
+	hdr ={
+		"Cache-Control": "no-cache",
+		"Ocp-Apim-Subscription-Key": f"{api_key}",
+		}
+	operation = ["allcharitydetailsV2", "charityoverview", "charitygoverningdocument"]
+	charity_data = {}
+	columns = ["reg_charity_number", "charity_name", "web", "activities", "charitable_objects", "latest_income", "latest_expenditure", "who_what_where", "CharityAoOCountryContinent", "CharityAoOLocalAuthority", "CharityAoORegion"]
+	df_rows = []
+
+	#call api
+	df = call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows)
+
+	return df

@@ -29,34 +29,12 @@ def ensure_area_columns(df_exploded, col_name, expected_cols):
     """
 
     normalised_df = pd.json_normalize(df_exploded[col_name])
-    
+
     for col in expected_cols:
         if col not in normalised_df.columns:
             normalised_df[col] = None
-    
+
     normalised_df = normalised_df.reindex(columns=expected_cols)
     normalised_df.columns = ["area_" + col for col in normalised_df.columns]
-    
+
     return normalised_df
-
-def clean_data(tables, title_cols, sentence_cols, int_cols):
-    for i in range(len(tables)):
-        #convert nans into json-readable nulls
-        tables[i] = tables[i].where(pd.notnull(tables[i]), None)
-        
-        #change to title case for relevant columns
-        for col in title_cols:
-            if col in tables[i].columns:
-                tables[i].loc[:, col] = tables[i][col].str.strip().str.title()
-        
-        #change to sentence case for relevant columns
-        for col in sentence_cols:
-            if col in tables[i].columns:
-                tables[i].loc[:, col] = tables[i][col].str.strip().str.capitalize()
-
-        #change to int for relevant columns
-        for col in int_cols:
-            if col in tables[i].columns:
-                tables[i].loc[:, col] = tables[i][col].astype(int)
-    
-    return tables

@@ -1,9 +1,9 @@
 import pandas as pd
-from src.helper_functions import ensure_area_columns
+from src.cc_api.transformers import ensure_area_columns
 
 def transform_area_columns(df):
 
-    """ 
+    """
     Transforms area lists into separate columns.
     """
 
@@ -16,19 +16,19 @@ def transform_area_columns(df):
     #explode areas and normalise into columns
     exploded_df_country_continent = df.explode("country_continent")
     country_continent_df = ensure_area_columns(
-        exploded_df_country_continent, "country_continent", 
+        exploded_df_country_continent, "country_continent",
         expected_columns["country_continent"]
     )
 
     exploded_df_local_authority = df.explode("local_authority")
     local_authority_df = ensure_area_columns(
-        exploded_df_local_authority, "local_authority", 
+        exploded_df_local_authority, "local_authority",
         expected_columns["local_authority"]
     )
 
     exploded_df_region = df.explode("region")
     region_df = ensure_area_columns(
-        exploded_df_region, "region", 
+        exploded_df_region, "region",
         expected_columns["region"]
     )
 
@@ -42,13 +42,13 @@ def transform_area_columns(df):
     exploded_df_region = exploded_df_region.reset_index(drop=True)
     region_df = region_df.reset_index(drop=True)
 
-    areas_df = pd.concat([exploded_df_country_continent, country_continent_df, 
-                        local_authority_df, region_df], axis=1) 
+    areas_df = pd.concat([exploded_df_country_continent, country_continent_df,
+                        local_authority_df, region_df], axis=1)
 
     #drop unnecessary columns and rows
-    areas_df = areas_df.drop(columns=["name", "website", "activities", "objectives", 
-                                      "income", "expenditure", "classifications", 
-                                      "country_continent", "local_authority", "region", 
+    areas_df = areas_df.drop(columns=["name", "website", "activities", "objectives",
+                                      "income", "expenditure", "classifications",
+                                      "country_continent", "local_authority", "region",
                                       "area_welsh_ind"], errors="ignore")
     areas_df.columns = [col.replace("area_", "") for col in areas_df.columns]
 
@@ -86,3 +86,18 @@ def transform_area_columns(df):
     areas = areas.rename(columns={"area_type": "area_level"})
 
     return areas, all_areas
+
+def build_areas_tables(df):
+
+    areas, all_areas = transform_area_columns(df)
+
+    #create unique ids for areas
+    areas["area_id"] = range(401, 401 + len(areas))
+
+    #build join table
+    funder_areas = all_areas.merge(
+        areas.rename(columns={"area_level": "area_type"}),
+        on=["area_name", "area_type"]
+    )[["registered_num", "area_id"]].drop_duplicates()
+
+    return funder_areas, areas

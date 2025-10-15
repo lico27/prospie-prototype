@@ -1,6 +1,6 @@
 import pandas as pd
-from src.api_clients import call_360_api
-from src.helper_functions import clean_data
+from src.giving360_api.client import call_360_api
+from src.utils import clean_data
 
 def get_grant_data(c_nums):
 

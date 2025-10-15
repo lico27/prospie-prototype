@@ -1,5 +1,6 @@
-from src.cc_data_extractor import get_funder_data, get_recipient_data
-from src.giving360_api_data_extractor import get_grant_data
+from src.cc_api.funder_pipeline import get_funder_data
+from src.cc_api.recipient_pipeline import get_recipient_data
+from src.giving360_api.grants_pipeline import get_grant_data
 
 def get_data():
 
