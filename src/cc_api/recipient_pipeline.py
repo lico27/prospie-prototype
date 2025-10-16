@@ -8,7 +8,7 @@ def get_recipient_data(recipient_grants, areas):
 	#convert recipients to list
 	c_nums = list(recipient_grants[recipient_grants["recipient_id"].str.isdigit()]["recipient_id"])
 
-	c_nums = c_nums[:5] #remove this
+	#c_nums = c_nums[:5] #remove this
 
 	recipient_df = extract_cc_data(c_nums)
 
