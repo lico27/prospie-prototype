@@ -39,4 +39,13 @@ def clean_data(tables, title_cols, sentence_cols, int_cols):
             if col in tables[i].columns:
                 tables[i].loc[:, col] = tables[i][col].astype(int)
 
+        #ensure financial figures are positive
+        if "income" in tables[i].columns:
+            tables[i].loc[tables[i]["income"] < 0, "income"] = None
+        if "expenditure" in tables[i].columns:
+            tables[i].loc[tables[i]["expenditure"] < 0, "expenditure"] = None
+
+        #remove duplicates
+        tables[i] = tables[i].drop_duplicates()
+
     return tables
