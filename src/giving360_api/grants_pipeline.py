@@ -30,13 +30,14 @@ def get_grant_data(c_nums):
                 exploded_df_recipients = exploded_df_recipients.reset_index(drop=True)
                 recipients_df = recipients_df.reset_index(drop=True)
                 grants = pd.concat([exploded_df_recipients, recipients_df], axis=1)
+
         except Exception as e:
                 print(f"Error processing recipient data: {e}")
                 raise
 
         try:
                 #finalise and tidy grants table
-                grants = grants[["grant_id", "data.title", "data.description", "data.amountAwarded", "data.currency", "data.awardDate", "recipient_id"]]
+                grants = grants[["grant_id", "data.title", "data.description", "data.amountAwarded", "data.currency", "data.awardDate", "recipient_id", "recipient_name", "recipient_description"]]
                 grants.loc[:, 'data.awardDate'] = grants['data.awardDate'].astype(str).str.strip().str[:4]
                 grants = grants.rename(columns={"data.title": "grant_title",
                                                 "data.description": "grant_desc",
@@ -45,21 +46,26 @@ def get_grant_data(c_nums):
                                                 "data.awardDate": "year"
                                                 })
                 grants["recipient_id"] = grants["recipient_id"].str.replace("^GB-CHC-", "", regex=True)
+                grants = grants.rename(columns={"recipient_description": "recipient_activities"})
 
                 #build join tables
                 funder_grants = grant_df[["grant_id", "funder_registered_num"]].rename(columns={"funder_registered_num": "registered_num"})
                 recipient_grants = grants[["grant_id", "recipient_id"]]
 
-                #drop unnecessary column
-                grants = grants.drop(columns=["recipient_id"])
+                #build recipients info table for non-charity recipients
+                #keep first occurrence of each recipient_id to avoid duplicates
+                recipients_info = grants[["recipient_id", "recipient_name", "recipient_activities"]].drop_duplicates(subset=["recipient_id"], keep="first")
+
+                #drop unnecessary columns from grants table
+                grants = grants.drop(columns=["recipient_id", "recipient_name", "recipient_activities"])
 
         except Exception as e:
                 print(f"Error building tables: {e}")
                 raise
 
         #clean data
-        g360_tables = [grants, funder_grants, recipient_grants]
-        clean_tables_grants = clean_data(g360_tables, ["grant_title"], ["grant_desc"], ["year"])
-        grants, funder_grants, recipient_grants = clean_tables_grants
+        g360_tables = [grants, funder_grants, recipient_grants, recipients_info]
+        clean_tables_grants = clean_data(g360_tables, ["grant_title", "recipient_name"], ["grant_desc", "recipient_activities"], ["year"])
+        grants, funder_grants, recipient_grants, recipients_info = clean_tables_grants
 
-        return grants, funder_grants, recipient_grants
+        return grants, funder_grants, recipient_grants, recipients_info

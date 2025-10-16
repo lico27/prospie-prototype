@@ -3,7 +3,7 @@ from src.cc_api.client import extract_cc_data
 from src.cc_api.areas_builder import transform_area_columns
 from src.utils import clean_data
 
-def get_recipient_data(recipient_grants, areas):
+def get_recipient_data(recipient_grants, recipients_info, areas):
 
 	#convert recipients to list
 	c_nums = list(recipient_grants[recipient_grants["recipient_id"].str.isdigit()]["recipient_id"])
@@ -58,17 +58,14 @@ def get_recipient_data(recipient_grants, areas):
 	clean_tables_recipients = clean_data(cc_recipient_tables, ["recipient_name"], ["recipient_activities"], [])
 	recipients, recipient_areas = clean_tables_recipients
 
-	#add placeholder recipients for non-charity organisations
+	#add non-charity recipients using actual data from 360Giving API
 	existing_recipient_ids = set(recipients["recipient_id"])
 	all_recipient_ids = set(recipient_grants["recipient_id"].dropna())
 	missing_recipient_ids = all_recipient_ids - existing_recipient_ids
 
 	if len(missing_recipient_ids) > 0:
-		placeholder_recipients = pd.DataFrame({
-			"recipient_id": list(missing_recipient_ids),
-			"recipient_name": "Unknown",
-			"recipient_activities": "Unknown"
-		})
-		recipients = pd.concat([recipients, placeholder_recipients], ignore_index=True)
+		#filter recipients_info to only include missing (non-charity) recipients
+		non_charity_recipients = recipients_info[recipients_info["recipient_id"].isin(missing_recipient_ids)].copy()
+		recipients = pd.concat([recipients, non_charity_recipients], ignore_index=True)
 
 	return recipients, recipient_areas, areas
