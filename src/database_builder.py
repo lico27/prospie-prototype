@@ -10,7 +10,7 @@ def get_data():
 	#call giving360 api and extract data
 	grants, funder_grants, recipient_grants = get_grant_data(c_nums)
 
-	#call charity commission api and extract data to build tables for recipients
-	recipients, recipient_areas = get_recipient_data(recipient_grants, areas)
+	#call charity commission api and extract data to build tables for recipients and update with any new areas
+	recipients, recipient_areas, areas = get_recipient_data(recipient_grants, areas)
 
 	return funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas, grants, funder_grants, recipients, recipient_grants, recipient_areas
