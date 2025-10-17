@@ -27,6 +27,7 @@ def call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows):
 
 	for num in c_nums:
 		charity_data[num] = {}
+		api_call_failed = False
 
 		#get data from each api operation
 		for op in operation:
@@ -45,7 +46,13 @@ def call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows):
 						charity_data[num][col] = data[col]
 
 			except Exception as e:
-				print(f"Error with {op}/{num}: {e}")
+				print(f"Error with {op}/{num}: {e}. Skipping this organisation.")
+				api_call_failed = True
+				break
+
+		#if api call failed, remove this org from the data
+		if api_call_failed:
+			del charity_data[num]
 
 	#get relevant data and combine into one row per charity
 	for num, data in charity_data.items():
