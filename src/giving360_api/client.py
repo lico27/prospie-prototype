@@ -23,7 +23,9 @@ def call_360_api(c_nums):
                 grants.extend(data["results"])
                 url = data["next"]
 
-                time.sleep(0.6)
+                #limit requests
+                if url is not None:
+                    time.sleep(0.6)
 
         except requests.exceptions.HTTPError as e:
             continue

@@ -2,6 +2,7 @@ import urllib.request
 import json
 import os
 import pandas as pd
+import time
 from dotenv import load_dotenv
 
 #get key from env
@@ -44,6 +45,9 @@ def call_cc_api(operation, hdr, c_nums, charity_data, columns, df_rows):
 				for col in columns:
 					if col in data and data[col] is not None:
 						charity_data[num][col] = data[col]
+
+				#limit requests
+				time.sleep(0.5)
 
 			except Exception as e:
 				print(f"Error with {op}/{num}: {e}. Skipping this organisation.")

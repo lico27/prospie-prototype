@@ -3,6 +3,7 @@ import requests
 import PyPDF2
 from io import BytesIO
 import pandas as pd
+import time
 
 def get_accounts_data(c_nums):
     
@@ -19,6 +20,10 @@ def get_accounts_data(c_nums):
             src = result.content
             soup = BeautifulSoup(src, "lxml")
             accounts_links = soup.find_all("a", class_="accounts-download-link")
+
+            #limit requests
+            time.sleep(1.0)
+
         except Exception as e:
             print(f"Error fetching or parsing accounts page for {num}: {e}")
             continue
@@ -56,7 +61,10 @@ def get_accounts_data(c_nums):
                     "content": full_text,
                     "url": pdf_url
                 })
-                
+
+                # Rate limiting: wait after downloading each PDF
+                time.sleep(0.5)
+
             except Exception as e:
                 print(f"Error processing PDF for {num}: {e}")
                 continue
