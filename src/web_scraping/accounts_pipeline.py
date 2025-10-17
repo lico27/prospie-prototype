@@ -4,20 +4,20 @@ import PyPDF2
 from io import BytesIO
 import pandas as pd
 
-def get_accounts_data():
+def get_accounts_data(c_nums):
     
     accounts_data = []
-    charity_nums = ["1015792"]
 
-    for num in charity_nums:
+    for num in c_nums:
         try:
+            #get charity's accounts page
             headers = {"User-Agent": "Mozilla/5.0"}
             result = requests.get(f"https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/{num}/accounts-and-annual-returns?_uk_gov_ccew_onereg_charitydetails_web_portlet_CharityDetailsPortlet_organisationNumber={num}", headers=headers)
             result.raise_for_status()
 
+            #parse page and find links to download accounts
             src = result.content
             soup = BeautifulSoup(src, "lxml")
-
             accounts_links = soup.find_all("a", class_="accounts-download-link")
         except Exception as e:
             print(f"Error fetching or parsing accounts page for {num}: {e}")
@@ -63,7 +63,9 @@ def get_accounts_data():
 
     try:
         #convert list to dataframe
-        accounts_df = pd.DataFrame(accounts_data)
+        accounts = pd.DataFrame(accounts_data)
     except Exception as e:
         print(f"Error creating DataFrame: {e}")
         raise
+
+    return accounts

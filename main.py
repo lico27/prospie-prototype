@@ -2,10 +2,10 @@ from src.database_builder import get_data
 from src.data_importer import pipe_to_supabase
 
 if __name__ == "__main__":
-    funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas, grants, funder_grants, recipients, recipient_grants, recipient_areas = get_data()
+    funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas, grants, funder_grants, recipients, recipient_grants, recipient_areas, accounts = get_data()
 
-    # for df in [funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas, grants, funder_grants, recipients, recipient_grants, recipient_areas]:
-    #     print(df.head(15))
+    for df in [funders, beneficiaries, funder_beneficiaries, causes, funder_causes, areas, funder_areas, grants, funder_grants, recipients, recipient_grants, recipient_areas, accounts]:
+        print(df.head(15))
     
     #dictionary to hold tables and their keys
     tables = {
@@ -15,6 +15,7 @@ if __name__ == "__main__":
         "areas": (areas, "area_id"),
         "grants": (grants, "grant_id"),
         "recipients": (recipients, "recipient_id"),
+        "accounts": (accounts, "url"),
         "funder_beneficiaries": (funder_beneficiaries, "registered_num,ben_id"),
         "funder_causes": (funder_causes, "registered_num,cause_id"),
         "funder_areas": (funder_areas, "registered_num,area_id"),
@@ -23,7 +24,7 @@ if __name__ == "__main__":
         "recipient_areas": (recipient_areas, "recipient_id,area_id")
     }
     
-    #loop to pipe data to supabase
+    #pipe data to supabase
     for table_name, (df, unique_key) in tables.items():
         pipe_to_supabase(df, table_name, unique_key)
 
