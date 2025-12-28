@@ -12,7 +12,7 @@ function Step2ConfirmDetails({ charityData }) {
           <div className="instruction-content">
             <h4 className="instruction-heading">Choose Your Details</h4>
             <p className="instruction-text">
-              Below is your charity's information taken from the Charity Commission website. Click next to review each section and make any changes you'd like.
+              Below is your charity's information taken from the Charity Commission website. Use the Next/Back buttons or click the numbered steps at the top to navigate through each section and make any changes you'd like.
             </p>
           </div>
         </div>
