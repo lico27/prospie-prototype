@@ -28,6 +28,7 @@ function UserInput({ resetTrigger }) {
   const [funderWebsite, setFunderWebsite] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [confirmedSteps, setConfirmedSteps] = useState([])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -62,10 +63,15 @@ function UserInput({ resetTrigger }) {
 
   const handleNext = async () => {
     if (currentStep < 8) {
+      //mark current step as confirmed
+      if (!confirmedSteps.includes(currentStep)) {
+        setConfirmedSteps([...confirmedSteps, currentStep])
+      }
+
       if (currentStep === 1) {
         await validateCharityNumber()
       } else if (currentStep === 6) {
-        // Extract keywords before moving to step 7
+        //extract keywords before moving to step 7
         await extractKeywordsFromData()
         setCurrentStep(currentStep + 1)
         setError(null)
@@ -214,6 +220,7 @@ function UserInput({ resetTrigger }) {
     setFunderName(null)
     setFunderWebsite(null)
     setError(null)
+    setConfirmedSteps([])
   }
 
   useEffect(() => {
@@ -230,13 +237,10 @@ function UserInput({ resetTrigger }) {
   }
 
   const handleStepClick = (step) => {
-    //only allow backwords navigation
-    if (step < currentStep) {
-      setCurrentStep(step)
-      setError(null)
-      setFunderName(null)
-      setFunderWebsite(null)
-    }
+    setCurrentStep(step)
+    setError(null)
+    setFunderName(null)
+    setFunderWebsite(null)
   }
 
   return (
@@ -248,6 +252,7 @@ function UserInput({ resetTrigger }) {
           currentStep={currentStep}
           totalSteps={8}
           onStepClick={handleStepClick}
+          confirmedSteps={confirmedSteps}
         />
 
         <div className="app-form-container">

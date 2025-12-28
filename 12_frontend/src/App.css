@@ -313,6 +313,13 @@
   color: #8ebcc0;
 }
 
+.progress-label.confirmed .progress-label-number {
+  background: rgba(88, 166, 95, 0.25);
+  border-color: #58a65f;
+  color: #7bc982;
+  font-weight: 700;
+}
+
 .progress-label.clickable {
   cursor: pointer;
 }
