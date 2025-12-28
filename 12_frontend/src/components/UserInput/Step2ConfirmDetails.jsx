@@ -1,4 +1,4 @@
-function Step2ConfirmDetails({ charityData, onBack, onUseThis, onEdit }) {
+function Step2ConfirmDetails({ charityData }) {
   if (!charityData) {
     return <div className="loading">Loading charity data...</div>
   }
@@ -12,7 +12,7 @@ function Step2ConfirmDetails({ charityData, onBack, onUseThis, onEdit }) {
           <div className="instruction-content">
             <h4 className="instruction-heading">Choose Your Details</h4>
             <p className="instruction-text">
-              Below is your charity's information taken from the Charity Commission website. You can use this if you want to get started quickly, or write your own if you'd rather customise it.
+              Below is your charity's information taken from the Charity Commission website. Click next to review each section and make any changes you'd like.
             </p>
           </div>
         </div>
@@ -39,9 +39,9 @@ function Step2ConfirmDetails({ charityData, onBack, onUseThis, onEdit }) {
           </div>
         )}
 
-        {charityData.areas && charityData.areas.length > 0 && (
-          <div className="entity-section">
-            <h4>Areas</h4>
+        <div className="entity-section">
+          <h4>Areas</h4>
+          {charityData.areas && charityData.areas.length > 0 ? (
             <div className="tag-list">
               {charityData.areas.map((area, idx) => (
                 <span key={idx} className="tag">
@@ -49,8 +49,14 @@ function Step2ConfirmDetails({ charityData, onBack, onUseThis, onEdit }) {
                 </span>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="empty-state-message">
+              <p style={{ fontStyle: 'italic', color: '#888', margin: '0.5rem 0', textAlign: 'center' }}>
+                Sorry! prospie was unable to retrieve geographic data for your charity. Please add your areas manually.
+              </p>
+            </div>
+          )}
+        </div>
 
         {charityData.beneficiaries && charityData.beneficiaries.length > 0 && (
           <div className="entity-section">
@@ -73,18 +79,6 @@ function Step2ConfirmDetails({ charityData, onBack, onUseThis, onEdit }) {
             </div>
           </div>
         )}
-      </div>
-
-      <div className="step2-navigation">
-        <button type="button" className="nav-button back-button" onClick={onBack}>
-          Back
-        </button>
-        <button type="button" className="nav-button next-button" onClick={onUseThis}>
-          Use This
-        </button>
-        <button type="button" className="nav-button edit-button" onClick={onEdit}>
-          Edit My Details
-        </button>
       </div>
     </div>
   )

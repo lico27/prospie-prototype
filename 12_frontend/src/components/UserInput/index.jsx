@@ -257,12 +257,7 @@ function UserInput({ resetTrigger }) {
             )}
 
             {currentStep === 2 && (
-              <Step2ConfirmDetails
-                charityData={charityData}
-                onBack={handleBack}
-                onUseThis={() => setCurrentStep(8)}
-                onEdit={() => setCurrentStep(3)}
-              />
+              <Step2ConfirmDetails charityData={charityData} />
             )}
 
             {currentStep === 3 && (
@@ -307,16 +302,14 @@ function UserInput({ resetTrigger }) {
               <StepXFunderNumber funderNumber={funderNumber} onChange={setFunderNumber} />
             )}
 
-            {currentStep !== 2 && (
-              <FormNavigation
-                currentStep={currentStep}
-                totalSteps={8}
-                onBack={handleBack}
-                onNext={handleNext}
-                onSubmit={handleSubmit}
-                loading={loading}
-              />
-            )}
+            <FormNavigation
+              currentStep={currentStep}
+              totalSteps={8}
+              onBack={handleBack}
+              onNext={handleNext}
+              onSubmit={handleSubmit}
+              loading={loading}
+            />
           </form>
 
           {funderName && (
