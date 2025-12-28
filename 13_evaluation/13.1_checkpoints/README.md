@@ -1,3 +1,3 @@
 # Checkpoints
 
-This folder (locally) contains seven pickle files: `funders_df.pkl`, `grants_df.pkl`, `areas_df.pkl` and `hierarchies_df.pkl` contain the dataframes produced by the scoring logic development notebook and have been saved as checkpoints to import the data without needing to connect to Supabase. The additional pairs dataframes, stored as `embed_df.pkl` and `eval_df.pkl`, are used as extra inputs to assist with evaluating the logic, whilst `eval_final_df.pkl` contains the final evaluation dataframe.
+This folder (locally) contains seven pickle files: `funders_df.pkl`, `grants_df.pkl`, `areas_df.pkl` and `hierarchies_df.pkl` contain the dataframes produced by the scoring logic development notebook and have been saved as checkpoints to import the data without needing to connect to Supabase. The checkpoints of the results from the validation tests are saved as `results_df.pkl` and `results_2_df.pkl`.
