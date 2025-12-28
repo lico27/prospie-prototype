@@ -120,9 +120,20 @@ function UserInput({ resetTrigger }) {
       return
     }
 
+    //reset everything when validating a new charity number
     setLoading(true)
     setError(null)
+    setCharityData(null)
+    setSelectedAreas([])
+    setSelectedBeneficiaries([])
+    setSelectedCauses([])
+    setActivities("")
+    setObjectives("")
     setKeywords([])
+    setConfirmedSteps([])
+    setFunderNumber("")
+    setFunderName(null)
+    setFunderWebsite(null)
 
     try {
       const { data: recipient, error } = await supabase
