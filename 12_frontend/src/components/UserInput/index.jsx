@@ -162,7 +162,7 @@ function UserInput({ resetTrigger }) {
           benIds.length > 0
             ? supabase.from("beneficiaries").select("ben_name").in("ben_id", benIds)
             : Promise.resolve({ data: [] }),
-          causeIds.length > 0
+          causeIds.length > 0 
             ? supabase.from("causes").select("cause_name").in("cause_id", causeIds)
             : Promise.resolve({ data: [] }),
         ])
