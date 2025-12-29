@@ -7,6 +7,9 @@ def check_existing_relationship(grants_df, funder_num, user_num):
     """
     Checks if funder has ever given a grant to the user.
     """
+    if grants_df.empty or "recipient_id" not in grants_df.columns:
+        return False, 0, pd.DataFrame()
+
     relationship = grants_df[
         (grants_df["funder_num"] == funder_num) &
         (grants_df["recipient_id"] == user_num)
@@ -507,8 +510,8 @@ def calculate_lv_penalty(funder_grants_df):
     Identifies low variance in a funder's previous giving and calculates a penalty.
     """
 
-    #skip funders with low giving history
-    if len(funder_grants_df) < 10:
+    #skip funders with low or no giving history
+    if funder_grants_df.empty or len(funder_grants_df) < 10 or "recipient_name" not in funder_grants_df.columns:
         return 1.0
 
     total_grants = len(funder_grants_df)
@@ -575,26 +578,38 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
     keyword_similarity_score, keyword_strong_matches, keyword_reasoning, keyword_gets_bonus = check_keywords(funder_keywords, user_keywords, model)
 
     #10 get name (RP) semantic similarity score
-    recipients_name_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_name_em"]))
-    user_name_em = pair_df["user_name_em"].iloc[idx]
-    user_name = pair_df["user_name"].iloc[idx]
-    name_rp_score, name_rp_reasoning = check_name_rp(recipients_name_all_em, user_name_em, user_name)
+    if not funder_grants_df.empty and "recipient_name" in funder_grants_df.columns:
+        recipients_name_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_name_em"]))
+        user_name_em = pair_df["user_name_em"].iloc[idx]
+        user_name = pair_df["user_name"].iloc[idx]
+        name_rp_score, name_rp_reasoning = check_name_rp(recipients_name_all_em, user_name_em, user_name)
+    else:
+        name_rp_score = 0.0
+        name_rp_reasoning = ["No grants history available"]
 
     #11 get grants (RP) semantic similarity score
-    non_empty_grants = funder_grants_df[
-        (funder_grants_df["grant_title"].notna() & (funder_grants_df["grant_title"] != "")) |
-        (funder_grants_df["grant_desc"].notna() & (funder_grants_df["grant_desc"] != ""))
-    ]
-    grants_all_em = dict(zip(non_empty_grants["recipient_name"], non_empty_grants["grant_concat_em"]))
-    user_concat_em = pair_df["user_concat_em"].iloc[idx]
-    user_name = pair_df["user_name"].iloc[idx]
-    grants_rp_score, grants_rp_reasoning = check_grants_rp(grants_all_em, user_concat_em, user_name)
+    if not funder_grants_df.empty and "grant_title" in funder_grants_df.columns:
+        non_empty_grants = funder_grants_df[
+            (funder_grants_df["grant_title"].notna() & (funder_grants_df["grant_title"] != "")) |
+            (funder_grants_df["grant_desc"].notna() & (funder_grants_df["grant_desc"] != ""))
+        ]
+        grants_all_em = dict(zip(non_empty_grants["recipient_name"], non_empty_grants["grant_concat_em"]))
+        user_concat_em = pair_df["user_concat_em"].iloc[idx]
+        user_name = pair_df["user_name"].iloc[idx]
+        grants_rp_score, grants_rp_reasoning = check_grants_rp(grants_all_em, user_concat_em, user_name)
+    else:
+        grants_rp_score = 0.0
+        grants_rp_reasoning = ["No grants history available"]
 
     #12 get recipients (RP) semantic similarity score
-    recipients_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_concat_em"]))
-    user_concat_em = pair_df["user_concat_em"].iloc[idx]
-    user_name = pair_df["user_name"].iloc[idx]
-    recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(recipients_all_em, user_concat_em, user_name)
+    if not funder_grants_df.empty and "recipient_name" in funder_grants_df.columns:
+        recipients_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_concat_em"]))
+        user_concat_em = pair_df["user_concat_em"].iloc[idx]
+        user_name = pair_df["user_name"].iloc[idx]
+        recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(recipients_all_em, user_concat_em, user_name)
+    else:
+        recipients_rp_score = 0.0
+        recipients_rp_reasoning = ["No grants history available"]
 
     #13 get sbf penalty
     sbf_penalty = 0.1 if is_sbf else 1.0
