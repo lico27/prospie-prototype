@@ -145,8 +145,6 @@ def build_grants_df(funder_number, url, key):
             "message": f"Error fetching grants: {str(e)}"
         }
 
-
-
 build_grants_df(test_funder_number, url, key)
 
 
