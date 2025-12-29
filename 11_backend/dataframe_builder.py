@@ -28,7 +28,7 @@ test_user_data = {
     "user_activities": "We provide educational support to young people",
     "user_objectives": "To improve educational outcomes for disadvantaged youth"
 }
-test_funder_number = "1202663"
+test_funder_number = "262861"
 model = SentenceTransformer("all-roberta-large-v1")
 
 def create_user_embeddings(user_data, model):
@@ -96,8 +96,6 @@ def get_funder_data(funder_number, url, key):
 
 # funder_data, funder_areas, funder_beneficiaries, funder_causes = get_funder_data(test_funder_number, url, key)
 
-
-
 def build_grants_df(funder_number, url, key):
     """
     Fetches grants data for the selected funder and builds a dataframe.
@@ -144,13 +142,26 @@ def build_grants_df(funder_number, url, key):
             "error": True,
             "message": f"Error fetching grants: {str(e)}"
         }
+    
+    return grants_df
 
-build_grants_df(test_funder_number, url, key)
+grants_df = build_grants_df(test_funder_number, url, key)
+
+def enrich_grants_df(grants_df, url, key):
 
 
 
 
+    supabase = create_client(url, key)
 
+    if len(grants_df) > 0:
+        print(f"\nEnriching grants with recipient data...")
+        grant_ids_list = grants_df["grant_id"].tolist()
+
+
+    return grants_df
+
+grants_df = enrich_grants_df(grants_df, url, key)
 
 
 # def get_lookup_tables()
