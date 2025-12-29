@@ -122,9 +122,24 @@ def build_grants_df(funder_number, url, key):
 
             offset += batch_size
 
+        #fetch grants
+        all_grants = []
+        if all_grant_ids:
+            batch_size = 100
+            total_batches = (len(all_grant_ids) - 1) // batch_size + 1
 
+            for i in range(0, len(all_grant_ids), batch_size):
+                batch_ids = all_grant_ids[i:i+batch_size]
+                batch_num = (i // batch_size) + 1
+                print(f"Fetching grants batch {batch_num}/{total_batches}...")
 
+                grants_response = supabase.table("grants").select("*").in_("grant_id", batch_ids).execute()
+                all_grants.extend(grants_response.data)
 
+        grants_df = pd.DataFrame(all_grants)
+        grants_df["registered_num"] = funder_number
+
+        print(f"\n✅ Total grants loaded: {len(grants_df)}")
 
     except Exception as e:
         return {
