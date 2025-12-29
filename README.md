@@ -25,7 +25,7 @@ prospie is an AI tool to support trusts fundraisers in the third sector. prospie
     10.3. Tests the scoring logic through iterations by adding and refactoring weightings 
 11. A backend to deliver the calculated alignment score of a user's charity and their chosen funder  
 12. A frontend to interact with the app     
-13. Evaluates the performance of the scoring logic
+13. Evaluates the performance of the scoring logic      
     13.1. Stores checkpoints locally        
 
 ## How to...
@@ -44,7 +44,47 @@ The database is built in stages by running Python scripts in folders 01-05. Each
 
 #### Steps
 
-TBC
+1. **Set up Supabase database**
+   - Create a new Supabase project
+   - Run the `schema.sql` file in your Supabase SQL editor to create all required tables
+   - Copy your project URL and service role key to the `.env` file
+
+2. **Generate sample of funders**
+   ```bash
+   cd 01_sample_generator
+   python sample_function.py
+   ```
+   This generates `sample_charity_numbers.json` with n funders' registered charity numbers stratified by income.
+
+3. **Build recipients table**
+   ```bash
+   cd 02_recipients_table_builder
+   python main.py
+   ```
+   Downloads all registered charities from Charity Commission and uploads to `recipients` table with classifications and join tables.
+
+4. **Build funders and grants data from APIs**
+   ```bash
+   cd 03_database_builder_apis
+   python main.py
+   ```
+   Fetches funder data from Charity Commission API and grants from 360Giving API. Uploads to `funders`, `grants`, and related/join tables.
+
+5. **Build grants data from PDF accounts**
+   ```bash
+   cd 04_database_builder_pdfs
+   python main.py
+   ```
+   Downloads charity accounts PDFs, extracts grants using Claude AI, and uploads to database (skips funders already in 360Giving data).
+
+6. **Add data from The List**
+   ```bash
+   cd 05_database_builder_csv
+   python main.py
+   ```
+   Processes the latest `the-list-*.csv` file and marks funders on The List.
+
+**Note:** Steps 3-5 can take several hours to complete depending on API rate limits. Progress is saved to the database continuously, so you can stop and resume if needed.
 
 ----
 
