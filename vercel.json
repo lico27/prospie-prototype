@@ -1,5 +1,7 @@
 {
-  "buildCommand": "cd 12_frontend && npm install && npm run build",
+  "framework": null,
+  "installCommand": "cd 12_frontend && npm install",
+  "buildCommand": "cd 12_frontend && npm run build",
   "outputDirectory": "12_frontend/dist",
   "functions": {
     "api/*.py": {
