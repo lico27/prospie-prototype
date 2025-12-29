@@ -51,7 +51,7 @@ def create_user_embeddings(user_data, model):
 
     return user_name_em, user_concat_em
 
-user_name_em, user_concat_em = create_user_embeddings(test_user_data, model)
+# user_name_em, user_concat_em = create_user_embeddings(test_user_data, model)
 
 def get_funder_data(funder_number, url, key):
     """
@@ -94,12 +94,53 @@ def get_funder_data(funder_number, url, key):
 
     return funder_data, funder_areas, funder_beneficiaries, funder_causes
 
-funder_data, funder_areas, funder_beneficiaries, funder_causes = get_funder_data(test_funder_number, url, key)
+# funder_data, funder_areas, funder_beneficiaries, funder_causes = get_funder_data(test_funder_number, url, key)
+
+
+
+def build_grants_df(funder_number, url, key):
+
+
+    supabase = create_client(url, key)
+
+    try:
+        #get all grants for this funder
+        all_grant_ids = []
+        offset = 0
+        batch_size = 1000
+
+        while True:
+            funder_grant_joins = supabase.table("funder_grants").select("grant_id").eq("registered_num", funder_number).range(offset, offset + batch_size - 1).execute()
+
+            if not funder_grant_joins.data:
+                break
+
+            grant_ids_batch = [join["grant_id"] for join in funder_grant_joins.data]
+            all_grant_ids.extend(grant_ids_batch)
+            if len(funder_grant_joins.data) < batch_size:
+                break
+
+            offset += batch_size
 
 
 
 
-# def enrich_grants_df(grants_df)
+
+    except Exception as e:
+        return {
+            "error": True,
+            "message": f"Error fetching grants: {str(e)}"
+        }
+
+
+
+build_grants_df()
+
+
+
+
+
+
 
 # def get_lookup_tables()
 
