@@ -39,8 +39,14 @@ venv/
 env/
 myenv/
 .venv/
+
+#cache
 *.pyc
 __pycache__/
+*.pyo
+*.pyd
+.cache/
+sentence_transformers_cache/
 
 /accounts
 *publicextract*
@@ -51,9 +57,10 @@ __pycache__/
 #checkpoint files
 *.pkl
 
-#notebook for testing functions
+#notes/workings
 eda_testing.ipynb
-
-#spreadsheet for planning scoring logic
 *logic_workings.xlsx
+required_cols.md
+test_scoring.py
+dev_server.py
 

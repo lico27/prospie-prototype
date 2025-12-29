@@ -1,0 +1,9 @@
+{
+  "name": "prospie-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd 12_frontend && npm run dev",
+    "build": "cd 12_frontend && npm run build"
+  }
+}

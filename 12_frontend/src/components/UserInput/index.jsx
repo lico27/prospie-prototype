@@ -58,7 +58,11 @@ function UserInput({ resetTrigger }) {
       console.log("User data prepared for scoring:", pair_df)
 
       //send to backend for alignment scoring
-      const response = await fetch("/api/calculate", {
+      const apiUrl = import.meta.env.DEV
+        ? 'http://localhost:5000/api/calculate'
+        : '/api/calculate'
+
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

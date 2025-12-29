@@ -525,59 +525,59 @@ def calculate_lv_penalty(funder_grants_df):
     
     return penalty
 
-def get_scores_and_reasonings(pairs_df, idx, grants_df, areas_df, hierarchies_df, model):
+def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df, model):
     """
     Calls all calculation functions to get scores and reasonings for each step.
     """
 
     #get funder's data
-    funder_num = pairs_df["funder_registered_num"].iloc[idx]
+    funder_num = pair_df["funder_registered_num"].iloc[idx]
     funder_grants_df = grants_df[grants_df["funder_num"] == funder_num].copy()
     has_grants_data = not funder_grants_df.empty
     
     #1 check if funder has a single beneficiary
-    is_sbf = pairs_df["is_potential_sbf"].iloc[idx]
+    is_sbf = pair_df["is_potential_sbf"].iloc[idx]
 
     #2 check if funder states no unsolicited applications
-    is_nua = pairs_df["is_nua"].iloc[idx]
+    is_nua = pair_df["is_nua"].iloc[idx]
 
     #3 check if funder is on the list
-    is_on_list = pairs_df["is_on_list"].iloc[idx]
-    list_reasoning = set(pairs_df["list_entries"].iloc[idx]) if is_on_list else None
+    is_on_list = pair_df["is_on_list"].iloc[idx]
+    list_reasoning = set(pair_df["list_entries"].iloc[idx]) if is_on_list else None
 
     #4 check if funder has ever given a grant to applicant
-    user_num = pairs_df["user_id"].iloc[idx]
+    user_num = pair_df["user_id"].iloc[idx]
     existing_relationship, num_grants, relationship = check_existing_relationship(grants_df, funder_num, user_num)
 
     #5 get areas score
-    funder_areas = pairs_df["areas"].iloc[idx].copy()
-    user_areas = pairs_df["user_areas"].iloc[idx].copy()
+    funder_areas = pair_df["areas"].iloc[idx].copy()
+    user_areas = pair_df["user_areas"].iloc[idx].copy()
     areas_score, areas_reasoning = check_areas(funder_areas, user_areas, areas_df, hierarchies_df)
 
     #6 get beneficiaries score
-    funder_beneficiaries = pairs_df["beneficiaries"].iloc[idx].copy()
-    user_beneficiaries = pairs_df["user_beneficiaries"].iloc[idx].copy()
+    funder_beneficiaries = pair_df["beneficiaries"].iloc[idx].copy()
+    user_beneficiaries = pair_df["user_beneficiaries"].iloc[idx].copy()
     beneficiaries_score, beneficiaries_reasoning = check_beneficiaries(funder_beneficiaries, user_beneficiaries)
 
     #7 get causes score
-    funder_causes = pairs_df["causes"].iloc[idx].copy()
-    user_causes = pairs_df["user_causes"].iloc[idx].copy()
+    funder_causes = pair_df["causes"].iloc[idx].copy()
+    user_causes = pair_df["user_causes"].iloc[idx].copy()
     causes_score, causes_reasoning, has_gcp = check_causes(funder_causes, user_causes)
 
     #8 get text semantic similarity score
-    funder_embedding = pairs_df["concat_em"].iloc[idx]
-    user_embedding = pairs_df["user_concat_em"].iloc[idx]
+    funder_embedding = pair_df["concat_em"].iloc[idx]
+    user_embedding = pair_df["user_concat_em"].iloc[idx]
     text_similarity_score = calculate_similarity_score(funder_embedding, user_embedding)
 
     #9 get keyword semantic similarity score
-    funder_keywords = pairs_df["extracted_class"].iloc[idx]
-    user_keywords = pairs_df["user_extracted_class"].iloc[idx]
+    funder_keywords = pair_df["extracted_class"].iloc[idx]
+    user_keywords = pair_df["user_extracted_class"].iloc[idx]
     keyword_similarity_score, keyword_strong_matches, keyword_reasoning, keyword_gets_bonus = check_keywords(funder_keywords, user_keywords, model)
 
     #10 get name (RP) semantic similarity score
     recipients_name_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_name_em"]))
-    user_name_em = pairs_df["user_name_em"].iloc[idx]
-    user_name = pairs_df["user_name"].iloc[idx]
+    user_name_em = pair_df["user_name_em"].iloc[idx]
+    user_name = pair_df["user_name"].iloc[idx]
     name_rp_score, name_rp_reasoning = check_name_rp(recipients_name_all_em, user_name_em, user_name)
 
     #11 get grants (RP) semantic similarity score
@@ -586,14 +586,14 @@ def get_scores_and_reasonings(pairs_df, idx, grants_df, areas_df, hierarchies_df
         (funder_grants_df["grant_desc"].notna() & (funder_grants_df["grant_desc"] != ""))
     ]
     grants_all_em = dict(zip(non_empty_grants["recipient_name"], non_empty_grants["grant_concat_em"]))
-    user_concat_em = pairs_df["user_concat_em"].iloc[idx]
-    user_name = pairs_df["user_name"].iloc[idx]
+    user_concat_em = pair_df["user_concat_em"].iloc[idx]
+    user_name = pair_df["user_name"].iloc[idx]
     grants_rp_score, grants_rp_reasoning = check_grants_rp(grants_all_em, user_concat_em, user_name)
 
     #12 get recipients (RP) semantic similarity score
     recipients_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_concat_em"]))
-    user_concat_em = pairs_df["user_concat_em"].iloc[idx]
-    user_name = pairs_df["user_name"].iloc[idx]
+    user_concat_em = pair_df["user_concat_em"].iloc[idx]
+    user_name = pair_df["user_name"].iloc[idx]
     recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(recipients_all_em, user_concat_em, user_name)
 
     #13 get sbf penalty
@@ -625,11 +625,11 @@ def get_scores_and_reasonings(pairs_df, idx, grants_df, areas_df, hierarchies_df
     gcp_bonus = 1.2 if has_gcp else 1.0
 
     #18 get areas (RP) bonus
-    user_areas = pairs_df["user_areas"].iloc[idx].copy()
+    user_areas = pair_df["user_areas"].iloc[idx].copy()
     areas_rp_bonus, areas_rp_reasoning = calculate_areas_bonus_rp(funder_grants_df, user_areas, areas_df, hierarchies_df)
 
     #19 get keywords (RP) bonus
-    user_keywords = pairs_df["user_extracted_class"].iloc[idx]
+    user_keywords = pair_df["user_extracted_class"].iloc[idx]
     keywords_rp_bonus, keywords_rp_reasoning = calculate_keywords_bonus_rp(funder_grants_df, user_keywords)
 
     #20 get low variance penalty
@@ -643,13 +643,13 @@ def get_scores_and_reasonings(pairs_df, idx, grants_df, areas_df, hierarchies_df
             has_grants_data
     )
 
-def calculate_alignment_score(pairs_df, idx, grants_df, areas_df, hierarchies_df, model):
+def calculate_alignment_score(pair_df, idx, grants_df, areas_df, hierarchies_df, model):
     """
     Combines all 20 scoring steps to produce one final alignment score with reweighting to account for missing data where funders have no grants history.
     """
 
     #get scores
-    result = get_scores_and_reasonings(pairs_df, idx, grants_df, areas_df, hierarchies_df, model)
+    result = get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df, model)
     
     #unpack score elements
     (is_sbf, is_nua, is_on_list, list_reasoning,
