@@ -30,6 +30,24 @@ function UserInput({ resetTrigger }) {
   const [loading, setLoading] = useState(false)
   const [confirmedSteps, setConfirmedSteps] = useState([])
 
+  const preparePairData = () => {
+    //prepare user data
+    const pair_df = {
+      user_id: charityNumber,
+      user_name: charityData?.recipient_name || "",
+      user_name_em: null,
+      user_areas: selectedAreas,
+      user_beneficiaries: selectedBeneficiaries,
+      user_causes: selectedCauses,
+      user_concat_em: null,
+      user_extracted_class: JSON.stringify(keywords),
+      user_activities: activities,
+      user_objectives: objectives
+    }
+
+    return pair_df
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -38,6 +56,7 @@ function UserInput({ resetTrigger }) {
     setFunderWebsite(null)
 
     try {
+      //validate funder
       const { data, error } = await supabase
         .from("funders")
         .select("name, website")
@@ -49,6 +68,28 @@ function UserInput({ resetTrigger }) {
       if (data) {
         setFunderName(data.name)
         setFunderWebsite(data.website)
+
+        const pair_df = preparePairData()
+        console.log("User data prepared for scoring:", pair_df)
+
+        //send to backend for alignment scoring
+        const response = await fetch("/api/score_calculator", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_data: pair_df,
+            funder_number: funderNumber
+          })
+        })
+
+        const scoringResult = await response.json()
+        console.log("Scoring result:", scoringResult)
+
+        if (scoringResult.error) {
+          setError(scoringResult.error)
+        }
       }
     } catch (err) {
       if (err.message.includes("Cannot coerce the result to a single JSON object")) {
@@ -108,6 +149,7 @@ function UserInput({ resetTrigger }) {
       setIsExtractingKeywords(false)
     }
   }
+
 
   const validateCharityNumber = async () => {
     if (!charityNumber) {
