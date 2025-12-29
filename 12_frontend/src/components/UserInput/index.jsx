@@ -9,7 +9,7 @@ import Step4Beneficiaries from "./Step4Beneficiaries"
 import Step5Causes from "./Step5Causes"
 import Step6Activities from "./Step6ActivitiesObjectives"
 import Step7Keywords from "./Step7Keywords"
-import StepXFunderNumber from "./StepXFunderNumber"
+import Step8FunderNumber from "./Step8FunderNumber"
 import { fetchUkcatData, extractClassifications } from "../../utils/keywordExtractor"
 
 function UserInput({ resetTrigger }) {
@@ -24,11 +24,10 @@ function UserInput({ resetTrigger }) {
   const [keywords, setKeywords] = useState([])
   const [isExtractingKeywords, setIsExtractingKeywords] = useState(false)
   const [funderNumber, setFunderNumber] = useState("")
-  const [funderName, setFunderName] = useState(null)
-  const [funderWebsite, setFunderWebsite] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [confirmedSteps, setConfirmedSteps] = useState([])
+  const [alignmentScore, setAlignmentScore] = useState(null)
 
   const preparePairData = () => {
     //prepare user data
@@ -52,51 +51,34 @@ function UserInput({ resetTrigger }) {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    setFunderName(null)
-    setFunderWebsite(null)
+    setAlignmentScore(null)
 
     try {
-      //validate funder
-      const { data, error } = await supabase
-        .from("funders")
-        .select("name, website")
-        .eq("registered_num", funderNumber)
-        .single()
+      const pair_df = preparePairData()
+      console.log("User data prepared for scoring:", pair_df)
 
-      if (error) throw error
-
-      if (data) {
-        setFunderName(data.name)
-        setFunderWebsite(data.website)
-
-        const pair_df = preparePairData()
-        console.log("User data prepared for scoring:", pair_df)
-
-        //send to backend for alignment scoring
-        const response = await fetch("/api/score_calculator", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_data: pair_df,
-            funder_number: funderNumber
-          })
+      //send to backend for alignment scoring
+      const response = await fetch("/api/calculate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_data: pair_df,
+          funder_number: funderNumber
         })
+      })
 
-        const scoringResult = await response.json()
-        console.log("Scoring result:", scoringResult)
+      const scoringResult = await response.json()
+      console.log("Scoring result:", scoringResult)
 
-        if (scoringResult.error) {
-          setError(scoringResult.error)
-        }
+      if (scoringResult.error) {
+        setError(scoringResult.error)
+      } else {
+        setAlignmentScore(scoringResult.score)
       }
     } catch (err) {
-      if (err.message.includes("Cannot coerce the result to a single JSON object")) {
-        setError("Please enter a valid registered charity number")
-      } else {
-        setError(err.message)
-      }
+      setError(err.message || "An error occurred while calculating the score")
     } finally {
       setLoading(false)
     }
@@ -116,13 +98,9 @@ function UserInput({ resetTrigger }) {
         await extractKeywordsFromData()
         setCurrentStep(currentStep + 1)
         setError(null)
-        setFunderName(null)
-        setFunderWebsite(null)
       } else {
         setCurrentStep(currentStep + 1)
         setError(null)
-        setFunderName(null)
-        setFunderWebsite(null)
       }
     }
   }
@@ -174,8 +152,6 @@ function UserInput({ resetTrigger }) {
     setKeywords([])
     setConfirmedSteps([])
     setFunderNumber("")
-    setFunderName(null)
-    setFunderWebsite(null)
 
     try {
       const { data: recipient, error } = await supabase
@@ -253,8 +229,6 @@ function UserInput({ resetTrigger }) {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
       setError(null)
-      setFunderName(null)
-      setFunderWebsite(null)
     }
   }
 
@@ -270,10 +244,9 @@ function UserInput({ resetTrigger }) {
     setKeywords([])
     setIsExtractingKeywords(false)
     setFunderNumber("")
-    setFunderName(null)
-    setFunderWebsite(null)
     setError(null)
     setConfirmedSteps([])
+    setAlignmentScore(null)
   }
 
   useEffect(() => {
@@ -292,8 +265,6 @@ function UserInput({ resetTrigger }) {
   const handleStepClick = (step) => {
     setCurrentStep(step)
     setError(null)
-    setFunderName(null)
-    setFunderWebsite(null)
   }
 
   return (
@@ -357,7 +328,7 @@ function UserInput({ resetTrigger }) {
             )}
 
             {currentStep === 8 && (
-              <StepXFunderNumber funderNumber={funderNumber} onChange={setFunderNumber} />
+              <Step8FunderNumber funderNumber={funderNumber} onChange={setFunderNumber} />
             )}
 
             <FormNavigation
@@ -370,12 +341,11 @@ function UserInput({ resetTrigger }) {
             />
           </form>
 
-          {funderName && (
-            <ResultDisplay
-              funderName={funderName}
-              funderWebsite={funderWebsite}
-              onReset={handleReset}
-            />
+          {alignmentScore !== null && (
+            <div className="result">
+              <h3>Alignment Score: {(alignmentScore * 100).toFixed(1)}%</h3>
+              <button onClick={handleReset}>Calculate Another</button>
+            </div>
           )}
 
           {error && (

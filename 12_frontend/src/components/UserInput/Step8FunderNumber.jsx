@@ -1,4 +1,4 @@
-function Step4FunderNumber({ funderNumber, onChange }) {
+function Step8FunderNumber({ funderNumber, onChange }) {
   return (
     <div className="form-group">
       <div className="question-heading">
@@ -18,4 +18,4 @@ function Step4FunderNumber({ funderNumber, onChange }) {
   )
 }
 
-export default Step4FunderNumber
+export default Step8FunderNumber
