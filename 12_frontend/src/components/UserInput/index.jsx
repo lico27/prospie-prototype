@@ -10,6 +10,8 @@ import Step5Causes from "./Step5Causes"
 import Step6Activities from "./Step6ActivitiesObjectives"
 import Step7Keywords from "./Step7Keywords"
 import Step8FunderNumber from "./Step8FunderNumber"
+import LoadingScreen from "../LoadingScreen"
+import ResultScreen from "../ResultScreen"
 import { fetchUkcatData, extractClassifications } from "../../utils/keywordExtractor"
 
 function UserInput({ resetTrigger }) {
@@ -26,6 +28,7 @@ function UserInput({ resetTrigger }) {
   const [funderNumber, setFunderNumber] = useState("")
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [isCalculating, setIsCalculating] = useState(false)
   const [confirmedSteps, setConfirmedSteps] = useState([])
   const [alignmentScore, setAlignmentScore] = useState(null)
 
@@ -49,7 +52,7 @@ function UserInput({ resetTrigger }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
+    setIsCalculating(true)
     setError(null)
     setAlignmentScore(null)
 
@@ -84,7 +87,7 @@ function UserInput({ resetTrigger }) {
     } catch (err) {
       setError(err.message || "An error occurred while calculating the score")
     } finally {
-      setLoading(false)
+      setIsCalculating(false)
     }
   }
 
@@ -272,94 +275,95 @@ function UserInput({ resetTrigger }) {
   }
 
   return (
-    <div className="app-view">
-      <div className="app-container">
-        <h2 className="app-title">Get your prospie score</h2>
+    <>
+      {isCalculating && <LoadingScreen />}
 
-        <ProgressIndicator
-          currentStep={currentStep}
-          totalSteps={8}
-          onStepClick={handleStepClick}
-          confirmedSteps={confirmedSteps}
-        />
+      {alignmentScore !== null && <ResultScreen score={alignmentScore} onReset={handleReset} />}
 
-        <div className="app-form-container">
-          <form onSubmit={handleFormSubmit}>
-            {currentStep === 1 && (
-              <Step1CharityNumber charityNumber={charityNumber} onChange={setCharityNumber} />
-            )}
+      {!isCalculating && alignmentScore === null && (
+        <div className="app-view">
+          <div className="app-container">
+            <h2 className="app-title">Get your prospie score</h2>
 
-            {currentStep === 2 && (
-              <Step2ConfirmDetails charityData={charityData} />
-            )}
-
-            {currentStep === 3 && (
-              <Step3Areas
-                selectedAreas={selectedAreas}
-                onChange={setSelectedAreas}
-              />
-            )}
-
-            {currentStep === 4 && (
-              <Step4Beneficiaries
-                selectedBeneficiaries={selectedBeneficiaries}
-                onChange={setSelectedBeneficiaries}
-              />
-            )}
-
-            {currentStep === 5 && (
-              <Step5Causes
-                selectedCauses={selectedCauses}
-                onChange={setSelectedCauses}
-              />
-            )}
-
-            {currentStep === 6 && (
-              <Step6Activities
-                activities={activities}
-                objectives={objectives}
-                onActivitiesChange={setActivities}
-                onObjectivesChange={setObjectives}
-              />
-            )}
-
-            {currentStep === 7 && (
-              <Step7Keywords
-                keywords={keywords}
-                onChange={setKeywords}
-                isExtracting={isExtractingKeywords}
-              />
-            )}
-
-            {currentStep === 8 && (
-              <Step8FunderNumber funderNumber={funderNumber} onChange={setFunderNumber} />
-            )}
-
-            <FormNavigation
+            <ProgressIndicator
               currentStep={currentStep}
               totalSteps={8}
-              onBack={handleBack}
-              onNext={handleNext}
-              onSubmit={handleSubmit}
-              loading={loading}
+              onStepClick={handleStepClick}
+              confirmedSteps={confirmedSteps}
             />
-          </form>
 
-          {alignmentScore !== null && (
-            <div className="result">
-              <h3>Alignment Score: {(alignmentScore * 100).toFixed(1)}%</h3>
-              <button onClick={handleReset}>Calculate Another</button>
-            </div>
-          )}
+            <div className="app-form-container">
+              <form onSubmit={handleFormSubmit}>
+                {currentStep === 1 && (
+                  <Step1CharityNumber charityNumber={charityNumber} onChange={setCharityNumber} />
+                )}
 
-          {error && (
-            <div className="error">
-              <p>{error}</p>
+                {currentStep === 2 && (
+                  <Step2ConfirmDetails charityData={charityData} />
+                )}
+
+                {currentStep === 3 && (
+                  <Step3Areas
+                    selectedAreas={selectedAreas}
+                    onChange={setSelectedAreas}
+                  />
+                )}
+
+                {currentStep === 4 && (
+                  <Step4Beneficiaries
+                    selectedBeneficiaries={selectedBeneficiaries}
+                    onChange={setSelectedBeneficiaries}
+                  />
+                )}
+
+                {currentStep === 5 && (
+                  <Step5Causes
+                    selectedCauses={selectedCauses}
+                    onChange={setSelectedCauses}
+                  />
+                )}
+
+                {currentStep === 6 && (
+                  <Step6Activities
+                    activities={activities}
+                    objectives={objectives}
+                    onActivitiesChange={setActivities}
+                    onObjectivesChange={setObjectives}
+                  />
+                )}
+
+                {currentStep === 7 && (
+                  <Step7Keywords
+                    keywords={keywords}
+                    onChange={setKeywords}
+                    isExtracting={isExtractingKeywords}
+                  />
+                )}
+
+                {currentStep === 8 && (
+                  <Step8FunderNumber funderNumber={funderNumber} onChange={setFunderNumber} />
+                )}
+
+                <FormNavigation
+                  currentStep={currentStep}
+                  totalSteps={8}
+                  onBack={handleBack}
+                  onNext={handleNext}
+                  onSubmit={handleSubmit}
+                  loading={loading || isCalculating}
+                />
+              </form>
+
+              {error && (
+                <div className="error">
+                  <p>{error}</p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 
