@@ -50,3 +50,57 @@ def create_user_embeddings(user_data, model):
     user_concat_em = model.encode(concat_text)
 
     return user_name_em, user_concat_em
+
+user_name_em, user_concat_em = create_user_embeddings(test_user_data, model)
+
+def get_funder_data(funder_number, url, key):
+    """
+    Fetches data for the selected funder from supabase and builds dataframes via join tables.
+    """
+    supabase = create_client(url, key)
+
+    #fetch funder data from supabase
+    funder_response = supabase.table("funders").select("*").eq("registered_num", funder_number).execute()
+    funder_data = funder_response.data[0]
+
+    if not funder_data:
+        return {"error": True}
+
+    #get classifications
+    funder_area_joins = supabase.table("funder_areas").select("area_id").eq("registered_num", funder_number).execute()
+    funder_area_ids = [join["area_id"] for join in funder_area_joins.data] if funder_area_joins.data else []
+
+    funder_ben_joins = supabase.table("funder_beneficiaries").select("ben_id").eq("registered_num", funder_number).execute()
+    funder_ben_ids = [join["ben_id"] for join in funder_ben_joins.data] if funder_ben_joins.data else []
+
+    funder_cause_joins = supabase.table("funder_causes").select("cause_id").eq("registered_num", funder_number).execute()
+    funder_cause_ids = [join["cause_id"] for join in funder_cause_joins.data] if funder_cause_joins.data else []
+
+    #get names from ids
+    funder_areas = []
+    if funder_area_ids:
+        fetched_resp = supabase.table("areas").select("area_name").in_("area_id", funder_area_ids).execute()
+        funder_areas = [area["area_name"] for area in fetched_resp.data]
+
+    funder_beneficiaries = []
+    if funder_ben_ids:
+        fetched_resp = supabase.table("beneficiaries").select("ben_name").in_("ben_id", funder_ben_ids).execute()
+        funder_beneficiaries = [ben["ben_name"] for ben in fetched_resp.data]
+
+    funder_causes = []
+    if funder_cause_ids:
+        fetched_resp = supabase.table("causes").select("cause_name").in_("cause_id", funder_cause_ids).execute()
+        funder_causes = [cause["cause_name"] for cause in fetched_resp.data]
+
+    return funder_data, funder_areas, funder_beneficiaries, funder_causes
+
+funder_data, funder_areas, funder_beneficiaries, funder_causes = get_funder_data(test_funder_number, url, key)
+
+
+
+
+# def enrich_grants_df(grants_df)
+
+# def get_lookup_tables()
+
+# def build_pair_df()
