@@ -1,9 +1,4 @@
 {
   "buildCommand": "cd 12_frontend && npm install && npm run build",
-  "outputDirectory": "12_frontend/dist",
-  "functions": {
-    "api/*.py": {
-      "runtime": "python3.9"
-    }
-  }
+  "outputDirectory": "12_frontend/dist"
 }
