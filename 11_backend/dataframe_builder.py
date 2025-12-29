@@ -3,34 +3,13 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from supabase import create_client
-from dotenv import load_dotenv
 import os
 import sys
 from collections import defaultdict
-from scoring_logic import calculate_alignment_score
 
 #add project root to path
 sys.path.insert(0, os.path.dirname(__file__))
 from backend_utils import get_table_from_supabase
-
-#get keys from env
-load_dotenv()
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_KEY")
-
-#TEMPORARY
-test_user_data = {
-    "user_id": "1234567",
-    "user_name": "Test Charity",
-    "user_areas": ["London", "Manchester"],
-    "user_beneficiaries": ["Children/young People"],
-    "user_causes": ["Education/training"],
-    "user_extracted_class": json.dumps(["education", "youth development"]),
-    "user_activities": "We provide educational support to young people",
-    "user_objectives": "To improve educational outcomes for disadvantaged youth"
-}
-test_funder_number = "262861"
-model = SentenceTransformer("all-roberta-large-v1")
 
 def create_user_embeddings(user_data, model):
     """
@@ -51,8 +30,6 @@ def create_user_embeddings(user_data, model):
     user_concat_em = model.encode(concat_text)
 
     return user_name_em, user_concat_em
-
-# user_name_em, user_concat_em = create_user_embeddings(test_user_data, model)
 
 def get_funder_data(funder_number, url, key):
     """
@@ -94,8 +71,6 @@ def get_funder_data(funder_number, url, key):
         funder_causes = [cause["cause_name"] for cause in fetched_resp.data]
 
     return funder_data, funder_areas, funder_beneficiaries, funder_causes
-
-# funder_data, funder_areas, funder_beneficiaries, funder_causes = get_funder_data(test_funder_number, url, key)
 
 def build_grants_df(funder_number, url, key):
     """
@@ -145,9 +120,7 @@ def build_grants_df(funder_number, url, key):
     
     return grants_df
 
-grants_df = build_grants_df(test_funder_number, url, key)
-
-def enrich_grants_df(grants_df, url, key):
+def enrich_grants_df(grants_df, funder_number, url, key):
     """
     Gets recipient data to enrich the grants dataframe.
     """
@@ -271,13 +244,49 @@ def enrich_grants_df(grants_df, url, key):
             how="left"
         )
 
-    grants_df["funder_num"] = test_funder_number
+    grants_df["funder_num"] = funder_number
 
     return grants_df
 
-grants_df = enrich_grants_df(grants_df, url, key)
+def get_lookup_tables(url, key):
+    """
+    Gets lookup tables from supabase for reference later.
+    """
 
+    areas_df = get_table_from_supabase(url, key, "areas")
+    hierarchies_df = get_table_from_supabase(url, key, "area_hierarchy")
 
-# def get_lookup_tables()
+    return areas_df, hierarchies_df
 
-# def build_pair_df()
+def build_pair_df(user_data, funder_data, funder_areas, funder_beneficiaries, funder_causes, user_name_em, user_concat_em):
+    """
+    Creates a dataframe of user and funder pairs.
+    """
+
+    pair_df = pd.DataFrame([{
+        #user
+        "user_id": user_data["user_id"],
+        "user_name": user_data["user_name"],
+        "user_name_em": user_name_em,
+        "user_areas": user_data["user_areas"],
+        "user_beneficiaries": user_data["user_beneficiaries"],
+        "user_causes": user_data["user_causes"],
+        "user_concat_em": user_concat_em,
+        "user_extracted_class": user_data["user_extracted_class"],
+
+        #funder
+        "funder_registered_num": funder_data["registered_num"],
+        "funder_name": funder_data["name"],
+        "website": funder_data["website"],
+        "areas": funder_areas,
+        "beneficiaries": funder_beneficiaries,
+        "causes": funder_causes,
+        "concat_em": funder_data.get("concat_em"),
+        "extracted_class": funder_data.get("extracted_class"),
+        "is_potential_sbf": funder_data.get("is_potential_sbf", False),
+        "is_nua": funder_data.get("is_nua", False),
+        "is_on_list": funder_data.get("is_on_list", False),
+        "list_entries": funder_data.get("list_entries", [])
+    }])
+
+    return pair_df
