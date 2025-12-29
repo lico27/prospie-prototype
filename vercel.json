@@ -1,4 +1,0 @@
-{
-  "buildCommand": "cd 12_frontend && npm install && npm run build",
-  "outputDirectory": "12_frontend/dist"
-}

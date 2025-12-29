@@ -28,7 +28,7 @@ test_user_data = {
     "user_activities": "We provide educational support to young people",
     "user_objectives": "To improve educational outcomes for disadvantaged youth"
 }
-test_funder_number = "262861"
+test_funder_number = "1202663"
 model = SentenceTransformer("all-roberta-large-v1")
 
 def create_user_embeddings(user_data, model):
@@ -99,7 +99,9 @@ def get_funder_data(funder_number, url, key):
 
 
 def build_grants_df(funder_number, url, key):
-
+    """
+    Fetches grants data for the selected funder and builds a dataframe.
+    """
 
     supabase = create_client(url, key)
 
@@ -131,15 +133,11 @@ def build_grants_df(funder_number, url, key):
             for i in range(0, len(all_grant_ids), batch_size):
                 batch_ids = all_grant_ids[i:i+batch_size]
                 batch_num = (i // batch_size) + 1
-                print(f"Fetching grants batch {batch_num}/{total_batches}...")
-
                 grants_response = supabase.table("grants").select("*").in_("grant_id", batch_ids).execute()
                 all_grants.extend(grants_response.data)
 
         grants_df = pd.DataFrame(all_grants)
         grants_df["registered_num"] = funder_number
-
-        print(f"\n✅ Total grants loaded: {len(grants_df)}")
 
     except Exception as e:
         return {
@@ -149,7 +147,7 @@ def build_grants_df(funder_number, url, key):
 
 
 
-build_grants_df()
+build_grants_df(test_funder_number, url, key)
 
 
 
