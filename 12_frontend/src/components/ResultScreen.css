@@ -12,6 +12,7 @@
   justify-content: center;
   z-index: 9999;
   animation: fadeIn 0.4s ease-in-out;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
@@ -25,8 +26,9 @@
 
 .result-screen-content {
   width: 100%;
-  max-width: 600px;
-  padding: 2rem 1rem;
+  max-width: 1200px;
+  padding: 2rem 1rem 3rem 1rem;
+  margin: auto;
 }
 
 .result-card {
@@ -108,7 +110,6 @@
 }
 
 .reset-button {
-  margin-top: 2rem;
   padding: 0.85rem 2rem;
   font-size: 1rem;
   font-weight: 600;
@@ -119,6 +120,8 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: uppercase;
+  display: inline-block;
+  width: auto;
 }
 
 .reset-button:hover {
@@ -132,6 +135,121 @@
   transform: translateY(0);
 }
 
+/* Reasoning Cards */
+.reasoning-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+  animation: cardsAppear 0.6s ease-out 0.5s both;
+}
+
+@keyframes cardsAppear {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.reasoning-card {
+  background: rgba(26, 22, 37, 0.4);
+  border: 1px solid rgba(142, 125, 179, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.reasoning-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-color: rgba(142, 125, 179, 0.5);
+}
+
+.reasoning-card.positive {
+  border-color: rgba(111, 163, 168, 0.4);
+}
+
+.reasoning-card.positive:hover {
+  border-color: rgba(111, 163, 168, 0.7);
+  box-shadow: 0 6px 20px rgba(111, 163, 168, 0.2);
+}
+
+.reasoning-card.neutral {
+  border-color: rgba(142, 125, 179, 0.3);
+}
+
+.reasoning-card.neutral:hover {
+  border-color: rgba(142, 125, 179, 0.5);
+}
+
+.reasoning-card.negative {
+  border-color: rgba(179, 125, 125, 0.4);
+}
+
+.reasoning-card.negative:hover {
+  border-color: rgba(179, 125, 125, 0.7);
+  box-shadow: 0 6px 20px rgba(179, 125, 125, 0.2);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(142, 125, 179, 0.2);
+}
+
+.card-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.positive .card-icon {
+  color: #6fa3a8;
+  background: rgba(111, 163, 168, 0.2);
+}
+
+.neutral .card-icon {
+  color: #c9c0de;
+  background: rgba(142, 125, 179, 0.2);
+}
+
+.negative .card-icon {
+  color: #b37d7d;
+  background: rgba(179, 125, 125, 0.2);
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #dcd3ed;
+  margin: 0;
+}
+
+.card-content {
+  color: #c9c0de;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.card-content p {
+  margin: 0;
+  opacity: 0.8;
+}
+
 @media (max-width: 640px) {
   .result-card {
     padding: 2rem 1.5rem;
@@ -139,5 +257,9 @@
 
   .result-score {
     font-size: 3rem;
+  }
+
+  .reasoning-cards {
+    grid-template-columns: 1fr;
   }
 }

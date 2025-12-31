@@ -31,6 +31,7 @@ function UserInput({ resetTrigger }) {
   const [isCalculating, setIsCalculating] = useState(false)
   const [confirmedSteps, setConfirmedSteps] = useState([])
   const [alignmentScore, setAlignmentScore] = useState(null)
+  const [reasonings, setReasonings] = useState(null)
 
   const preparePairData = () => {
     //prepare user data
@@ -83,6 +84,7 @@ function UserInput({ resetTrigger }) {
         setError(scoringResult.error)
       } else {
         setAlignmentScore(scoringResult.score)
+        setReasonings(scoringResult.reasonings)
       }
     } catch (err) {
       setError(err.message || "An error occurred while calculating the score")
@@ -278,7 +280,7 @@ function UserInput({ resetTrigger }) {
     <>
       {isCalculating && <LoadingScreen />}
 
-      {alignmentScore !== null && <ResultScreen score={alignmentScore} onReset={handleReset} />}
+      {alignmentScore !== null && <ResultScreen score={alignmentScore} reasonings={reasonings} onReset={handleReset} />}
 
       {!isCalculating && alignmentScore === null && (
         <div className="app-view">
