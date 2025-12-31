@@ -132,20 +132,14 @@ def enrich_grants_df(grants_df, funder_number, url, key):
 
         #join grants to recipients
         all_recipient_joins = []
-        offset = 0
-        batch_size = 1000
+        batch_size = 100
 
-        while True:
-            recipient_joins = supabase.table("recipient_grants").select("grant_id, recipient_id").in_("grant_id", grant_ids_list).range(offset, offset + batch_size - 1).execute()
+        for i in range(0, len(grant_ids_list), batch_size):
+            batch_ids = grant_ids_list[i:i+batch_size]
+            recipient_joins = supabase.table("recipient_grants").select("grant_id, recipient_id").in_("grant_id", batch_ids).execute()
 
-            if not recipient_joins.data:
-                break
-
-            all_recipient_joins.extend(recipient_joins.data)
-            if len(recipient_joins.data) < batch_size:
-                break
-
-            offset += batch_size
+            if recipient_joins.data:
+                all_recipient_joins.extend(recipient_joins.data)
 
         #map grants to unique recipients
         grant_to_recipient = {join["grant_id"]: join["recipient_id"] for join in all_recipient_joins}
@@ -168,39 +162,28 @@ def enrich_grants_df(grants_df, funder_number, url, key):
 
             #areas
             recipient_area_joins = []
-            offset = 0
-            while True:
-                joins = supabase.table("recipient_areas").select("recipient_id, area_id").in_("recipient_id", recipient_ids_list).range(offset, offset + 999).execute()
-                if not joins.data:
-                    break
-                recipient_area_joins.extend(joins.data)
-                if len(joins.data) < 1000:
-                    break
-                offset += 1000
+            batch_size = 100
+            for i in range(0, len(recipient_ids_list), batch_size):
+                batch_ids = recipient_ids_list[i:i+batch_size]
+                joins = supabase.table("recipient_areas").select("recipient_id, area_id").in_("recipient_id", batch_ids).execute()
+                if joins.data:
+                    recipient_area_joins.extend(joins.data)
 
             #beneficiaries
             recipient_ben_joins = []
-            offset = 0
-            while True:
-                joins = supabase.table("recipient_beneficiaries").select("recipient_id, ben_id").in_("recipient_id", recipient_ids_list).range(offset, offset + 999).execute()
-                if not joins.data:
-                    break
-                recipient_ben_joins.extend(joins.data)
-                if len(joins.data) < 1000:
-                    break
-                offset += 1000
+            for i in range(0, len(recipient_ids_list), batch_size):
+                batch_ids = recipient_ids_list[i:i+batch_size]
+                joins = supabase.table("recipient_beneficiaries").select("recipient_id, ben_id").in_("recipient_id", batch_ids).execute()
+                if joins.data:
+                    recipient_ben_joins.extend(joins.data)
 
             #causes
             recipient_cause_joins = []
-            offset = 0
-            while True:
-                joins = supabase.table("recipient_causes").select("recipient_id, cause_id").in_("recipient_id", recipient_ids_list).range(offset, offset + 999).execute()
-                if not joins.data:
-                    break
-                recipient_cause_joins.extend(joins.data)
-                if len(joins.data) < 1000:
-                    break
-                offset += 1000
+            for i in range(0, len(recipient_ids_list), batch_size):
+                batch_ids = recipient_ids_list[i:i+batch_size]
+                joins = supabase.table("recipient_causes").select("recipient_id, cause_id").in_("recipient_id", batch_ids).execute()
+                if joins.data:
+                    recipient_cause_joins.extend(joins.data)
 
             #get tables for lookups
             beneficiaries_df = get_table_from_supabase(url, key, "beneficiaries")
