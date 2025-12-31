@@ -171,12 +171,23 @@ def check_keywords(funder_keywords, user_keywords, model):
     """
     
     #parse json
-    if isinstance(funder_keywords, str):
-        funder_keywords = json.loads(funder_keywords)
-    if isinstance(user_keywords, str):
-        user_keywords = json.loads(user_keywords)
-    
-    #handle empty/nans
+    if pd.isna(funder_keywords) or funder_keywords is None or isinstance(funder_keywords, (int, float)):
+        funder_keywords = []
+    elif isinstance(funder_keywords, str):
+        try:
+            funder_keywords = json.loads(funder_keywords)
+        except (json.JSONDecodeError, TypeError):
+            funder_keywords = []
+
+    if pd.isna(user_keywords) or user_keywords is None or isinstance(user_keywords, (int, float)):
+        user_keywords = []
+    elif isinstance(user_keywords, str):
+        try:
+            user_keywords = json.loads(user_keywords)
+        except (json.JSONDecodeError, TypeError):
+            user_keywords = []
+
+    #handle empty lists
     if not funder_keywords:
         funder_keywords = []
     if not user_keywords:
@@ -454,8 +465,14 @@ def calculate_keywords_bonus_rp(funder_grants_df, user_keywords):
         return 1.0, ["No grants history available"]
 
     #parse json
-    if isinstance(user_keywords, str):
-        user_keywords = json.loads(user_keywords)
+    if pd.isna(user_keywords) or user_keywords is None or isinstance(user_keywords, (int, float)):
+        user_keywords = []
+    elif isinstance(user_keywords, str):
+        try:
+            user_keywords = json.loads(user_keywords)
+        except (json.JSONDecodeError, TypeError):
+            user_keywords = []
+
     if not user_keywords:
         user_keywords = []
 
@@ -465,8 +482,13 @@ def calculate_keywords_bonus_rp(funder_grants_df, user_keywords):
     #get all recipient keywords
     all_recipient_keywords = []
     for recipient_keywords in funder_grants_df["recipient_extracted_class"]:
+        if pd.isna(recipient_keywords) or recipient_keywords is None or isinstance(recipient_keywords, (int, float)):
+            continue
         if isinstance(recipient_keywords, str):
-            recipient_keywords = json.loads(recipient_keywords)
+            try:
+                recipient_keywords = json.loads(recipient_keywords)
+            except (json.JSONDecodeError, TypeError):
+                continue
         if isinstance(recipient_keywords, list) and recipient_keywords:
             all_recipient_keywords.extend(recipient_keywords)
 
@@ -579,10 +601,14 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
 
     #10 get name (RP) semantic similarity score
     if not funder_grants_df.empty and "recipient_name" in funder_grants_df.columns:
-        recipients_name_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_name_em"]))
+        valid_name_embeddings = {}
+        for name, embedding in zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_name_em"]):
+            if not pd.isna(embedding) and embedding is not None and not isinstance(embedding, (int, float)):
+                valid_name_embeddings[name] = embedding
+
         user_name_em = pair_df["user_name_em"].iloc[idx]
         user_name = pair_df["user_name"].iloc[idx]
-        name_rp_score, name_rp_reasoning = check_name_rp(recipients_name_all_em, user_name_em, user_name)
+        name_rp_score, name_rp_reasoning = check_name_rp(valid_name_embeddings, user_name_em, user_name)
     else:
         name_rp_score = 0.0
         name_rp_reasoning = ["No grants history available"]
@@ -593,20 +619,28 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
             (funder_grants_df["grant_title"].notna() & (funder_grants_df["grant_title"] != "")) |
             (funder_grants_df["grant_desc"].notna() & (funder_grants_df["grant_desc"] != ""))
         ]
-        grants_all_em = dict(zip(non_empty_grants["recipient_name"], non_empty_grants["grant_concat_em"]))
+        valid_grant_embeddings = {}
+        for name, embedding in zip(non_empty_grants["recipient_name"], non_empty_grants["grant_concat_em"]):
+            if not pd.isna(embedding) and embedding is not None and not isinstance(embedding, (int, float)):
+                valid_grant_embeddings[name] = embedding
+
         user_concat_em = pair_df["user_concat_em"].iloc[idx]
         user_name = pair_df["user_name"].iloc[idx]
-        grants_rp_score, grants_rp_reasoning = check_grants_rp(grants_all_em, user_concat_em, user_name)
+        grants_rp_score, grants_rp_reasoning = check_grants_rp(valid_grant_embeddings, user_concat_em, user_name)
     else:
         grants_rp_score = 0.0
         grants_rp_reasoning = ["No grants history available"]
 
     #12 get recipients (RP) semantic similarity score
     if not funder_grants_df.empty and "recipient_name" in funder_grants_df.columns:
-        recipients_all_em = dict(zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_concat_em"]))
+        valid_recipient_embeddings = {}
+        for name, embedding in zip(funder_grants_df["recipient_name"], funder_grants_df["recipient_concat_em"]):
+            if not pd.isna(embedding) and embedding is not None and not isinstance(embedding, (int, float)):
+                valid_recipient_embeddings[name] = embedding
+
         user_concat_em = pair_df["user_concat_em"].iloc[idx]
         user_name = pair_df["user_name"].iloc[idx]
-        recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(recipients_all_em, user_concat_em, user_name)
+        recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(valid_recipient_embeddings, user_concat_em, user_name)
     else:
         recipients_rp_score = 0.0
         recipients_rp_reasoning = ["No grants history available"]
