@@ -86,6 +86,14 @@
   opacity: 0.8;
 }
 
+.loading-note {
+  font-size: 0.875rem;
+  color: #c9c0de;
+  margin: 0.75rem 0 0 0;
+  opacity: 0.6;
+  font-style: italic;
+}
+
 @keyframes pulse {
   0%, 100% {
     opacity: 1;

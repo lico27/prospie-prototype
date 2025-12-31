@@ -11,6 +11,7 @@ const LoadingScreen = () => {
         </div>
         <h2 className="loading-title">Calculating your prospie score!</h2>
         <p className="loading-subtitle">Analysing how well your charity aligns with this funder...</p>
+        <p className="loading-note">This may take a few minutes for funders with large giving histories.</p>
       </div>
     </div>
   );
