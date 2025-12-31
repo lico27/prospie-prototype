@@ -1,6 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import ThemeToggle from "./ThemeToggle";
 import "./Navbar.css";
 
 function Navbar1({ onHomeClick, onAboutClick }) {
@@ -24,9 +25,14 @@ function Navbar1({ onHomeClick, onAboutClick }) {
         <Navbar.Brand href="#home" onClick={handleHomeClick}>🔎</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="w-100 justify-content-evenly">
-            <Nav.Link href="#home" onClick={handleHomeClick}>Home</Nav.Link>
-            <Nav.Link href="#about" onClick={handleAboutClick}>About</Nav.Link>
+          <Nav className="w-100 align-items-center">
+            <div className="navbar-links">
+              <Nav.Link href="#home" onClick={handleHomeClick}>Home</Nav.Link>
+              <Nav.Link href="#about" onClick={handleAboutClick}>About</Nav.Link>
+            </div>
+            <div className="navbar-theme-toggle">
+              <ThemeToggle />
+            </div>
           </Nav>
         </Navbar.Collapse>
       </Container>

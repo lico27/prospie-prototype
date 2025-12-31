@@ -1,3 +1,4 @@
+/* standard/dark navbar */
 .glass-navbar,
 .glass-navbar.navbar,
 .navbar.glass-navbar {
@@ -21,9 +22,9 @@
 
 .glass-navbar .navbar-brand,
 .glass-navbar .nav-link {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: #d4cfe0 !important;
 }
 
@@ -37,7 +38,7 @@
 }
 
 .glass-navbar .nav-link:hover {
-  color: #b8a8d4 !important;
+  color: var(--accent-purple-2) !important;
   text-shadow: 0 0 12px rgba(184, 168, 212, 0.6);
 }
 
@@ -53,5 +54,63 @@
 
 .glass-navbar .dropdown-item:hover {
   background-color: rgba(116, 99, 150, 0.2) !important;
-  color: #b8a8d4 !important;
+  color: var(--accent-purple-2) !important;
+}
+
+/* light mode navbar */
+:root[data-theme="light"] .glass-navbar,
+:root[data-theme="light"] .glass-navbar.navbar,
+:root[data-theme="light"] .navbar.glass-navbar {
+  background: rgba(200, 230, 230, 0.85) !important;
+  box-shadow: 0 1px 0 rgba(74, 134, 140, 0.15) !important;
+  border-bottom: 1px solid rgba(74, 134, 140, 0.2) !important;
+}
+
+:root[data-theme="light"] .glass-navbar .navbar-brand,
+:root[data-theme="light"] .glass-navbar .nav-link {
+  color: #3d7278 !important;
+  font-weight: 700;
+}
+
+:root[data-theme="light"] .glass-navbar .nav-link:hover {
+  color: #5a9599 !important;
+  text-shadow: 0 0 12px rgba(74, 134, 140, 0.4);
+}
+
+:root[data-theme="light"] .glass-navbar .dropdown-menu {
+  background-color: rgba(210, 235, 235, 0.95) !important;
+  border: 1px solid rgba(74, 134, 140, 0.3) !important;
+}
+
+:root[data-theme="light"] .glass-navbar .dropdown-item {
+  color: #2d4a4d !important;
+}
+
+:root[data-theme="light"] .glass-navbar .dropdown-item:hover {
+  background-color: rgba(74, 134, 140, 0.2) !important;
+  color: #3d7278 !important;
+}
+
+.navbar-links {
+  display: flex;
+  justify-content: space-evenly;
+  flex: 1;
+  gap: 2rem;
+}
+
+.navbar-theme-toggle {
+  margin-left: auto;
+}
+
+@media (max-width: 991px) {
+  .navbar-links {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .navbar-theme-toggle {
+    margin-left: 0;
+    margin-top: 1rem;
+    padding-left: 0.5rem;
+  }
 }
