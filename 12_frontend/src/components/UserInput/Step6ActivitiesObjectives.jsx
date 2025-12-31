@@ -5,7 +5,9 @@ function Step6ActivitiesObjectives({ activities, objectives, onActivitiesChange,
 
   return (
     <>
-      <h3 className="section-main-heading">Activities & Objectives</h3>
+      <div className="question-heading">
+        <span className="question-heading-text">Activities & Objectives</span>
+      </div>
       <p className="form-helper-text">These are your activities and objectives as described on the Charity Commission website. Use the text boxes to edit or add to them if required.</p>
 
       <div className="hint-toggle" onClick={() => setShowHint(!showHint)}>

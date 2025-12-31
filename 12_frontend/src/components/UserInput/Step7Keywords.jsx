@@ -14,27 +14,31 @@ function Step7Keywords({ keywords, onChange, isExtracting }) {
     onChange(keywordList)
   }
 
-  //style
+  //apply styles
+  const getColor = (varName) => {
+    return getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
+  }
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      backgroundColor: "rgba(26, 22, 37, 0.6)",
-      borderColor: state.isFocused ? "rgba(111, 163, 168, 0.6)" : "rgba(142, 125, 179, 0.3)",
+      backgroundColor: getColor('--bg-tertiary'),
+      borderColor: state.isFocused ? getColor('--positive-hover') : getColor('--border-primary'),
       borderRadius: "8px",
       padding: "0.25rem",
-      boxShadow: state.isFocused ? "0 0 0 3px rgba(111, 163, 168, 0.1)" : "none",
+      boxShadow: state.isFocused ? `0 0 0 3px ${getColor('--positive-glow')}` : "none",
       transition: "all 0.3s ease",
       "&:hover": {
-        borderColor: "rgba(142, 125, 179, 0.5)"
+        borderColor: getColor('--border-hover')
       }
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "rgba(42, 38, 54, 0.95)",
-      border: "1px solid rgba(142, 125, 179, 0.3)",
+      backgroundColor: getColor('--bg-secondary'),
+      border: `1px solid ${getColor('--border-primary')}`,
       borderRadius: "8px",
       backdropFilter: "blur(10px)",
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)"
+      boxShadow: `0 8px 32px ${getColor('--shadow-secondary')}`
     }),
     menuList: (provided) => ({
       ...provided,
@@ -44,66 +48,67 @@ function Step7Keywords({ keywords, onChange, isExtracting }) {
         width: "8px"
       },
       "::-webkit-scrollbar-track": {
-        background: "rgba(26, 22, 37, 0.6)"
+        background: getColor('--bg-tertiary')
       },
       "::-webkit-scrollbar-thumb": {
-        background: "rgba(142, 125, 179, 0.3)",
+        background: getColor('--border-primary'),
         borderRadius: "4px"
       },
       "::-webkit-scrollbar-thumb:hover": {
-        background: "rgba(142, 125, 179, 0.5)"
+        background: getColor('--border-hover')
       }
     }),
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? "rgba(142, 125, 179, 0.3)"
+        ? getColor('--border-primary')
         : state.isFocused
-        ? "rgba(142, 125, 179, 0.15)"
+        ? getColor('--border-secondary')
         : "transparent",
-      color: state.isSelected ? "#dcd3ed" : "#c9c0de",
+      color: state.isSelected ? getColor('--text-tertiary') : getColor('--text-secondary'),
       padding: "0.6rem 0.75rem",
       cursor: "pointer",
       borderRadius: "4px",
       fontSize: "0.9rem",
       transition: "all 0.2s ease",
       "&:active": {
-        backgroundColor: "rgba(142, 125, 179, 0.25)"
+        backgroundColor: getColor('--border-primary')
       }
     }),
     multiValue: (provided) => ({
       ...provided,
-      backgroundColor: "rgba(142, 125, 179, 0.2)",
-      border: "1px solid rgba(142, 125, 179, 0.3)",
+      backgroundColor: getColor('--border-secondary'),
+      border: `1px solid ${getColor('--border-primary')}`,
       borderRadius: "6px"
     }),
     multiValueLabel: (provided) => ({
       ...provided,
-      color: "#dcd3ed",
+      color: getColor('--text-tertiary'),
       fontSize: "0.85rem",
       padding: "0.3rem 0.5rem"
     }),
     multiValueRemove: (provided) => ({
       ...provided,
-      color: "#c9c0de",
+      color: getColor('--text-secondary'),
       ":hover": {
-        backgroundColor: "rgba(220, 92, 92, 0.3)",
-        color: "#ffb3b3",
+        backgroundColor: getColor('--negative-color'),
+        color: getColor('--negative-color'),
         borderRadius: "0 4px 4px 0"
       }
     }),
     placeholder: (provided) => ({
       ...provided,
-      color: "rgba(201, 192, 222, 0.4)",
+      color: getColor('--text-secondary'),
+      opacity: 0.6,
       fontSize: "0.9rem"
     }),
     input: (provided) => ({
       ...provided,
-      color: "#ffffff"
+      color: getColor('--text-primary')
     }),
     noOptionsMessage: (provided) => ({
       ...provided,
-      color: "#c9c0de",
+      color: getColor('--text-secondary'),
       fontSize: "0.9rem",
       padding: "0.75rem"
     })
