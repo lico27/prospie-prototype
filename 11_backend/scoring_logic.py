@@ -467,7 +467,7 @@ def calculate_keywords_bonus_rp(funder_grants_df, user_keywords):
     for recipient_keywords in funder_grants_df["recipient_extracted_class"]:
         if isinstance(recipient_keywords, str):
             recipient_keywords = json.loads(recipient_keywords)
-        if recipient_keywords:
+        if isinstance(recipient_keywords, list) and recipient_keywords:
             all_recipient_keywords.extend(recipient_keywords)
 
     if len(all_recipient_keywords) == 0:
@@ -720,4 +720,27 @@ def calculate_alignment_score(pair_df, idx, grants_df, areas_df, hierarchies_df,
     
     final_score = min(max(final_score, 0.05), 0.95)
     
-    return final_score
+    return final_score, {
+      "is_sbf": bool(is_sbf),
+      "is_nua": bool(is_nua),
+      "is_on_list": bool(is_on_list),
+      "list_reasoning": list(list_reasoning) if list_reasoning else None,
+      "existing_relationship": bool(existing_relationship),
+      "num_grants": int(num_grants),
+      "areas_score": float(areas_score),
+      "areas_reasoning": areas_reasoning,
+      "beneficiaries_reasoning": beneficiaries_reasoning,
+      "causes_reasoning": causes_reasoning,
+      "has_gcp": bool(has_gcp),
+      "keyword_strong_matches": keyword_strong_matches,
+      "keyword_reasoning": keyword_reasoning,
+      "name_rp_reasoning": name_rp_reasoning,
+      "grants_rp_reasoning": grants_rp_reasoning,
+      "recipients_rp_reasoning": recipients_rp_reasoning,
+      "time_lapsed": int(time_lapsed) if time_lapsed is not None else None,
+      "last_grant_year": int(last_grant_year) if last_grant_year is not None else None,
+      "areas_rp_reasoning": areas_rp_reasoning,
+      "keywords_rp_reasoning": keywords_rp_reasoning,
+      "lv_penalty": float(lv_penalty),
+      "has_grants_data": bool(has_grants_data)
+  }
