@@ -215,14 +215,29 @@ def calculate_similarity_score(funder_embedding, user_embedding):
     """
     Calculates semantic similarity between user and funder using pre-computed embeddings.
     """
-    
-    #parse json   
+    import numpy as np
+
+    #parse json
     if isinstance(funder_embedding, str):
         funder_embedding = json.loads(funder_embedding)
     if isinstance(user_embedding, str):
         user_embedding = json.loads(user_embedding)
+
+    funder_embedding = np.array(funder_embedding, dtype=np.float32)
+    user_embedding = np.array(user_embedding, dtype=np.float32)
+
+    #check for invalid embeddings/reshape if needed
+    if funder_embedding.ndim == 0 or user_embedding.ndim == 0:
+        return 0.0
+    if funder_embedding.size == 0 or user_embedding.size == 0:
+        return 0.0
     
+    if funder_embedding.ndim == 1:
+        funder_embedding = funder_embedding.reshape(1, -1)
+    if user_embedding.ndim == 1:
+        user_embedding = user_embedding.reshape(1, -1)
+
     #calculate cosine similarity
     score = util.cos_sim(funder_embedding, user_embedding).item()
-    
+
     return max(0.0, score)
