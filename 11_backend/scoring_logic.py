@@ -196,6 +196,10 @@ def check_keywords(funder_keywords, user_keywords, model):
     if len(funder_keywords) == 0 or len(user_keywords) == 0:
         return 0.0, {}, ["No keywords to compare"], False
     
+    #convert to lowercase
+    funder_keywords = [kw.lower() for kw in funder_keywords]
+    user_keywords = [kw.lower() for kw in user_keywords]
+
     #create embeddings for each keyword
     funder_keywords_em = {}
     for keyword in funder_keywords:
