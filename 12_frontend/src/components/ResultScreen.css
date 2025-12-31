@@ -135,6 +135,44 @@
   transform: translateY(0);
 }
 
+/* NUA Warning */
+.nua-warning {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(220, 180, 92, 0.15);
+  border: 1px solid rgba(220, 180, 92, 0.4);
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: warningAppear 0.5s ease-out 0.4s both;
+}
+
+@keyframes warningAppear {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.warning-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.warning-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #f4e4bc;
+  line-height: 1.5;
+}
+
 /* Reasoning Cards */
 .reasoning-cards {
   display: grid;

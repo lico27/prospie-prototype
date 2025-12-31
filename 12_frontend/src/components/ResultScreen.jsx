@@ -18,6 +18,15 @@ const ResultScreen = ({ score, reasonings, onReset }) => {
             </pre>
           </div>
 
+          {reasonings?.is_nua && (
+            <div className="nua-warning">
+              <span className="warning-icon">⚠️</span>
+              <p className="warning-text">
+                This funder has potentially indicated that they do not accept unsolicited applications. Your score has been reduced to reflect this, and you should be cautious about applying to this funder.
+              </p>
+            </div>
+          )}
+
           <div className="reasoning-cards">
             <div className="reasoning-card positive">
               <div className="card-header">
