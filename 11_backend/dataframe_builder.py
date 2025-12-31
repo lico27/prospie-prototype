@@ -22,12 +22,12 @@ def create_user_embeddings(user_data, model):
     user_objectives = user_data.get("user_objectives", "") or ""
 
     #get embedding for name
-    user_name_em = model.encode(user_name)
+    user_name_em = model.encode(user_name).tolist()
 
     #concatenate text sections and embed
     concat_text = f"{user_activities} {user_objectives}"
     concat_text = concat_text.lower()
-    user_concat_em = model.encode(concat_text)
+    user_concat_em = model.encode(concat_text).tolist()
 
     return user_name_em, user_concat_em
 
