@@ -27,38 +27,6 @@ const ResultScreen = ({ score, reasonings, onReset }) => {
             </div>
           )}
 
-          <div className="reasoning-cards">
-            <div className="reasoning-card positive">
-              <div className="card-header">
-                <span className="card-icon">✓</span>
-                <h3 className="card-title">Positive Factors</h3>
-              </div>
-              <div className="card-content">
-                <p>Placeholder content for positive factors...</p>
-              </div>
-            </div>
-
-            <div className="reasoning-card neutral">
-              <div className="card-header">
-                <span className="card-icon">−</span>
-                <h3 className="card-title">Neutral Factors</h3>
-              </div>
-              <div className="card-content">
-                <p>Placeholder content for neutral factors...</p>
-              </div>
-            </div>
-
-            <div className="reasoning-card negative">
-              <div className="card-header">
-                <span className="card-icon">✕</span>
-                <h3 className="card-title">Negative Factors</h3>
-              </div>
-              <div className="card-content">
-                <p>Placeholder content for negative factors...</p>
-              </div>
-            </div>
-          </div>
-
           <button className="reset-button" onClick={onReset}>
             Start Again
           </button>

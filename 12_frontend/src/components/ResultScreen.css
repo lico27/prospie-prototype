@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(26, 22, 37, 0.95);
+  background: var(--bg-overlay);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   display: flex;
@@ -32,13 +32,13 @@
 }
 
 .result-card {
-  background: rgba(42, 38, 54, 0.8);
-  border: 1px solid rgba(142, 125, 179, 0.4);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
   border-radius: 16px;
   padding: 3rem 2rem;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px var(--shadow-primary);
   text-align: center;
   animation: slideUp 0.5s ease-out;
 }
@@ -57,7 +57,7 @@
 .result-label {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #c9c0de;
+  color: var(--text-secondary);
   margin: 0 0 1.5rem 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -66,7 +66,7 @@
 .result-score {
   font-size: 4rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #dcd3ed, #b8a8d4, #8e7db3, #6fa3a8);
+  background: linear-gradient(135deg, var(--text-tertiary), var(--accent-purple-2), var(--accent-purple-3), var(--accent-teal));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -89,21 +89,21 @@
 .result-reasonings-placeholder {
   margin: 2rem 0;
   padding: 1.5rem;
-  background: rgba(26, 22, 37, 0.4);
-  border: 1px solid rgba(142, 125, 179, 0.2);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
   border-radius: 12px;
 }
 
 .reasonings-label {
   font-size: 1rem;
   font-weight: 600;
-  color: #dcd3ed;
+  color: var(--text-tertiary);
   margin: 0 0 0.5rem 0;
 }
 
 .reasonings-coming-soon {
   font-size: 0.875rem;
-  color: #c9c0de;
+  color: var(--text-secondary);
   margin: 0;
   opacity: 0.6;
   font-style: italic;
@@ -113,9 +113,9 @@
   padding: 0.85rem 2rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #dcd3ed;
-  background: rgba(142, 125, 179, 0.2);
-  border: 1px solid rgba(142, 125, 179, 0.4);
+  color: var(--text-tertiary);
+  background: var(--border-secondary);
+  border: 1px solid var(--border-primary);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -125,24 +125,24 @@
 }
 
 .reset-button:hover {
-  background: rgba(142, 125, 179, 0.3);
-  border-color: rgba(142, 125, 179, 0.6);
+  background: var(--border-primary);
+  border-color: var(--border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(142, 125, 179, 0.3);
+  box-shadow: 0 4px 12px var(--border-primary);
 }
 
 .reset-button:active {
   transform: translateY(0);
 }
 
-/* NUA Warning */
+/* nua warning */
 .nua-warning {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: rgba(220, 180, 92, 0.15);
-  border: 1px solid rgba(220, 180, 92, 0.4);
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
   border-radius: 8px;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
@@ -169,135 +169,6 @@
 .warning-text {
   margin: 0;
   font-size: 0.9rem;
-  color: #f4e4bc;
+  color: var(--warning-text);
   line-height: 1.5;
-}
-
-/* Reasoning Cards */
-.reasoning-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin: 2rem 0;
-  animation: cardsAppear 0.6s ease-out 0.5s both;
-}
-
-@keyframes cardsAppear {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.reasoning-card {
-  background: rgba(26, 22, 37, 0.4);
-  border: 1px solid rgba(142, 125, 179, 0.3);
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: left;
-  transition: all 0.3s ease;
-}
-
-.reasoning-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  border-color: rgba(142, 125, 179, 0.5);
-}
-
-.reasoning-card.positive {
-  border-color: rgba(111, 163, 168, 0.4);
-}
-
-.reasoning-card.positive:hover {
-  border-color: rgba(111, 163, 168, 0.7);
-  box-shadow: 0 6px 20px rgba(111, 163, 168, 0.2);
-}
-
-.reasoning-card.neutral {
-  border-color: rgba(142, 125, 179, 0.3);
-}
-
-.reasoning-card.neutral:hover {
-  border-color: rgba(142, 125, 179, 0.5);
-}
-
-.reasoning-card.negative {
-  border-color: rgba(179, 125, 125, 0.4);
-}
-
-.reasoning-card.negative:hover {
-  border-color: rgba(179, 125, 125, 0.7);
-  box-shadow: 0 6px 20px rgba(179, 125, 125, 0.2);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(142, 125, 179, 0.2);
-}
-
-.card-icon {
-  font-size: 1.5rem;
-  font-weight: bold;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.positive .card-icon {
-  color: #6fa3a8;
-  background: rgba(111, 163, 168, 0.2);
-}
-
-.neutral .card-icon {
-  color: #c9c0de;
-  background: rgba(142, 125, 179, 0.2);
-}
-
-.negative .card-icon {
-  color: #b37d7d;
-  background: rgba(179, 125, 125, 0.2);
-}
-
-.card-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #dcd3ed;
-  margin: 0;
-}
-
-.card-content {
-  color: #c9c0de;
-  font-size: 0.875rem;
-  line-height: 1.6;
-}
-
-.card-content p {
-  margin: 0;
-  opacity: 0.8;
-}
-
-@media (max-width: 640px) {
-  .result-card {
-    padding: 2rem 1.5rem;
-  }
-
-  .result-score {
-    font-size: 3rem;
-  }
-
-  .reasoning-cards {
-    grid-template-columns: 1fr;
-  }
 }
