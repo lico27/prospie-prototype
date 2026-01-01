@@ -32,6 +32,7 @@ function UserInput({ resetTrigger }) {
   const [confirmedSteps, setConfirmedSteps] = useState([])
   const [alignmentScore, setAlignmentScore] = useState(null)
   const [reasonings, setReasonings] = useState(null)
+  const [pairData, setPairData] = useState(null)
 
   const preparePairData = () => {
     //prepare user data
@@ -85,6 +86,7 @@ function UserInput({ resetTrigger }) {
       } else {
         setAlignmentScore(scoringResult.score)
         setReasonings(scoringResult.reasonings)
+        setPairData(scoringResult.pair_data)
       }
     } catch (err) {
       setError(err.message || "An error occurred while calculating the score")
@@ -136,7 +138,6 @@ function UserInput({ resetTrigger }) {
       setIsExtractingKeywords(false)
     }
   }
-
 
   const validateCharityNumber = async () => {
     if (!charityNumber) {
@@ -280,7 +281,15 @@ function UserInput({ resetTrigger }) {
     <>
       {isCalculating && <LoadingScreen />}
 
-      {alignmentScore !== null && <ResultScreen score={alignmentScore} reasonings={reasonings} onReset={handleReset} />}
+      {alignmentScore !== null && (
+        <ResultScreen
+          score={alignmentScore}
+          reasonings={reasonings}
+          userName={pairData?.user_name}
+          funderName={pairData?.funder_name}
+          onReset={handleReset}
+        />
+      )}
 
       {!isCalculating && alignmentScore === null && (
         <div className="app-view">
