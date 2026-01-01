@@ -70,7 +70,16 @@ def get_funder_data(funder_number, url, key):
         fetched_resp = supabase.table("causes").select("cause_name").in_("cause_id", funder_cause_ids).execute()
         funder_causes = [cause["cause_name"] for cause in fetched_resp.data]
 
-    return funder_data, funder_areas, funder_beneficiaries, funder_causes
+    #get list entries
+    funder_list_joins = supabase.table("funder_list").select("list_id").eq("registered_num", funder_number).execute()
+    funder_list_ids = [join["list_id"] for join in funder_list_joins.data] if funder_list_joins.data else []
+
+    list_entries = []
+    if funder_list_ids:
+        fetched_resp = supabase.table("list_entries").select("list_type").in_("list_id", funder_list_ids).execute()
+        list_entries = [entry["list_type"] for entry in fetched_resp.data]
+
+    return funder_data, funder_areas, funder_beneficiaries, funder_causes, list_entries
 
 def build_grants_df(funder_number, url, key):
     """
@@ -241,7 +250,7 @@ def get_lookup_tables(url, key):
 
     return areas_df, hierarchies_df
 
-def build_pair_df(user_data, funder_data, funder_areas, funder_beneficiaries, funder_causes, user_name_em, user_concat_em):
+def build_pair_df(user_data, funder_data, funder_areas, funder_beneficiaries, funder_causes, list_entries, user_name_em, user_concat_em):
     """
     Creates a dataframe of user and funder pairs.
     """
@@ -268,8 +277,8 @@ def build_pair_df(user_data, funder_data, funder_areas, funder_beneficiaries, fu
         "extracted_class": funder_data.get("extracted_class"),
         "is_potential_sbf": funder_data.get("is_potential_sbf", False),
         "is_nua": funder_data.get("is_nua", False),
-        "is_on_list": funder_data.get("is_on_list", False),
-        "list_entries": funder_data.get("list_entries", [])
+        "is_on_list": len(list_entries) > 0,
+        "list_entries": list_entries
     }])
 
     return pair_df

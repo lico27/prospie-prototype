@@ -16,7 +16,7 @@ def get_backend_data(user_data, funder_number, model):
     user_name_em, user_concat_em = create_user_embeddings(user_data, model)
 
     #get funder data
-    funder_data, funder_areas, funder_beneficiaries, funder_causes = get_funder_data(funder_number, url, key)
+    funder_data, funder_areas, funder_beneficiaries, funder_causes, list_entries = get_funder_data(funder_number, url, key)
 
     #get grants data
     grants_df = build_grants_df(funder_number, url, key)
@@ -28,6 +28,6 @@ def get_backend_data(user_data, funder_number, model):
     areas_df, hierarchies_df = get_lookup_tables(url, key)
 
     #build pair dataframe
-    pair_df = build_pair_df(user_data, funder_data, funder_areas, funder_beneficiaries, funder_causes, user_name_em, user_concat_em)
+    pair_df = build_pair_df(user_data, funder_data, funder_areas, funder_beneficiaries, funder_causes, list_entries, user_name_em, user_concat_em)
 
     return grants_df, areas_df, hierarchies_df, pair_df
