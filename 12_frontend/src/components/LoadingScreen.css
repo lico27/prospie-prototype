@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(26, 22, 37, 0.95);
+  background: var(--bg-overlay);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   display: flex;
@@ -41,8 +41,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border: 3px solid rgba(142, 125, 179, 0.2);
-  border-top: 3px solid #8e7db3;
+  border: 3px solid var(--border-secondary);
+  border-top: 3px solid var(--accent-purple-3);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -53,8 +53,8 @@
   left: 10px;
   right: 10px;
   bottom: 10px;
-  border: 2px solid rgba(111, 163, 168, 0.2);
-  border-bottom: 2px solid #6fa3a8;
+  border: 2px solid var(--positive-glow);
+  border-bottom: 2px solid var(--accent-teal);
   border-radius: 50%;
   animation: spin 1.5s linear infinite reverse;
 }
@@ -71,7 +71,7 @@
 .loading-title {
   font-size: 1.75rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #dcd3ed, #b8a8d4, #8e7db3, #6fa3a8);
+  background: linear-gradient(135deg, var(--accent-purple-1), var(--accent-purple-2), var(--accent-purple-3), var(--accent-teal));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -81,14 +81,14 @@
 
 .loading-subtitle {
   font-size: 1rem;
-  color: #c9c0de;
+  color: var(--text-secondary);
   margin: 0;
   opacity: 0.8;
 }
 
 .loading-note {
   font-size: 0.875rem;
-  color: #c9c0de;
+  color: var(--text-secondary);
   margin: 0.75rem 0 0 0;
   opacity: 0.6;
   font-style: italic;

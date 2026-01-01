@@ -4,12 +4,99 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* dark mode */
+  --bg-primary: #1a1625;
+  --bg-secondary: rgba(42, 38, 54, 0.8);
+  --bg-tertiary: rgba(26, 22, 37, 0.4);
+  --bg-overlay: rgba(26, 22, 37, 0.95);
+
+  --text-primary: #e8e4f0;
+  --text-secondary: #c9c0de;
+  --text-tertiary: #dcd3ed;
+
+  --border-primary: rgba(142, 125, 179, 0.4);
+  --border-secondary: rgba(142, 125, 179, 0.2);
+  --border-hover: rgba(142, 125, 179, 0.6);
+
+  --accent-purple-1: #dcd3ed;
+  --accent-purple-2: #b8a8d4;
+  --accent-purple-3: #8e7db3;
+  --accent-teal: #6fa3a8;
+
+  --positive-color: rgba(111, 163, 168, 0.4);
+  --positive-hover: rgba(111, 163, 168, 0.7);
+  --positive-glow: rgba(111, 163, 168, 0.2);
+
+  --negative-color: rgba(179, 125, 125, 0.4);
+  --negative-hover: rgba(179, 125, 125, 0.7);
+  --negative-glow: rgba(179, 125, 125, 0.2);
+
+  --warning-bg: rgba(220, 180, 92, 0.15);
+  --warning-border: rgba(220, 180, 92, 0.4);
+  --warning-text: #f4e4bc;
+
+  --shadow-primary: rgba(0, 0, 0, 0.4);
+  --shadow-secondary: rgba(0, 0, 0, 0.3);
+
+  --success-bg: rgba(88, 166, 95, 0.25);
+  --success-border: #58a65f;
+  --success-text: #7bc982;
+
+  --link-color: #8e7db3;
+  --link-hover: #b8a8d4;
+}
+
+:root[data-theme="light"] {
+  /* light mode */
+  --bg-primary: #f6fafa;
+  --bg-secondary: rgba(210, 235, 235, 0.6);
+  --bg-tertiary: rgba(240, 248, 248, 0.8);
+  --bg-overlay: rgba(246, 250, 250, 0.98);
+
+  --text-primary: #2d4a4d;
+  --text-secondary: #3d5c60;
+  --text-tertiary: #2d4a4d;
+
+  --border-primary: rgba(74, 134, 140, 0.35);
+  --border-secondary: rgba(74, 134, 140, 0.15);
+  --border-hover: rgba(74, 134, 140, 0.55);
+
+  --accent-purple-1: #6b5d8f;
+  --accent-purple-2: #8e7db3;
+  --accent-purple-3: #a394c4;
+  --accent-teal: #3d7278;
+
+  --link-color: #8e7db3;
+  --link-hover: #6b5d8f;
+
+  --positive-color: rgba(74, 134, 140, 0.3);
+  --positive-hover: rgba(74, 134, 140, 0.5);
+  --positive-glow: rgba(74, 134, 140, 0.15);
+
+  --negative-color: rgba(139, 52, 52, 0.4);
+  --negative-hover: rgba(139, 52, 52, 0.6);
+  --negative-glow: rgba(139, 52, 52, 0.2);
+
+  --warning-bg: rgba(220, 160, 52, 0.15);
+  --warning-border: rgba(220, 160, 52, 0.4);
+  --warning-text: #8b6914;
+
+  --shadow-primary: rgba(0, 0, 0, 0.1);
+  --shadow-secondary: rgba(0, 0, 0, 0.05);
+
+  --success-bg: rgba(88, 166, 95, 0.2);
+  --success-border: #4a8c50;
+  --success-text: #3d7542;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-  background-color: #1a1625;
-  color: #e8e4f0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body::before {
@@ -22,8 +109,14 @@ body::before {
   background-image: url("/src/assets/graph-paper.svg");
   background-size: 100px 100px;
   background-position: center;
+  opacity: 0.8;
   mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 80%);
   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 80%);
   pointer-events: none;
   z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+:root[data-theme="light"] body::before {
+  opacity: 0.15;
 }

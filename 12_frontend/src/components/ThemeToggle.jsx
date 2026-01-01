@@ -51,3 +51,5 @@ const ThemeToggle = () => {
 };
 
 export default ThemeToggle;
+
+// code adapated from Szuc (2020)
