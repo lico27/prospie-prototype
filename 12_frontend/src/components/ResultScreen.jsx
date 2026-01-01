@@ -32,7 +32,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, onReset }) => {
             )}
           </div>
 
-          {(reasonings?.existing_relationship || reasonings?.is_on_list || reasonings?.is_nua || reasonings?.is_sbf) && (
+          {(reasonings?.existing_relationship || reasonings?.has_gcp || reasonings?.is_on_list || reasonings?.is_nua || reasonings?.is_sbf) && (
             <>
               <hr className="result-section-break" />
 
@@ -46,6 +46,15 @@ const ResultScreen = ({ score, reasonings, userName, funderName, onReset }) => {
                     <span className="message-icon">✅</span>
                     <p className="message-text">
                       This funder has given your organisation a grant before! According to the available data, your last gift was in {reasonings?.last_grant_year || 'an unknown year'}.
+                    </p>
+                  </div>
+                )}
+
+                {reasonings?.has_gcp && (
+                  <div className="message-box benefit">
+                    <span className="message-icon">✅</span>
+                    <p className="message-text">
+                      This funder supports General Charitable Purposes, so they might be open to funding a wide range of causes. Your score has been increased slightly to reflect this but it is still important to do your due diligence before applying.
                     </p>
                   </div>
                 )}

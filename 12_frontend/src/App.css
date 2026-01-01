@@ -388,7 +388,7 @@
   font-weight: 700;
   margin: 0 0 0.75rem 0;
   text-align: left;
-  padding: 0 0 0.5rem 0.75rem;
+  padding: 0.3rem 0 0.3rem 0.5rem;
   border-left: 3px solid transparent;
   border-image: linear-gradient(180deg, var(--border-hover), var(--positive-color)) 1;
   position: relative;
@@ -1084,8 +1084,4 @@
   font-weight: 600;
   font-style: italic;
   text-transform: lowercase;
-}
-
-:root[data-theme="light"] .question-heading {
-  background: transparent;
 }
