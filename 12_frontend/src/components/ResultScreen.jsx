@@ -1,6 +1,8 @@
 import React from "react";
 import "./ResultScreen.css";
 import AreasReasoning from "./Reasonings/AreasReasoning";
+import BeneficiariesReasoning from "./Reasonings/BeneficiariesReasoning";
+import CausesReasoning from "./Reasonings/CausesReasoning";
 import ReasoningDropdown from "./ReasoningDropdown";
 
 const toTitleCase = (str) => {
@@ -90,7 +92,9 @@ const ResultScreen = ({ score, reasonings, userName, funderName, onReset }) => {
               description="how your stated areas, beneficiaries and causes match with the funder's"
               defaultOpen={false}
             >
-              {/* <AreasReasoning reasonings={reasonings} /> */}
+              <AreasReasoning reasonings={reasonings} />
+              <BeneficiariesReasoning reasonings={reasonings} />
+              <CausesReasoning reasonings={reasonings} />
             </ReasoningDropdown>
           </div>
 
