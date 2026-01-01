@@ -115,12 +115,67 @@
   opacity: 0.6;
 }
 
-.result-reasonings-placeholder {
-  margin: 1.5rem 0 2rem 0;
-  padding: 1.5rem;
+.points-to-note-container {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-secondary);
   border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.points-to-note-container .question-heading {
+  margin-bottom: 1.5rem;
+}
+
+.points-to-note-container .message-box {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.points-to-note-container .message-box:last-child {
+  margin-bottom: 0;
+}
+
+.result-reasonings {
+  margin: 1.5rem 0 2rem 0;
+}
+
+.result-reasonings .question-heading {
+  margin-bottom: 2rem;
+}
+
+.reasoning-section {
+  text-align: left;
+}
+
+.reasoning-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reasoning-item {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-secondary);
+  line-height: 1.5;
+}
+
+.reasoning-item:last-child {
+  border-bottom: none;
+}
+
+.reasoning-icon {
+  flex-shrink: 0;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 1rem;
+}
+
+.reasoning-text {
+  flex: 1;
 }
 
 .reset-button {
