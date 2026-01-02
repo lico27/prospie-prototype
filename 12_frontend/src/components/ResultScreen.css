@@ -173,6 +173,15 @@
 
 .reasoning-section {
   text-align: left;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.reasoning-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .reasoning-list {
@@ -187,12 +196,7 @@
   font-size: 0.9rem;
   color: var(--text-secondary);
   padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-secondary);
   line-height: 1.5;
-}
-
-.reasoning-item:last-child {
-  border-bottom: none;
 }
 
 .reasoning-icon {
@@ -248,9 +252,18 @@
   border: 1px solid rgba(179, 90, 90, 0.5);
 }
 
+:root[data-theme="light"] .message-box.warning {
+  background: rgba(220, 80, 80, 0.15);
+  border: 1px solid rgba(200, 60, 60, 0.6);
+}
+
 .message-box.flag {
   background: var(--warning-bg);
   border: 1px solid var(--warning-border);
+}
+
+:root[data-theme="light"] .message-box.flag {
+  border: 1px solid rgba(220, 140, 52, 0.7);
 }
 
 .message-box.benefit {
