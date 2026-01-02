@@ -72,6 +72,15 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
                   </div>
                 )}
 
+                {pairData?.website && (
+                  <div className="message-box flag">
+                    <span className="message-icon">✴️</span>
+                    <p className="message-text">
+                      This funder has their own website: <a href={pairData.website} target="_blank" rel="noopener noreferrer">{pairData.website.replace(/^https?:\/\//, '')}</a>. It is recommended that you check this for their latest priorities and any specific requirements not captured in prospie's analysis.
+                    </p>
+                  </div>
+                )}
+
                 {reasonings?.is_nua && (
                   <div className="message-box warning">
                     <span className="message-icon">‼️</span>

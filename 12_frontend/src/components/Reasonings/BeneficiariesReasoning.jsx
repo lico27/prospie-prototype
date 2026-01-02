@@ -38,7 +38,7 @@ const BeneficiariesReasoning = ({ reasonings }) => {
               if (match) {
                 const beneficiary = match[1];
                 textContent = (
-                  <>Weak match: you support <em>{beneficiary}</em> and the funder supports broad beneficiary categories</>
+                  <>Weak match on beneficiaries: you support <em>{beneficiary}</em> and the funder supports broad beneficiary categories</>
                 );
               }
             } else if (reason.startsWith("No match:")) {
