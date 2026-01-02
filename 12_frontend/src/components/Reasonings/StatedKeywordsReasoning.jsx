@@ -60,7 +60,7 @@ const StatedKeywordsReasoning = ({ reasonings }) => {
             <span className="reasoning-toggle-icon">{isOpen ? "▼" : "▶"}</span>
             <div className="reasoning-toggle-content">
               <span className="reasoning-toggle-title">
-                Top matches: <span style={{ color: "#f97316" }}>funder"s keywords</span> and <span style={{ color: "#9b87f5" }}>your keywords</span>
+                Top matches: <span style={{ color: "#f97316" }}>funder's keywords</span> and <span style={{ color: "#9b87f5" }}>your keywords</span>
               </span>
             </div>
           </div>
@@ -87,7 +87,7 @@ const StatedKeywordsReasoning = ({ reasonings }) => {
                       if (scoreMatch) {
                         const numericScore = parseFloat(scoreMatch[1]);
                         let textWithoutScore = match.substring(0, match.lastIndexOf(":"));
-                        textWithoutScore = textWithoutScore.replace(/"/g, "").replace(" & ", " ↔ ");
+                        textWithoutScore = textWithoutScore.replace(/'/g, "").replace(" & ", " ↔ ");
                         allReasoning.push({
                           text: textWithoutScore,
                           score: numericScore,
@@ -107,9 +107,9 @@ const StatedKeywordsReasoning = ({ reasonings }) => {
                     return (
                       <li key={index} className="reasoning-item" style={{ fontSize: "0.85rem", padding: "0.1rem 0 0 1rem" }}>
                         <span className="reasoning-text">
-                          <span style={{ color: "#f97316" }}>{funderKeyword}</span>
+                          "<span style={{ color: "#f97316" }}>{funderKeyword}</span>"
                           {" ↔ "}
-                          <span style={{ color: "#9b87f5" }}>{userKeyword}</span>
+                          "<span style={{ color: "#9b87f5" }}>{userKeyword}</span>"
                           : <em>{match.rating}</em>
                         </span>
                       </li>
