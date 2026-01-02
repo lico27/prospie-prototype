@@ -745,6 +745,16 @@
 }
 
 @media (max-width: 640px) {
+  .form-navigation {
+    gap: 0.5rem;
+  }
+
+  .nav-button {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+  }
+
   .step2-navigation {
     flex-direction: column;
   }

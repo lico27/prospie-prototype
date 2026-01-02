@@ -105,7 +105,7 @@ const StatedKeywordsReasoning = ({ reasonings }) => {
                   return topMatches.map((match, index) => {
                     const [funderKeyword, userKeyword] = match.text.split(" ↔ ");
                     return (
-                      <li key={index} className="reasoning-item" style={{ fontSize: "0.85rem", padding: "0.1rem 0 0 1rem" }}>
+                      <li key={index} className="reasoning-item" style={{ fontSize: "0.85rem", padding: "0.1rem 0 0 0.1rem" }}>
                         <span className="reasoning-text">
                           "<span style={{ color: "#f97316" }}>{funderKeyword}</span>"
                           {" ↔ "}

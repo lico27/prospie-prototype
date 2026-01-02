@@ -1,5 +1,6 @@
 .reasoning-dropdown {
   margin-bottom: 1.5rem;
+  overflow: hidden;
 }
 
 .reasoning-dropdown .question-heading {
@@ -33,6 +34,9 @@
   display: flex;
   align-items: baseline;
   gap: 0.35rem;
+  flex-wrap: wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .reasoning-toggle-title {
@@ -49,6 +53,7 @@
 
 .reasoning-content {
   animation: slideDown 0.3s ease-out;
+  overflow: hidden;
 }
 
 @keyframes slideDown {
@@ -59,5 +64,25 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .reasoning-toggle {
+    padding: 0.4rem 0;
+    gap: 0.4rem;
+  }
+
+  .reasoning-toggle-title {
+    font-size: 0.8rem;
+  }
+
+  .reasoning-toggle-description {
+    font-size: 0.8rem;
+  }
+
+  .reasoning-toggle-content {
+    gap: 0.2rem;
+    min-width: 0;
   }
 }

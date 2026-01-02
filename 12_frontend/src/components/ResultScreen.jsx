@@ -119,48 +119,50 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
               <span className="question-heading-text">Explanation for your score</span>
             </div>
 
-            <div className="reasoning-subheading">
-              <span className="reasoning-subheading-text">Stated Preferences</span>
+            <div className="reasoning-card">
+              <div className="reasoning-subheading">
+                <span className="reasoning-subheading-text">Stated Preferences</span>
+              </div>
+
+              <StatedSemanticReasoning reasonings={reasonings} />
+              <StatedKeywordsReasoning reasonings={reasonings} />
+
+              <ReasoningDropdown
+                title="Classifications"
+                description="how your stated areas, beneficiaries and causes match with the funder's"
+                defaultOpen={false}
+              >
+                <AreasReasoning
+                  reasonings={reasonings}
+                  userAreas={pairData?.user_areas}
+                  funderAreas={pairData?.areas}
+                />
+                <BeneficiariesReasoning
+                  reasonings={reasonings}
+                  userBeneficiaries={pairData?.user_beneficiaries}
+                  funderBeneficiaries={pairData?.beneficiaries}
+                />
+                <CausesReasoning
+                  reasonings={reasonings}
+                  userCauses={pairData?.user_causes}
+                  funderCauses={pairData?.causes}
+                />
+              </ReasoningDropdown>
             </div>
 
-            <StatedSemanticReasoning reasonings={reasonings} />
-            <StatedKeywordsReasoning reasonings={reasonings} />
+            <div className="reasoning-card">
+              <div className="reasoning-subheading">
+                <span className="reasoning-subheading-text">Revealed Preferences</span>
+              </div>
 
-            <ReasoningDropdown
-              title="Classifications"
-              description="how your stated areas, beneficiaries and causes match with the funder's"
-              defaultOpen={false}
-            >
-              <AreasReasoning
-                reasonings={reasonings}
-                userAreas={pairData?.user_areas}
-                funderAreas={pairData?.areas}
-              />
-              <BeneficiariesReasoning
-                reasonings={reasonings}
-                userBeneficiaries={pairData?.user_beneficiaries}
-                funderBeneficiaries={pairData?.beneficiaries}
-              />
-              <CausesReasoning
-                reasonings={reasonings}
-                userCauses={pairData?.user_causes}
-                funderCauses={pairData?.causes}
-              />
-            </ReasoningDropdown>
 
-            <hr className="reasoning-section-divider" />
-
-            <div className="reasoning-subheading">
-              <span className="reasoning-subheading-text">Revealed Preferences</span>
             </div>
           </div>
-
-        <div className="result-reasonings-placeholder">
-            <pre style={{ textAlign: "left", fontSize: "0.75rem", color: "#c9c0de", overflow: "auto", maxHeight: "400px" }}>
-              {JSON.stringify(reasonings, null, 2)}
-            </pre>
-          </div>
-
+          <div className="result-reasonings-placeholder">
+                <pre style={{ textAlign: "left", fontSize: "0.75rem", color: "#c9c0de", overflow: "auto", maxHeight: "400px" }}>
+                  {JSON.stringify(reasonings, null, 2)}
+                </pre>
+              </div>
           <button className="reset-button" onClick={onReset}>
             Start Again
           </button>

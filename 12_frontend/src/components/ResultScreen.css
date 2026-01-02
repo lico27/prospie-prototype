@@ -164,6 +164,18 @@
   display: inline-block;
 }
 
+.reasoning-card {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 2rem 2rem 0.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.reasoning-card .reasoning-subheading {
+  margin-top: 0;
+}
+
 .reasoning-section-divider {
   border: none;
   border-top: 1px solid var(--border-primary);
@@ -207,6 +219,9 @@
 
 .reasoning-text {
   flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .reset-button {
@@ -326,4 +341,39 @@
 .message-text a:hover {
   text-decoration-thickness: 2px;
   opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .result-card {
+    padding: 2rem 1rem;
+  }
+
+  .reasoning-card {
+    padding: 1.5rem 1rem 0.5rem 1rem;
+  }
+
+  .result-score-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .result-score {
+    font-size: 3rem;
+  }
+
+  .points-to-note-container {
+    padding: 1rem;
+  }
+
+  .message-box {
+    padding: 1rem;
+  }
+
+  .reasoning-item {
+    font-size: 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .reasoning-subheading-text {
+    font-size: 0.85rem;
+  }
 }
