@@ -1,8 +1,25 @@
 import React from "react";
 
-const AreasReasoning = ({ reasonings }) => {
+const AreasReasoning = ({ reasonings, userAreas, funderAreas }) => {
+  
+  //handle missing areas
   if (!reasonings?.areas_reasoning || reasonings.areas_reasoning.length === 0) {
-    return null;
+    const hasUserAreas = userAreas && userAreas.length > 0;
+    const hasFunderAreas = funderAreas && funderAreas.length > 0;
+    return (
+      <div className="reasoning-section">
+        <ul className="reasoning-list">
+          <li className="reasoning-item">
+            <span className="reasoning-icon">‼️</span>
+            <span className="reasoning-text">
+              {!hasUserAreas && !hasFunderAreas && "No matches on areas: neither you nor the funder stated where you work"}
+              {!hasUserAreas && hasFunderAreas && "No matches on areas: you did not state where you work"}
+              {hasUserAreas && !hasFunderAreas && "No matches on areas: the funder did not state where they work"}
+            </span>
+          </li>
+        </ul>
+      </div>
+    );
   }
 
   return (
