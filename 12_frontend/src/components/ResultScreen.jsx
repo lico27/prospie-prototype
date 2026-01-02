@@ -98,6 +98,15 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
                     </p>
                   </div>
                 )}
+
+                {pairData?.lv_penalty && (
+                  <div className="message-box warning">
+                    <span className="message-icon">‼️</span>
+                    <p className="message-text">
+                      This could be a low variance funder. Data suggests that they may only support the same small group of causes year after year. Your score has been reduced to reflect this, and it is important to be cautious about applying to this funder.
+                    </p>
+                  </div>
+                )}
               </div>
             </>
           )}
@@ -136,11 +145,11 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
             </div>
           </div>
 
-        {/* <div className="result-reasonings-placeholder">
+        <div className="result-reasonings-placeholder">
             <pre style={{ textAlign: "left", fontSize: "0.75rem", color: "#c9c0de", overflow: "auto", maxHeight: "400px" }}>
               {JSON.stringify(reasonings, null, 2)}
             </pre>
-          </div> */}
+          </div>
 
           <button className="reset-button" onClick={onReset}>
             Start Again
