@@ -527,7 +527,7 @@ def calculate_keywords_bonus_rp(funder_grants_df, user_keywords):
 
         reasoning = []
         for keyword, count in sorted_matches[:10]:
-            reasoning.append(f"{keyword}: {count} occurrences")
+            reasoning.append(f"{keyword}: {count} times")
 
     return bonus, reasoning
 
