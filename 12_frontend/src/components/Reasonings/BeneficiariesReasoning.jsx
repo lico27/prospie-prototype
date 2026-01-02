@@ -1,8 +1,24 @@
 import React from "react";
 
-const BeneficiariesReasoning = ({ reasonings }) => {
+const BeneficiariesReasoning = ({ reasonings, userBeneficiaries, funderBeneficiaries }) => {
+  //handle missing beneficiaries
   if (!reasonings?.beneficiaries_reasoning || reasonings.beneficiaries_reasoning.length === 0) {
-    return null;
+    const hasUserBeneficiaries = userBeneficiaries && userBeneficiaries.length > 0;
+    const hasFunderBeneficiaries = funderBeneficiaries && funderBeneficiaries.length > 0;
+    return (
+      <div className="reasoning-section">
+        <ul className="reasoning-list">
+          <li className="reasoning-item">
+            <span className="reasoning-icon">‼️</span>
+            <span className="reasoning-text">
+              {!hasUserBeneficiaries && !hasFunderBeneficiaries && "No matches on beneficiaries: neither you nor the funder stated who you support"}
+              {!hasUserBeneficiaries && hasFunderBeneficiaries && "No matches on beneficiaries: you did not state who you support"}
+              {hasUserBeneficiaries && !hasFunderBeneficiaries && "No matches on beneficiaries: the funder did not state who they support"}
+            </span>
+          </li>
+        </ul>
+      </div>
+    );
   }
 
   return (

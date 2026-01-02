@@ -4,6 +4,7 @@ import AreasReasoning from "./Reasonings/AreasReasoning";
 import BeneficiariesReasoning from "./Reasonings/BeneficiariesReasoning";
 import CausesReasoning from "./Reasonings/CausesReasoning";
 import StatedSemanticReasoning from "./Reasonings/StatedSemanticReasoning";
+import StatedKeywordsReasoning from "./Reasonings/StatedKeywordsReasoning";
 import ReasoningDropdown from "./ReasoningDropdown";
 
 const toTitleCase = (str) => {
@@ -122,7 +123,8 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
               <span className="reasoning-subheading-text">Stated Preferences</span>
             </div>
 
-            <StatedSemanticReasoning reasonings={reasonings} /> 
+            <StatedSemanticReasoning reasonings={reasonings} />
+            <StatedKeywordsReasoning reasonings={reasonings} />
 
             <ReasoningDropdown
               title="Classifications"
@@ -134,8 +136,16 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
                 userAreas={pairData?.user_areas}
                 funderAreas={pairData?.areas}
               />
-              <BeneficiariesReasoning reasonings={reasonings} />
-              <CausesReasoning reasonings={reasonings} />
+              <BeneficiariesReasoning
+                reasonings={reasonings}
+                userBeneficiaries={pairData?.user_beneficiaries}
+                funderBeneficiaries={pairData?.beneficiaries}
+              />
+              <CausesReasoning
+                reasonings={reasonings}
+                userCauses={pairData?.user_causes}
+                funderCauses={pairData?.causes}
+              />
             </ReasoningDropdown>
 
             <hr className="reasoning-section-divider" />

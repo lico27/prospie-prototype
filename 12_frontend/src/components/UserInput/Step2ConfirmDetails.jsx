@@ -58,27 +58,39 @@ function Step2ConfirmDetails({ charityData }) {
           )}
         </div>
 
-        {charityData.beneficiaries && charityData.beneficiaries.length > 0 && (
-          <div className="entity-section">
-            <h4>Beneficiaries</h4>
+        <div className="entity-section">
+          <h4>Beneficiaries</h4>
+          {charityData.beneficiaries && charityData.beneficiaries.length > 0 ? (
             <div className="tag-list">
               {charityData.beneficiaries.map((ben, idx) => (
                 <span key={idx} className="tag">{ben.ben_name}</span>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="empty-state-message">
+              <p style={{ fontStyle: 'italic', color: '#888', margin: '0.5rem 0', textAlign: 'center' }}>
+                Sorry! prospie was unable to retrieve beneficiary data for your charity. Please add your beneficiaries manually.
+              </p>
+            </div>
+          )}
+        </div>
 
-        {charityData.causes && charityData.causes.length > 0 && (
-          <div className="entity-section">
-            <h4>Causes</h4>
+        <div className="entity-section">
+          <h4>Causes</h4>
+          {charityData.causes && charityData.causes.length > 0 ? (
             <div className="tag-list">
               {charityData.causes.map((cause, idx) => (
                 <span key={idx} className="tag">{cause.cause_name}</span>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="empty-state-message">
+              <p style={{ fontStyle: 'italic', color: '#888', margin: '0.5rem 0', textAlign: 'center' }}>
+                Sorry! prospie was unable to retrieve cause data for your charity. Please add your causes manually.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

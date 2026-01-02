@@ -1,8 +1,24 @@
 import React from "react";
 
-const CausesReasoning = ({ reasonings }) => {
+const CausesReasoning = ({ reasonings, userCauses, funderCauses }) => {
+  //handle missing causes
   if (!reasonings?.causes_reasoning || reasonings.causes_reasoning.length === 0) {
-    return null;
+    const hasUserCauses = userCauses && userCauses.length > 0;
+    const hasFunderCauses = funderCauses && funderCauses.length > 0;
+    return (
+      <div className="reasoning-section">
+        <ul className="reasoning-list">
+          <li className="reasoning-item">
+            <span className="reasoning-icon">‼️</span>
+            <span className="reasoning-text">
+              {!hasUserCauses && !hasFunderCauses && "No matches on causes: neither you nor the funder stated your causes"}
+              {!hasUserCauses && hasFunderCauses && "No matches on causes: you did not state your causes"}
+              {hasUserCauses && !hasFunderCauses && "No matches on causes: the funder did not state their causes"}
+            </span>
+          </li>
+        </ul>
+      </div>
+    );
   }
 
   return (
