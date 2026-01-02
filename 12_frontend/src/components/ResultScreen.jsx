@@ -3,6 +3,7 @@ import "./ResultScreen.css";
 import AreasReasoning from "./Reasonings/AreasReasoning";
 import BeneficiariesReasoning from "./Reasonings/BeneficiariesReasoning";
 import CausesReasoning from "./Reasonings/CausesReasoning";
+// import StatedSemanticReasoning from "./Reasonings/StatedSemanticReasoning";
 import ReasoningDropdown from "./ReasoningDropdown";
 
 const toTitleCase = (str) => {
@@ -14,7 +15,7 @@ const toTitleCase = (str) => {
     .join(" ");
 };
 
-const ResultScreen = ({ score, reasonings, userName, funderName, onReset }) => {
+const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onReset }) => {
   return (
     <div className="result-screen-overlay">
       <div className="result-screen-content">
@@ -95,16 +96,33 @@ const ResultScreen = ({ score, reasonings, userName, funderName, onReset }) => {
           <hr className="result-section-break" />
 
           <div className="result-reasonings">
+            <div className="question-heading">
+              <span className="question-heading-text">Explanation for your score</span>
+            </div>
+
+            <div className="reasoning-subheading">
+              <span className="reasoning-subheading-text">Stated Preferences</span>
+            </div>
+
             <ReasoningDropdown
-              heading="Explanation for your score"
               title="Classifications"
               description="how your stated areas, beneficiaries and causes match with the funder's"
               defaultOpen={false}
             >
-              <AreasReasoning reasonings={reasonings} />
+              <AreasReasoning
+                reasonings={reasonings}
+                userAreas={pairData?.user_areas}
+                funderAreas={pairData?.areas}
+              />
               <BeneficiariesReasoning reasonings={reasonings} />
               <CausesReasoning reasonings={reasonings} />
             </ReasoningDropdown>
+
+            <hr className="reasoning-section-divider" />
+
+            <div className="reasoning-subheading">
+              <span className="reasoning-subheading-text">Revealed Preferences</span>
+            </div>
           </div>
 
         {/* <div className="result-reasonings-placeholder">

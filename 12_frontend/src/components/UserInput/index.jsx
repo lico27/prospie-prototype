@@ -287,6 +287,7 @@ function UserInput({ resetTrigger }) {
           reasonings={reasonings}
           userName={pairData?.user_name}
           funderName={pairData?.funder_name}
+          pairData={pairData}
           onReset={handleReset}
         />
       )}

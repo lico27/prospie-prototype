@@ -137,11 +137,38 @@
 }
 
 .result-reasonings {
-  margin: 1.5rem 0 2rem 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .result-reasonings .question-heading {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.reasoning-subheading {
+  margin: 1.5rem 0 1rem 0;
+  text-align: left;
+}
+
+.reasoning-subheading-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent-teal);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-primary);
+  display: inline-block;
+}
+
+.reasoning-section-divider {
+  border: none;
+  border-top: 1px solid var(--border-primary);
+  margin: 2rem 0 1.5rem 0;
+  opacity: 0.5;
 }
 
 .reasoning-section {
