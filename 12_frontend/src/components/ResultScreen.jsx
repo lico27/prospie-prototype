@@ -3,7 +3,7 @@ import "./ResultScreen.css";
 import AreasReasoning from "./Reasonings/AreasReasoning";
 import BeneficiariesReasoning from "./Reasonings/BeneficiariesReasoning";
 import CausesReasoning from "./Reasonings/CausesReasoning";
-// import StatedSemanticReasoning from "./Reasonings/StatedSemanticReasoning";
+import StatedSemanticReasoning from "./Reasonings/StatedSemanticReasoning";
 import ReasoningDropdown from "./ReasoningDropdown";
 
 const toTitleCase = (str) => {
@@ -103,6 +103,8 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
             <div className="reasoning-subheading">
               <span className="reasoning-subheading-text">Stated Preferences</span>
             </div>
+
+            <StatedSemanticReasoning reasonings={reasonings} /> 
 
             <ReasoningDropdown
               title="Classifications"
