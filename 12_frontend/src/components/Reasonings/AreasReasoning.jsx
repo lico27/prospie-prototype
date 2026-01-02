@@ -37,7 +37,7 @@ const AreasReasoning = ({ reasonings, userAreas, funderAreas }) => {
             return (
               <li key="no-match" className="reasoning-item">
                 <span className="reasoning-icon">‼️</span>
-                <span className="reasoning-text">No matches on areas.</span>
+                <span className="reasoning-text">No matches on areas</span>
               </li>
             );
           }
