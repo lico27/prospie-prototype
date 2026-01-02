@@ -989,6 +989,23 @@
   margin-bottom: 2rem;
 }
 
+.instruction-box-flag {
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+}
+
+:root[data-theme="light"] .instruction-box-flag {
+  border: 2px solid rgba(220, 140, 52, 0.7);
+}
+
+.instruction-box-flag .instruction-heading {
+  color: var(--warning-text);
+}
+
+.instruction-box-flag .instruction-text {
+  color: var(--warning-text);
+}
+
 .instruction-icon {
   font-size: 1.8rem;
   line-height: 1;

@@ -1,4 +1,4 @@
-function Step2ConfirmDetails({ charityData }) {
+function Step2CheckDetails({ charityData, onUseDetails, onEdit, onBack }) {
   if (!charityData) {
     return <div className="loading">Loading charity data...</div>
   }
@@ -7,12 +7,12 @@ function Step2ConfirmDetails({ charityData }) {
     <div className="charity-details">
       <div className="entity-column">
 
-        <div className="instruction-box">
+        <div className="instruction-box instruction-box-flag">
           <div className="instruction-icon">ℹ️</div>
           <div className="instruction-content">
-            <h4 className="instruction-heading">Choose Your Details</h4>
+            <h4 className="instruction-heading">Check Your Details</h4>
             <p className="instruction-text">
-              Below is your charity's information taken from the Charity Commission website. Use the Next/Back buttons or click the numbered steps at the top to navigate through each section and make any changes you'd like.
+              Below is your charity's information taken from the Charity Commission website. If you're happy with these details, click "Use these details" to skip ahead. Otherwise, click "Edit or add" to review and modify each section.
             </p>
           </div>
         </div>
@@ -92,8 +92,20 @@ function Step2ConfirmDetails({ charityData }) {
           )}
         </div>
       </div>
+
+      <div className="form-navigation">
+        <button type="button" className="nav-button back-button" onClick={onBack}>
+          Back
+        </button>
+        <button type="button" className="nav-button next-button" onClick={onEdit}>
+          Edit or add
+        </button>
+        <button type="button" className="nav-button submit-button" onClick={onUseDetails}>
+          Use these details
+        </button>
+      </div>
     </div>
   )
 }
 
-export default Step2ConfirmDetails
+export default Step2CheckDetails

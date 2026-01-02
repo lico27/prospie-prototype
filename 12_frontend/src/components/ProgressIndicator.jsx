@@ -3,7 +3,7 @@ function ProgressIndicator({ currentStep, totalSteps = 4, onStepClick, confirmed
 
   const stepLabels = [
     "Charity Number",
-    "Confirm Details",
+    "Check Details",
     "Areas",
     "Beneficiaries",
     "Causes",
@@ -29,12 +29,12 @@ function ProgressIndicator({ currentStep, totalSteps = 4, onStepClick, confirmed
             return (
               <div
                 key={step}
-                className={`progress-label ${currentStep === step ? 'active' : ''} ${isConfirmed ? 'confirmed' : ''} ${isClickable ? 'clickable' : ''}`}
+                className={`progress-label ${currentStep === step ? "active" : ""} ${isConfirmed ? "confirmed" : ""} ${isClickable ? "clickable" : ""}`}
                 onClick={() => isClickable && onStepClick(step)}
                 title={stepLabels[index]}
               >
                 <span className="progress-label-number">
-                  {isConfirmed ? '✓' : step}
+                  {isConfirmed ? "✓" : step}
                 </span>
                 <span className="progress-label-text">{stepLabels[index]}</span>
               </div>

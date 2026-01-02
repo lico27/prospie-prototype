@@ -3,7 +3,7 @@ import { supabase } from "../../supabaseClient"
 import ProgressIndicator from "../ProgressIndicator"
 import FormNavigation from "../FormNavigation"
 import Step1CharityNumber from "./Step1CharityNumber"
-import Step2ConfirmDetails from "./Step2ConfirmDetails"
+import Step2CheckDetails from "./Step2CheckDetails"
 import Step3Areas from "./Step3Areas"
 import Step4Beneficiaries from "./Step4Beneficiaries"
 import Step5Causes from "./Step5Causes"
@@ -311,7 +311,23 @@ function UserInput({ resetTrigger }) {
                 )}
 
                 {currentStep === 2 && (
-                  <Step2ConfirmDetails charityData={charityData} />
+                  <Step2CheckDetails
+                    charityData={charityData}
+                    onUseDetails={async () => {
+                      await extractKeywordsFromData();
+                      setConfirmedSteps([...confirmedSteps, 2, 3, 4, 5, 6, 7]);
+                      setCurrentStep(8);
+                      setError(null);
+                    }}
+                    onEdit={() => {
+                      if (!confirmedSteps.includes(2)) {
+                        setConfirmedSteps([...confirmedSteps, 2]);
+                      }
+                      setCurrentStep(3);
+                      setError(null);
+                    }}
+                    onBack={handleBack}
+                  />
                 )}
 
                 {currentStep === 3 && (
@@ -356,14 +372,16 @@ function UserInput({ resetTrigger }) {
                   <Step8FunderNumber funderNumber={funderNumber} onChange={setFunderNumber} />
                 )}
 
-                <FormNavigation
-                  currentStep={currentStep}
-                  totalSteps={8}
-                  onBack={handleBack}
-                  onNext={handleNext}
-                  onSubmit={handleSubmit}
-                  loading={loading || isCalculating}
-                />
+                {currentStep !== 2 && (
+                  <FormNavigation
+                    currentStep={currentStep}
+                    totalSteps={8}
+                    onBack={handleBack}
+                    onNext={handleNext}
+                    onSubmit={handleSubmit}
+                    loading={loading || isCalculating}
+                  />
+                )}
               </form>
 
               {error && (
