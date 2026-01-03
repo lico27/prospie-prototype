@@ -768,7 +768,7 @@ def calculate_alignment_score(pair_df, idx, grants_df, areas_df, hierarchies_df,
         #get total weights when no grants history
         sp_total = sum(weight for _, weight in sp_weights.values())
         rp_total = sum(weight for _, weight in rp_weights.values())
-        
+
         #apply proportional reweighting
         reweight_proportion = (sp_total + rp_total) / sp_total
         weighted_scores = sum(score * weight * reweight_proportion for score, weight in sp_weights.values())
