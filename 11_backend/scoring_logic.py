@@ -294,13 +294,22 @@ def check_grants_rp(grants_embedding_dict, user_embedding, user_name):
 
     #compare every grant to the user's text
     all_scores = []
-    for grant_recipient_name, grant_embedding in grants_embedding_dict.items():
+    for grant_id, grant_data in grants_embedding_dict.items():
+        grant_recipient_name = grant_data.get("recipient_name", "")
+        grant_embedding = grant_data.get("embedding")
+
         if grant_recipient_name != user_name:
             similarity = calculate_similarity_score(grant_embedding, user_embedding)
-            all_scores.append({
-                "grant_recipient_name": grant_recipient_name,
-                "similarity": similarity
-            })
+            if similarity is not None and not pd.isna(similarity):
+                all_scores.append({
+                    "grant_id": grant_id,
+                    "recipient_name": grant_recipient_name,
+                    "grant_title": grant_data.get("grant_title"),
+                    "grant_desc": grant_data.get("grant_desc"),
+                    "year": grant_data.get("year"),
+                    "amount": grant_data.get("amount"),
+                    "similarity": similarity
+                })
 
     #sort and calculate average of top 10
     all_scores.sort(key=lambda x: x["similarity"], reverse=True)
@@ -313,7 +322,18 @@ def check_grants_rp(grants_embedding_dict, user_embedding, user_name):
     #build reasoning from top 10 matches
     reasoning = []
     for match in top_10:
-        reasoning.append(f"{match['grant_recipient_name']}: {match['similarity']:.3f}")
+        year_val = match.get("year")
+        amount_val = match.get("amount")
+
+        reasoning.append({
+            "grant_id": match["grant_id"],
+            "recipient_name": match.get("recipient_name"),
+            "grant_title": match.get("grant_title"),
+            "grant_desc": match.get("grant_desc"),
+            "year": int(year_val) if year_val and not pd.isna(year_val) else None,
+            "amount": float(amount_val) if amount_val and not pd.isna(amount_val) else None,
+            "similarity": match["similarity"]
+        })
 
     return max(0.0, score), reasoning
 
@@ -624,16 +644,25 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
             (funder_grants_df["grant_desc"].notna() & (funder_grants_df["grant_desc"] != ""))
         ]
         valid_grant_embeddings = {}
-        for name, embedding in zip(non_empty_grants["recipient_name"], non_empty_grants["grant_concat_em"]):
-            if not pd.isna(embedding) and embedding is not None and not isinstance(embedding, (int, float)):
-                valid_grant_embeddings[name] = embedding
+        for idx_grant, row in non_empty_grants.iterrows():
+            embedding = row.get("grant_concat_em")
+            grant_id = row.get("grant_id")
+            if not pd.isna(embedding) and embedding is not None and not isinstance(embedding, (int, float)) and grant_id:
+                valid_grant_embeddings[grant_id] = {
+                    "embedding": embedding,
+                    "recipient_name": row.get("recipient_name"),
+                    "grant_title": row.get("grant_title"),
+                    "grant_desc": row.get("grant_desc"),
+                    "year": row.get("year"),
+                    "amount": row.get("amount")
+                }
 
         user_concat_em = pair_df["user_concat_em"].iloc[idx]
         user_name = pair_df["user_name"].iloc[idx]
         grants_rp_score, grants_rp_reasoning = check_grants_rp(valid_grant_embeddings, user_concat_em, user_name)
     else:
-        grants_rp_score = 0.0
-        grants_rp_reasoning = ["No grants history available"]
+        grants_rp_score = None
+        grants_rp_reasoning = None
 
     #12 get recipients (RP) semantic similarity score
     if not funder_grants_df.empty and "recipient_name" in funder_grants_df.columns:
@@ -774,11 +803,11 @@ def calculate_alignment_score(pair_df, idx, grants_df, areas_df, hierarchies_df,
       "keyword_similarity_score": float(keyword_similarity_score),
       "keyword_strong_matches": keyword_strong_matches,
       "keyword_reasoning": keyword_reasoning,
-      "name_rp_score": float(name_rp_score),
+      "name_rp_score": float(name_rp_score) if name_rp_score is not None else None,
       "name_rp_reasoning": name_rp_reasoning,
-      "grants_rp_score": float(grants_rp_score),
+      "grants_rp_score": float(grants_rp_score) if grants_rp_score is not None else None,
       "grants_rp_reasoning": grants_rp_reasoning,
-      "recipients_rp_score": float(recipients_rp_score),
+      "recipients_rp_score": float(recipients_rp_score) if recipients_rp_score is not None else None,
       "recipients_rp_reasoning": recipients_rp_reasoning,
       "time_lapsed": int(time_lapsed) if time_lapsed is not None else None,
       "last_grant_year": int(last_grant_year) if last_grant_year is not None else None,
