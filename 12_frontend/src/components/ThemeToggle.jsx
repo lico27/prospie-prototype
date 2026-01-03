@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./ThemeToggle.css";
+import "../css/components/ThemeToggle.css";
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState(() => {

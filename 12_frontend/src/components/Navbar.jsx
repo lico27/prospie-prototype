@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import ThemeToggle from "./ThemeToggle";
-import "./Navbar.css";
+import "../css/components/Navbar.css";
 
 function Navbar1({ onHomeClick, onAboutClick }) {
   const handleHomeClick = (e) => {

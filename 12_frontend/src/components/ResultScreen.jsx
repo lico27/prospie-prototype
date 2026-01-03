@@ -1,5 +1,5 @@
 import React from "react";
-import "./ResultScreen.css";
+import "../css/components/ResultScreen.css";
 import AreasReasoning from "./Reasonings/AreasReasoning";
 import BeneficiariesReasoning from "./Reasonings/BeneficiariesReasoning";
 import CausesReasoning from "./Reasonings/CausesReasoning";
@@ -156,7 +156,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
                 <span className="reasoning-subheading-text">Revealed Preferences</span>
               </div>
 
-              <RevealedGrantsReasoning reasonings={reasonings} />
+              <RevealedGrantsReasoning reasonings={reasonings} funderName={funderName} />
             </div>
           </div>
           <div className="result-reasonings-placeholder">

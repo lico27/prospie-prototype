@@ -1,0 +1,59 @@
+.grant-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: rgba(155, 135, 245, 0.05);
+  border-radius: 6px;
+  border-left: 3px solid #9b87f5;
+}
+
+:root[data-theme="dark"] .grant-item {
+  background-color: rgba(111, 163, 168, 0.08);
+  border-left-color: var(--accent-teal);
+}
+
+.grant-item-header {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #7c6baf;
+}
+
+:root[data-theme="dark"] .grant-item-header {
+  color: var(--accent-teal);
+}
+
+.grant-item-title {
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.grant-item-description {
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+:root[data-theme="dark"] .grant-item-description {
+  color: var(--text-secondary);
+}
+
+.grant-item-read-more {
+  color: #9b87f5;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  font-weight: 500;
+}
+
+:root[data-theme="dark"] .grant-item-read-more {
+  color: var(--accent-teal);
+}
+
+.grant-item-score {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #9b87f5;
+}
+
+:root[data-theme="dark"] .grant-item-score {
+  color: var(--accent-teal);
+}

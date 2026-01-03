@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./ReasoningDropdown.css";
+import "../css/components/ReasoningDropdown.css";
 
 const ReasoningDropdown = ({ title, description, heading, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
