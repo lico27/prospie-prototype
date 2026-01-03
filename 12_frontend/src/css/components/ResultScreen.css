@@ -286,6 +286,16 @@
   border: 1px solid var(--success-border);
 }
 
+.message-box.info {
+  background: rgba(100, 100, 110, 0.15);
+  border: 1px solid rgba(140, 140, 150, 0.6);
+}
+
+:root[data-theme="light"] .message-box.info {
+  background: rgba(100, 100, 110, 0.08);
+  border: 1px solid rgba(100, 100, 110, 0.5);
+}
+
 .message-box + .message-box {
   margin-top: 1rem;
 }
@@ -315,11 +325,11 @@
 }
 
 .message-box.warning .message-text {
-  color: #ffb3b3;
+  color: rgba(255, 179, 179, 1);
 }
 
 :root[data-theme="light"] .message-box.warning .message-text {
-  color: #8b3434;
+  color: rgba(139, 52, 52, 1);
 }
 
 .message-box.flag .message-text {
@@ -328,6 +338,14 @@
 
 .message-box.benefit .message-text {
   color: var(--success-text);
+}
+
+.message-box.info .message-text {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="light"] .message-box.info .message-text {
+  color: var(--text-primary);
 }
 
 .message-text a {
@@ -376,4 +394,13 @@
   .reasoning-subheading-text {
     font-size: 0.85rem;
   }
+}
+
+/* Shared wrapper for dropdown-based reasonings */
+.reasoning-dropdown-wrapper {
+  margin-left: 2rem;
+}
+
+.reasoning-dropdown-wrapper .reasoning-dropdown {
+  margin-bottom: 0;
 }

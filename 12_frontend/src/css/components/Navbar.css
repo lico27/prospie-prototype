@@ -25,7 +25,7 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: #d4cfe0 !important;
+  color: rgba(212, 207, 224, 1) !important;
 }
 
 .glass-navbar .navbar-brand {
@@ -49,7 +49,7 @@
 }
 
 .glass-navbar .dropdown-item {
-  color: #d4cfe0 !important;
+  color: rgba(212, 207, 224, 1) !important;
 }
 
 .glass-navbar .dropdown-item:hover {
@@ -68,12 +68,12 @@
 
 :root[data-theme="light"] .glass-navbar .navbar-brand,
 :root[data-theme="light"] .glass-navbar .nav-link {
-  color: #3d7278 !important;
+  color: rgba(61, 114, 120, 1) !important;
   font-weight: 700;
 }
 
 :root[data-theme="light"] .glass-navbar .nav-link:hover {
-  color: #5a9599 !important;
+  color: rgba(90, 149, 153, 1) !important;
   text-shadow: 0 0 12px rgba(74, 134, 140, 0.4);
 }
 
@@ -83,12 +83,12 @@
 }
 
 :root[data-theme="light"] .glass-navbar .dropdown-item {
-  color: #2d4a4d !important;
+  color: rgba(45, 74, 77, 1) !important;
 }
 
 :root[data-theme="light"] .glass-navbar .dropdown-item:hover {
   background-color: rgba(74, 134, 140, 0.2) !important;
-  color: #3d7278 !important;
+  color: rgba(61, 114, 120, 1) !important;
 }
 
 .navbar-links {
