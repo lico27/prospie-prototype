@@ -249,7 +249,7 @@ def check_keywords(funder_keywords, user_keywords, model):
     
     return max(0.0, score), strong_matches, reasoning, gets_bonus
 
-def check_name_rp(recipients_embedding_dict, user_embedding, user_name):
+def check_name_rp(recipients_embedding_dict, user_embedding, user_name, grants_df=None):
     """
     Calculates semantic similarity between the user's name and the names of the funder's previous recipients.
     """
@@ -279,7 +279,23 @@ def check_name_rp(recipients_embedding_dict, user_embedding, user_name):
     #build reasoning from top 10 matches
     reasoning = []
     for match in top_10:
-        reasoning.append(f"{match['recipient_name']}: {match['similarity']:.3f}")
+        recipient_name = match["recipient_name"]
+        reasoning_obj = {
+            "recipient_name": recipient_name,
+            "similarity": match["similarity"],
+            "match_type": "name"
+        }
+
+        #add grant data if available
+        if grants_df is not None and not grants_df.empty:
+            recipient_grants = grants_df[grants_df["recipient_name"] == recipient_name]
+            if not recipient_grants.empty:
+                latest_grant = recipient_grants.iloc[0]
+                reasoning_obj["year"] = int(latest_grant["year"]) if not pd.isna(latest_grant["year"]) else None
+                reasoning_obj["amount"] = float(latest_grant["amount"]) if not pd.isna(latest_grant["amount"]) else None
+                reasoning_obj["recipient_activities"] = latest_grant.get("recipient_activities")
+
+        reasoning.append(reasoning_obj)
 
     return max(0.0, score), reasoning
 
@@ -337,7 +353,7 @@ def check_grants_rp(grants_embedding_dict, user_embedding, user_name):
 
     return max(0.0, score), reasoning
 
-def check_recipients_rp(recipients_embedding_dict, user_embedding, user_name):
+def check_recipients_rp(recipients_embedding_dict, user_embedding, user_name, grants_df=None):
     """
     Calculates semantic similarity between the user's text sections and those of the funder's previous recipients.
     """
@@ -367,7 +383,23 @@ def check_recipients_rp(recipients_embedding_dict, user_embedding, user_name):
     #build reasoning from top 10 matches
     reasoning = []
     for match in top_10:
-        reasoning.append(f"{match['grant_recipient_name']}: {match['similarity']:.3f}")
+        recipient_name = match["grant_recipient_name"]
+        reasoning_obj = {
+            "recipient_name": recipient_name,
+            "similarity": match["similarity"],
+            "match_type": "activities"
+        }
+
+        #add grant data if available
+        if grants_df is not None and not grants_df.empty:
+            recipient_grants = grants_df[grants_df["recipient_name"] == recipient_name]
+            if not recipient_grants.empty:
+                latest_grant = recipient_grants.iloc[0]
+                reasoning_obj["year"] = int(latest_grant["year"]) if not pd.isna(latest_grant["year"]) else None
+                reasoning_obj["amount"] = float(latest_grant["amount"]) if not pd.isna(latest_grant["amount"]) else None
+                reasoning_obj["recipient_activities"] = latest_grant.get("recipient_activities")
+
+        reasoning.append(reasoning_obj)
 
     return max(0.0, score), reasoning
 
@@ -632,7 +664,7 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
 
         user_name_em = pair_df["user_name_em"].iloc[idx]
         user_name = pair_df["user_name"].iloc[idx]
-        name_rp_score, name_rp_reasoning = check_name_rp(valid_name_embeddings, user_name_em, user_name)
+        name_rp_score, name_rp_reasoning = check_name_rp(valid_name_embeddings, user_name_em, user_name, funder_grants_df)
     else:
         name_rp_score = None
         name_rp_reasoning = None
@@ -673,7 +705,7 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
 
         user_concat_em = pair_df["user_concat_em"].iloc[idx]
         user_name = pair_df["user_name"].iloc[idx]
-        recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(valid_recipient_embeddings, user_concat_em, user_name)
+        recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(valid_recipient_embeddings, user_concat_em, user_name, funder_grants_df)
     else:
         recipients_rp_score = None
         recipients_rp_reasoning = None
