@@ -36,7 +36,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
             )}
           </div>
 
-          {(reasonings?.existing_relationship || reasonings?.has_gcp || reasonings?.is_on_list || reasonings?.is_nua || reasonings?.is_sbf) && (
+          {(reasonings?.existing_relationship || reasonings?.has_gcp || reasonings?.is_on_list || reasonings?.is_nua || reasonings?.is_sbf || reasonings?.lv_penalty === 0.7 || pairData?.website) && (
             <>
               <hr className="result-section-break" />
 
@@ -102,7 +102,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
                   </div>
                 )}
 
-                {pairData?.lv_penalty && (
+                {reasonings?.lv_penalty === 0.7 && (
                   <div className="message-box warning">
                     <span className="message-icon">‼️</span>
                     <p className="message-text">
