@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 
 const RevealedRecipientsReasoning = ({ reasonings, funderName }) => {
-  const score = reasonings?.recipients_rp_score;
+  const recipientsScore = reasonings?.recipients_rp_score;
+  const nameScore = reasonings?.name_rp_score;
   const recipientsReasoning = reasonings?.recipients_rp_reasoning;
 
+  //calculate average of available scores
+  let score = null;
+  const validScores = [];
+
+  if (recipientsScore !== undefined && recipientsScore !== null) {
+    validScores.push(recipientsScore);
+  }
+  if (nameScore !== undefined && nameScore !== null) {
+    validScores.push(nameScore);
+  }
+
+  if (validScores.length > 0) {
+    score = validScores.reduce((a, b) => a + b, 0) / validScores.length;
+  }
+
   //handle missing data
-  if (score === undefined || score === null) {
+  if (score === null || score === 0) {
     return (
       <div className="reasoning-section">
         <ul className="reasoning-list">

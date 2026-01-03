@@ -78,7 +78,7 @@ const RevealedGrantsReasoning = ({ reasonings, funderName }) => {
   const grantsReasoning = reasonings?.grants_rp_reasoning;
 
   //handle missing data
-  if (score === undefined || score === null) {
+  if (score === undefined || score === null || score === 0) {
     return (
       <div className="reasoning-section">
         <ul className="reasoning-list">
