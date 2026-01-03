@@ -2,8 +2,21 @@ import React from "react";
 
 const RevealedGrantsReasoning = ({ reasonings }) => {
   const score = reasonings?.grants_rp_score;
+
+  //handle missing data
   if (score === undefined || score === null) {
-    return null;
+    return (
+      <div className="reasoning-section">
+        <ul className="reasoning-list">
+          <li className="reasoning-item">
+            <span className="reasoning-icon">ℹ️</span>
+            <span className="reasoning-text">
+              No grants data available for this funder
+            </span>
+          </li>
+        </ul>
+      </div>
+    );
   }
 
   //assign rating based on score ranges
