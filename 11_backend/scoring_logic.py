@@ -634,8 +634,8 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
         user_name = pair_df["user_name"].iloc[idx]
         name_rp_score, name_rp_reasoning = check_name_rp(valid_name_embeddings, user_name_em, user_name)
     else:
-        name_rp_score = 0.0
-        name_rp_reasoning = ["No grants history available"]
+        name_rp_score = None
+        name_rp_reasoning = None
 
     #11 get grants (RP) semantic similarity score
     if not funder_grants_df.empty and "grant_title" in funder_grants_df.columns:
@@ -675,8 +675,8 @@ def get_scores_and_reasonings(pair_df, idx, grants_df, areas_df, hierarchies_df,
         user_name = pair_df["user_name"].iloc[idx]
         recipients_rp_score, recipients_rp_reasoning = check_recipients_rp(valid_recipient_embeddings, user_concat_em, user_name)
     else:
-        recipients_rp_score = 0.0
-        recipients_rp_reasoning = ["No grants history available"]
+        recipients_rp_score = None
+        recipients_rp_reasoning = None
 
     #13 get sbf penalty
     sbf_penalty = 0.1 if is_sbf else 1.0

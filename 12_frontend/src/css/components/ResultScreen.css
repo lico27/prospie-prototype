@@ -117,7 +117,7 @@
 
 .points-to-note-container {
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-secondary);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 2.5rem;
@@ -138,7 +138,7 @@
 
 .result-reasonings {
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-secondary);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 2.5rem;
@@ -168,12 +168,16 @@
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
   border-radius: 12px;
-  padding: 2rem 2rem 0rem 2rem;
+  padding: 2rem;
   margin-bottom: 1.5rem;
 }
 
 .reasoning-card .reasoning-subheading {
   margin-top: 0;
+}
+
+.reasoning-card > .reasoning-dropdown:last-child {
+  margin-bottom: 0;
 }
 
 .reasoning-section-divider {
@@ -187,7 +191,7 @@
   text-align: left;
   padding-bottom: 0.5rem;
   margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-secondary);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .reasoning-section:last-child {
@@ -367,7 +371,7 @@
   }
 
   .reasoning-card {
-    padding: 1.5rem 1rem 0.5rem 1rem;
+    padding: 1.5rem 1rem;
   }
 
   .result-score-container {

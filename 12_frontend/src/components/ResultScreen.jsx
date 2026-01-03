@@ -6,6 +6,7 @@ import CausesReasoning from "./Reasonings/CausesReasoning";
 import StatedSemanticReasoning from "./Reasonings/StatedSemanticReasoning";
 import StatedKeywordsReasoning from "./Reasonings/StatedKeywordsReasoning";
 import RevealedGrantsReasoning from "./Reasonings/RevealedGrantsReasoning";
+import RevealedRecipientsReasoning from "./Reasonings/RevealedRecipientsReasoning";
 import ReasoningDropdown from "./ReasoningDropdown";
 
 const toTitleCase = (str) => {
@@ -75,8 +76,8 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
                 )}
 
                 {pairData?.website && (
-                  <div className="message-box flag">
-                    <span className="message-icon">✴️</span>
+                  <div className="message-box info">
+                    <span className="message-icon">ℹ️</span>
                     <p className="message-text">
                       This funder has their own website: <a href={pairData.website} target="_blank" rel="noopener noreferrer">{pairData.website.replace(/^https?:\/\//, '')}</a>. It is recommended that you check this for their latest priorities and any specific requirements not captured in prospie's analysis.
                     </p>
@@ -157,6 +158,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
               </div>
 
               <RevealedGrantsReasoning reasonings={reasonings} funderName={funderName} />
+              <RevealedRecipientsReasoning reasonings={reasonings} funderName={funderName} />
             </div>
           </div>
           <div className="result-reasonings-placeholder">

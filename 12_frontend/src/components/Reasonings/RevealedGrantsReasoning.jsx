@@ -117,27 +117,29 @@ const RevealedGrantsReasoning = ({ reasonings, funderName }) => {
         <li className="reasoning-item">
           <span className="reasoning-icon">{icon}</span>
           <span className="reasoning-text">
-            This funder has given grants that, on average, have a <em>{rating}</em> alignment score to your organisation
+            This funder has given grants that, on average, have a <em>{rating}</em> alignment score with your organisation
           </span>
         </li>
       </ul>
 
       {grantsReasoning && grantsReasoning.length > 0 && (
-        <ReasoningDropdown
-          title="Top matches"
-          description="funder's grant-making history"
-          defaultOpen={false}
-        >
-          <div style={{ marginTop: "0.5rem" }}>
-            {grantsReasoning.map((grant, index) => (
-              <GrantItem
-                key={grant.grant_id || index}
-                grant={grant}
-                funderName={funderName}
-              />
-            ))}
-          </div>
-        </ReasoningDropdown>
+        <div className="reasoning-dropdown-wrapper">
+          <ReasoningDropdown
+            title="Top matches"
+            description="funder's grant-making history"
+            defaultOpen={false}
+          >
+            <div>
+              {grantsReasoning.map((grant, index) => (
+                <GrantItem
+                  key={grant.grant_id || index}
+                  grant={grant}
+                  funderName={funderName}
+                />
+              ))}
+            </div>
+          </ReasoningDropdown>
+        </div>
       )}
     </div>
   );

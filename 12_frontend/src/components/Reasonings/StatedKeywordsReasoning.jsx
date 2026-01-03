@@ -55,7 +55,7 @@ const StatedKeywordsReasoning = ({ reasonings }) => {
       </ul>
 
       {((keywordStrongMatches && Object.keys(keywordStrongMatches).length > 0) || (keywordReasoning && keywordReasoning.length > 0)) && (
-        <div className="keyword-details-dropdown" style={{ marginLeft: "2rem" }}>
+        <div className="reasoning-dropdown-wrapper">
           <div className="reasoning-toggle" onClick={() => setIsOpen(!isOpen)}>
             <span className="reasoning-toggle-icon">{isOpen ? "▼" : "▶"}</span>
             <div className="reasoning-toggle-content">
@@ -66,7 +66,7 @@ const StatedKeywordsReasoning = ({ reasonings }) => {
           </div>
 
           {isOpen && (
-            <div className="reasoning-content" style={{ marginBottom: "1rem" }}>
+            <div className="reasoning-content">
               <ul className="reasoning-list">
                 {(() => {
                   //combine reasonings and process for display
