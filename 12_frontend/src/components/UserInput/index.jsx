@@ -64,8 +64,8 @@ function UserInput({ resetTrigger }) {
 
       //send to backend for alignment scoring
       const apiUrl = import.meta.env.DEV
-        ? 'http://localhost:5000/api/calculate'
-        : '/api/calculate'
+        ? "http://localhost:5000/api/calculate"
+        : import.meta.env.VITE_API_URL || "https://prospie-backend.onrender.com/api/calculate"
 
       const response = await fetch(apiUrl, {
         method: "POST",
