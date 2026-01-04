@@ -10,10 +10,9 @@ from scoring_logic import calculate_alignment_score
 app = Flask(__name__)
 
 #configure cors
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
 CORS(app, resources={
     r"/api/*": {
-        "origins": [FRONTEND_URL, "http://localhost:5173", "https://prospie.app"],
+        "origins": "*",
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
