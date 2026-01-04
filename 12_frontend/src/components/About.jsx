@@ -1,4 +1,4 @@
-function About() {
+function About({ onOpenInstructions }) {
   return (
     <div className="app-view">
       <div className="app-container">
@@ -48,12 +48,9 @@ function About() {
             <div className="question-heading">
               <span className="question-heading-text">How to use it</span>
             </div>
-            <ol className="about-list">
-              <li>Fill in some basic details about your charity or project</li>
-              <li>Enter the registered charity number of the funder you want to assess</li>
-              <li>Review the alignment score and – crucially – read the reasoning behind it</li>
-              <li>Use this information to make your own informed decision about whether to proceed</li>
-            </ol>
+            <p>
+              <span className="app-link" onClick={onOpenInstructions} style={{ cursor: "pointer" }}>Click here!</span>
+            </p>
           </section>
 
           <section className="about-section">
