@@ -1,0 +1,145 @@
+.showcase-section {
+  padding: 4rem 2rem;
+  background: transparent;
+}
+
+.divider-line {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, var(--accent-purple-2), var(--accent-teal));
+  margin: 0 auto 3rem auto;
+  border-radius: 2px;
+  box-shadow: 0 0 20px rgba(111, 163, 168, 0.4);
+}
+
+.showcase-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.showcase-item {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.showcase-item-reverse {
+  flex-direction: row-reverse;
+}
+
+.showcase-content {
+  flex: 1;
+  z-index: 2;
+}
+
+.showcase-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-purple-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.showcase-description {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 500px;
+}
+
+.showcase-image-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.showcase-card {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 20px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px var(--shadow-primary);
+  transition: all 0.3s ease;
+}
+
+.showcase-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px var(--shadow-primary);
+  border-color: var(--border-hover);
+}
+
+.showcase-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+/* Light theme adjustments */
+:root[data-theme="light"] .showcase-card {
+  background: rgba(200, 230, 230, 0.4);
+  border: 1px solid rgba(74, 134, 140, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 968px) {
+  .showcase-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .showcase-container {
+    gap: 4rem;
+  }
+
+  .showcase-item {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .showcase-item-reverse {
+    flex-direction: column-reverse;
+    gap: 2rem;
+  }
+
+  .showcase-content {
+    text-align: center;
+  }
+
+  .showcase-title {
+    font-size: 2rem;
+  }
+
+  .showcase-description {
+    font-size: 1.1rem;
+    max-width: 100%;
+  }
+
+  .showcase-card {
+    max-width: 500px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .showcase-title {
+    font-size: 1.75rem;
+  }
+
+  .showcase-description {
+    font-size: 1rem;
+  }
+
+  .showcase-card {
+    padding: 1rem;
+  }
+}
