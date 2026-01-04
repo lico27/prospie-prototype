@@ -29,14 +29,11 @@ def health_check():
     """
     return jsonify({"status": "healthy", "message": "prospie API is running"})
 
-@app.route("/api/calculate", methods=["POST", "OPTIONS"])
+@app.route("/api/calculate", methods=["POST"])
 def calculate():
     """
     Main calculation endpoint
     """
-    if request.method == "OPTIONS":
-        return "", 204
-
     try:
         data = request.get_json()
 
