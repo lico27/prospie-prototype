@@ -73,8 +73,8 @@ function UserInput({ resetTrigger }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_data: pair_df,
-          funder_number: funderNumber
+          userData: pair_df,
+          funderNumber: funderNumber
         })
       })
 
