@@ -14,7 +14,7 @@ import LoadingScreen from "../LoadingScreen"
 import ResultScreen from "../ResultScreen"
 import { fetchUkcatData, extractClassifications } from "../../utils/keywordExtractor"
 
-function UserInput({ resetTrigger }) {
+function UserInput({ resetTrigger, onOpenInstructions }) {
   const [currentStep, setCurrentStep] = useState(1)
   const [charityNumber, setCharityNumber] = useState("")
   const [charityData, setCharityData] = useState(null)
