@@ -46,7 +46,7 @@ def calculate():
             return jsonify({"error": "Funder number is required"}), 400
 
         #get backend data
-        pair_df, grants_df, areas_df, hierarchies_df = get_backend_data(user_data, funder_number)
+        grants_df, areas_df, hierarchies_df, pair_df = get_backend_data(user_data, funder_number, model)
 
         #calculate score
         score, reasonings = calculate_alignment_score(pair_df, 0, grants_df, areas_df, hierarchies_df, model)
