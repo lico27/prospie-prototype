@@ -4,6 +4,8 @@ import time
 import re
 import json
 from sentence_transformers import SentenceTransformer, util
+import numpy as np
+import math
 
 def get_table_from_supabase(url, key, table_name, batch_size=1000, delay=0.2, filter_recipients=False):
     """
@@ -241,3 +243,21 @@ def calculate_similarity_score(funder_embedding, user_embedding):
     score = util.cos_sim(funder_embedding, user_embedding).item()
 
     return max(0.0, score)
+
+def make_data_json_safe(obj):
+    """
+    Cleans up data to ensure it can be converted to JSON.
+    """
+
+    if isinstance(obj, dict):
+        return {k: make_data_json_safe(v) for k, v in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        return [make_data_json_safe(item) for item in obj]
+    elif isinstance(obj, np.ndarray):
+        return make_data_json_safe(obj.tolist())
+    elif isinstance(obj, (np.integer, np.floating)):
+        return float(obj)
+    elif isinstance(obj, float):
+        return None if (math.isnan(obj) or math.isinf(obj)) else obj
+    else:
+        return obj
