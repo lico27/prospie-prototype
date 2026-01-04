@@ -8,7 +8,11 @@ import "../css/components/HomePage.css"
 
 function HomePage({ onGetStarted }) {
   const [theme, setTheme] = useState(() => {
-    return document.documentElement.getAttribute("data-theme") || "dark"
+    const savedTheme = localStorage.getItem("theme")
+    if (savedTheme) {
+      return savedTheme
+    }
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
   })
 
   useEffect(() => {
