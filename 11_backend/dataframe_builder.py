@@ -56,7 +56,7 @@ def get_funder_data(funder_number, url, key):
 
         error_msg = f"Funder number {funder_number} not found in database"
         if suggested_funder:
-            error_msg += f". Try {suggested_funder} instead"
+            error_msg += f". Please try another one. Feeling lucky? Here's a random one to try: {suggested_funder}!"
         raise ValueError(error_msg)
 
     funder_data = funder_response.data[0]
