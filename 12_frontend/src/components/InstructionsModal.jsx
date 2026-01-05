@@ -28,7 +28,7 @@ function InstructionsModal({ isOpen, onClose, onProceed, buttonText = "Get start
             <span className="question-heading-text">Steps</span>
           </div>
           <ol>
-            <li><strong>Enter your details</strong><br></br>Enter your charity number. prospie will pull your organisation's information from the Charity Commission.</li>
+            <li><strong>Enter your details</strong><br></br>Enter your charity number. prospie's database stores your organisation's information, which has been pulled from the Charity Commission.</li>
             <li><strong>Edit your data (recommended)</strong><br></br>
                   Whilst you can use the data as-is for a quick assessment, editing it will likely significantly improve the quality of your score:
                   <ul>
