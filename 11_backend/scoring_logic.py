@@ -490,7 +490,7 @@ def calculate_areas_bonus_rp(funder_grants_df, user_areas, areas_df, hierarchies
     #convert to bonus multiplier
     bonus = 1.0 + (match_score * 0.2)
 
-    #get reasoning from top 10 (low level tiers only)
+    #get reasoning from top 10 (low level tiers only) + user matches
     area_count = {}
     for area_name in all_areas:
         area_id = get_id_from_name(area_name, areas_df)
@@ -505,10 +505,25 @@ def calculate_areas_bonus_rp(funder_grants_df, user_areas, areas_df, hierarchies
         sorted_areas = sorted(area_count.items(), key=lambda x: x[1], reverse=True)
         total_low_level = sum(area_count.values())
 
+        #get top 10
+        top_10_names = [name for name, _ in sorted_areas[:10]]
+
+        #find user matches outside top 10
+        user_matches_outside_top_10 = []
+        if user_areas:
+            user_areas_lower = [area.lower() for area in user_areas]
+            for area_name, count in sorted_areas[10:]:
+                if area_name.lower() in user_areas_lower:
+                    percentage = (count / total_low_level) * 100
+                    user_matches_outside_top_10.append(f"{area_name}: {count} grants ({percentage:.1f}%)")
+
+        #build reasoning list
         reasoning = []
         for area_name, count in sorted_areas[:10]:
             percentage = (count / total_low_level) * 100
             reasoning.append(f"{area_name}: {count} grants ({percentage:.1f}%)")
+
+        reasoning.extend(user_matches_outside_top_10)
 
     return bonus, reasoning
 
