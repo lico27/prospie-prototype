@@ -40,10 +40,26 @@ def get_funder_data(funder_number, url, key):
 
     #fetch funder data from supabase
     funder_response = supabase.table("funders").select("*").eq("registered_num", funder_number).execute()
-    funder_data = funder_response.data[0]
 
-    if not funder_data:
-        return {"error": True}
+    if not funder_response.data or len(funder_response.data) == 0:
+        #get a random funder to suggest
+        import random
+        count_response = supabase.table("funders").select("registered_num", count="exact").execute()
+        total_funders = count_response.count if hasattr(count_response, 'count') else 0
+
+        if total_funders > 0:
+            random_offset = random.randint(0, total_funders - 1)
+            random_funder_response = supabase.table("funders").select("registered_num").limit(1).range(random_offset, random_offset).execute()
+            suggested_funder = random_funder_response.data[0]["registered_num"] if random_funder_response.data else None
+        else:
+            suggested_funder = None
+
+        error_msg = f"Funder number {funder_number} not found in database"
+        if suggested_funder:
+            error_msg += f". Try {suggested_funder} instead"
+        raise ValueError(error_msg)
+
+    funder_data = funder_response.data[0]
 
     #get classifications
     funder_area_joins = supabase.table("funder_areas").select("area_id").eq("registered_num", funder_number).execute()
