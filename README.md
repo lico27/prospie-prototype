@@ -111,7 +111,7 @@ The app is deployed at [prospie.app](https://prospie.app).
 Enter your charity number. prospie will pull your organisation's information from the Charity Commission.   
 
 <strong>2. Edit your data (recommended)</strong><br>
-Whilst you can use the data as-is for a quick assessment, editing it significantly improves match quality:
+Whilst you can use the data as-is for a quick assessment, editing it will likely significantly improve the quality of your score:
 <ul style="margin-left: 20px; margin-top: 0;">
 <li style="margin-bottom: 0.25em;">Be specific – consider focusing on a single project rather than your entire organisation, especially if you work in multiple areas/sectors</li>
 <li style="margin-bottom: 0.25em;">Replace generic charity sector language (e.g. "improving wellbeing", "making a difference") with concrete and distinctive keywords – vague language will result in a good alignment with pretty much any funder!</li>
