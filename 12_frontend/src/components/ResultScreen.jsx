@@ -8,6 +8,7 @@ import StatedKeywordsReasoning from "./Reasonings/StatedKeywordsReasoning";
 import RevealedGrantsReasoning from "./Reasonings/RevealedGrantsReasoning";
 import RevealedRecipientsReasoning from "./Reasonings/RevealedRecipientsReasoning";
 import RevealedAreasReasoning from "./Reasonings/RevealedAreasReasoning";
+import RevealedKeywordsReasoning from "./Reasonings/RevealedKeywordsReasoning";
 import ReasoningDropdown from "./ReasoningDropdown";
 
 const toTitleCase = (str) => {
@@ -161,6 +162,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
               <RevealedGrantsReasoning reasonings={reasonings} funderName={funderName} />
               <RevealedRecipientsReasoning reasonings={reasonings} funderName={funderName} />
               <RevealedAreasReasoning reasonings={reasonings} userAreas={pairData?.user_areas} />
+              <RevealedKeywordsReasoning reasonings={reasonings} />
             </div>
           </div>
           
