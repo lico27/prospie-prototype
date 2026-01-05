@@ -47,7 +47,7 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
       user_beneficiaries: selectedBeneficiaries,
       user_causes: selectedCauses,
       user_concat_em: null,
-      user_extracted_class: JSON.stringify(keywords),
+      user_extracted_class: JSON.stringify(keywords.map(kw => kw.toUpperCase())),
       user_activities: activities,
       user_objectives: objectives
     }
