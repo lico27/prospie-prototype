@@ -31,6 +31,7 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
   const [loading, setLoading] = useState(false)
   const [isCalculating, setIsCalculating] = useState(false)
   const [confirmedSteps, setConfirmedSteps] = useState([])
+  const [usingSavedData, setUsingSavedData] = useState(false)
 
   //set results state
   const [alignmentScore, setAlignmentScore] = useState(null)
@@ -53,6 +54,38 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
     }
 
     return pair_df
+  }
+
+  //save user data
+  const saveToLocalStorage = () => {
+    if (!charityNumber) return
+
+    const savedData = {
+      activities,
+      objectives,
+      keywords,
+      selectedAreas,
+      selectedBeneficiaries,
+      selectedCauses
+    }
+
+    localStorage.setItem(`prospie_user_${charityNumber}`, JSON.stringify(savedData))
+    alert("Your details have been saved! They'll be loaded automatically next time you enter this charity number.")
+  }
+
+  //retreive user data 
+  const loadFromLocalStorage = (charityNum) => {
+    const savedDataStr = localStorage.getItem(`prospie_user_${charityNum}`)
+    if (savedDataStr) {
+      try {
+        const savedData = JSON.parse(savedDataStr)
+        return savedData
+      } catch (e) {
+        console.error("Error loading saved data:", e)
+        return null
+      }
+    }
+    return null
   }
 
   const handleSubmit = async (e) => {
@@ -165,6 +198,7 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
     setKeywords([])
     setConfirmedSteps([])
     setFunderNumber("")
+    setUsingSavedData(false)
 
     try {
       const { data: recipient, error } = await supabase
@@ -205,23 +239,33 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
           causes: causes.data || []
         }
 
-        //pre-populate areas
-        const dbAreas = areas.data?.map(a => a.area_name) || []
-        setSelectedAreas(dbAreas)
+        //check for saved data
+        const savedData = loadFromLocalStorage(charityNumber)
 
-        //pre-populate beneficiaries
-        const dbBeneficiaries = beneficiaries.data?.map(b => b.ben_name) || []
-        setSelectedBeneficiaries(dbBeneficiaries)
+        if (savedData) {
+          //use saved data
+          setSelectedAreas(savedData.selectedAreas || [])
+          setSelectedBeneficiaries(savedData.selectedBeneficiaries || [])
+          setSelectedCauses(savedData.selectedCauses || [])
+          setActivities(savedData.activities || "")
+          setObjectives(savedData.objectives || "")
+          setKeywords(savedData.keywords || [])
+          setUsingSavedData(true)
+        } else {
+          //pre-populate from database
+          const dbAreas = areas.data?.map(a => a.area_name) || []
+          setSelectedAreas(dbAreas)
 
-        //pre-populate causes
-        const dbCauses = causes.data?.map(c => c.cause_name) || []
-        setSelectedCauses(dbCauses)
+          const dbBeneficiaries = beneficiaries.data?.map(b => b.ben_name) || []
+          setSelectedBeneficiaries(dbBeneficiaries)
 
-        //pre-populate activities
-        setActivities(recipient.recipient_activities || "")
+          const dbCauses = causes.data?.map(c => c.cause_name) || []
+          setSelectedCauses(dbCauses)
 
-        //pre-populate objectives
-        setObjectives(recipient.recipient_objectives || "")
+          setActivities(recipient.recipient_activities || "")
+          setObjectives(recipient.recipient_objectives || "")
+          setUsingSavedData(false)
+        }
 
         setCharityData(enrichedData)
         setCurrentStep(currentStep + 1)
@@ -261,6 +305,7 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
     setError(null)
     setConfirmedSteps([])
     setAlignmentScore(null)
+    setUsingSavedData(false)
   }
 
   //reset form when user navigates back from home
@@ -380,6 +425,8 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
                     keywords={keywords}
                     onChange={setKeywords}
                     isExtracting={isExtractingKeywords}
+                    onSave={saveToLocalStorage}
+                    usingSavedData={usingSavedData}
                   />
                 )}
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import CreatableSelect from "react-select/creatable"
 
-function Step7Keywords({ keywords, onChange, isExtracting }) {
+function Step7Keywords({ keywords, onChange, isExtracting, onSave, usingSavedData }) {
   const [showHint, setShowHint] = useState(false)
 
   const keywordOptions = keywords.map(keyword => ({
@@ -150,17 +150,54 @@ function Step7Keywords({ keywords, onChange, isExtracting }) {
           Extracting keywords from your data...
         </div>
       ) : (
-        <CreatableSelect
-          isMulti
-          value={keywordOptions}
-          onChange={handleChange}
-          options={[]}
-          placeholder="Your extracted keywords will appear here. Type to add custom keywords..."
-          styles={customStyles}
-          className="react-select-container"
-          classNamePrefix="react-select"
-          formatCreateLabel={(inputValue) => `Add "${inputValue}"`}
-        />
+        <>
+          <CreatableSelect
+            isMulti
+            value={keywordOptions}
+            onChange={handleChange}
+            options={[]}
+            placeholder="Your extracted keywords will appear here. Type to add custom keywords..."
+            styles={customStyles}
+            className="react-select-container"
+            classNamePrefix="react-select"
+            formatCreateLabel={(inputValue) => `Add "${inputValue}"`}
+          />
+
+          {/* save/retrieve details */}
+          {usingSavedData && (
+            <div style={{
+              marginTop: "1rem",
+              padding: "0.75rem",
+              backgroundColor: "var(--positive-glow)",
+              borderRadius: "8px",
+              fontSize: "0.9rem",
+              color: "var(--text-primary)"
+            }}>
+              ℹ️ Using your saved details. Make changes above and save again to update.
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={onSave}
+            style={{
+              marginTop: "1rem",
+              padding: "0.75rem 1.5rem",
+              backgroundColor: "var(--positive-color)",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "0.95rem",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "all 0.3s ease"
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = "var(--positive-hover)"}
+            onMouseOut={(e) => e.target.style.backgroundColor = "var(--positive-color)"}
+          >
+            Save my details
+          </button>
+        </>
       )}
     </div>
   )
