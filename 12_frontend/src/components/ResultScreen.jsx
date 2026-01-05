@@ -56,7 +56,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
                   </div>
                 )}
 
-                {reasonings?.has_gcp && (
+                {reasonings?.has_gcp && pairData?.causes?.length === 1 && (
                   <div className="message-box benefit">
                     <span className="message-icon">✅</span>
                     <p className="message-text">

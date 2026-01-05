@@ -22,6 +22,26 @@ const RevealedAreasReasoning = ({ reasonings, userAreas }) => {
     );
   }
 
+  //confirm data missing not poor match
+  const noDataMessages = ["No grants history available", "No area data available", "Only broad geographic areas found"];
+  const hasNoData = areasReasoning && areasReasoning.length > 0 &&
+                    areasReasoning.some(msg => noDataMessages.includes(msg));
+
+  if (hasNoData) {
+    return (
+      <div className="reasoning-section">
+        <ul className="reasoning-list">
+          <li className="reasoning-item">
+            <span className="reasoning-icon">ℹ️</span>
+            <span className="reasoning-text">
+              No revealed geographic area data available for this funder
+            </span>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+
   //assign rating based on bonus ranges
   let rating = "";
   let icon = "";

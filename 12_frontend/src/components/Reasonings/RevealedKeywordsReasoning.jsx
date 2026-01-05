@@ -22,6 +22,26 @@ const RevealedKeywordsReasoning = ({ reasonings }) => {
     );
   }
 
+  //confirm data missing not poor match
+  const noDataMessages = ["No grants history available", "No recipient keywords available", "No user keywords to match"];
+  const hasNoData = keywordsReasoning && keywordsReasoning.length > 0 &&
+                    keywordsReasoning.some(msg => noDataMessages.includes(msg));
+
+  if (hasNoData) {
+    return (
+      <div className="reasoning-section">
+        <ul className="reasoning-list">
+          <li className="reasoning-item">
+            <span className="reasoning-icon">ℹ️</span>
+            <span className="reasoning-text">
+              No revealed keyword data available for this funder
+            </span>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+
   //assign rating based on bonus ranges
   let rating = "";
   let icon = "";
