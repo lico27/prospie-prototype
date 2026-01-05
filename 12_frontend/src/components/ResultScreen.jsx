@@ -161,11 +161,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
               <RevealedRecipientsReasoning reasonings={reasonings} funderName={funderName} />
             </div>
           </div>
-          <div className="result-reasonings-placeholder">
-                <pre style={{ textAlign: "left", fontSize: "0.75rem", color: "#c9c0de", overflow: "auto", maxHeight: "400px" }}>
-                  {JSON.stringify(reasonings, null, 2)}
-                </pre>
-              </div>
+          
           <button className="reset-button" onClick={onReset}>
             Start Again
           </button>
