@@ -1,8 +1,8 @@
-# prospie
+# prospie 🔎
 
 prospie is an AI tool to support trusts fundraisers in the third sector. prospie will speed up and improve the trusts prospecting process, saving money for charities and contributing to better fundraiser wellbeing ✨
 
-## Tech Stack and Tools
+# Tech Stack and Tools
 
 ![image](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white)
 ![image](https://img.shields.io/badge/Jupyter-F37626.svg?&style=for-the-badge&logo=Jupyter&logoColor=white)
@@ -15,7 +15,7 @@ prospie is an AI tool to support trusts fundraisers in the third sector. prospie
 ![image](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 
-## Repo Structure
+# Repo Structure
 
 1. Generates a sample of *n* funders from Charity Commission data (1000 for the prototype)
 2. Gets all registered (non-removed) charities from [Charity Commission data](https://register-of-charities.charitycommission.gov.uk/en/register/full-register-download) to serve as potential recipients
@@ -41,13 +41,13 @@ prospie is an AI tool to support trusts fundraisers in the third sector. prospie
 13. Evaluates the performance of the scoring logic      
     13.1. Stores checkpoints locally        
 
-## How to...
+# How to...
 
-### Build the Database
+## Build the Database
 
 The database is built in stages by running Python scripts in folders 01-05. Each stage processes and uploads data to your Supabase instance.
 
-#### Prerequisites
+### Prerequisites
 
 - Supabase project with appropriate tables configured [per the schema](https://github.com/lico27/prospie/blob/64276f68aa005a70749cb7eb20427adc115679bc/schema.sql/)
 - API keys stored in a `.env` file in the project root:
@@ -55,7 +55,7 @@ The database is built in stages by running Python scripts in folders 01-05. Each
 - `SUPABASE_KEY` - your Supabase service role key
 - `ANTHROPIC_KEY` - Claude API key (for PDF processing in step 04)
 
-#### Steps
+### Steps
 
 1. **Set up Supabase database**
    - Create a new Supabase project
@@ -99,18 +99,16 @@ The database is built in stages by running Python scripts in folders 01-05. Each
 
 **Note:** Steps 3-5 can take several hours to complete depending on API rate limits. Progress is saved to the database continuously, so you can stop and resume if needed.
 
-----
-
-### Use the App
+## Use the App
 
 The app is deployed at [prospie.app](https://prospie.app).
 
-#### <u>Steps</u>
+### Steps
 
-<strong>1. Enter your details</strong><br>
+1. **Enter your details**     
 Enter your charity number. prospie will pull your organisation's information from the Charity Commission.   
 
-<strong>2. Edit your data (recommended)</strong><br>
+2. **Edit your data (recommended)**    
 Whilst you can use the data as-is for a quick assessment, editing it will likely significantly improve the quality of your score:
 <ul style="margin-left: 20px; margin-top: 0;">
 <li style="margin-bottom: 0.25em;">Be specific – consider focusing on a single project rather than your entire organisation, especially if you work in multiple areas/sectors</li>
@@ -118,22 +116,22 @@ Whilst you can use the data as-is for a quick assessment, editing it will likely
 <li style="margin-bottom: 0.25em;">Add or delete keywords and text in any field</li>
 </ul>
 
-<strong>3. Enter the funder's charity number</strong><br>
+3. **Enter the funder's charity number**     
 Input the registered charity number of the funder you want to assess alignment with.
 
-<strong>4. Click "Submit" and wait...</strong><br>
+4. **Click "Submit" and wait...**      
 prospie calculates your score from lots of different factors, so it can take up to two or three minutes, especially if your funder has a large giving history (fun fact: Esmee Fairbairn Foundation is the biggest, with a whopping 6,987 grants!).
 
-<strong>5. Review your results</strong><br>
+5. **Review your results**    
 Your alignment score will be displayed with clear reasoning behind it. Click the dropdown sections to see detailed breakdowns of how different factors contributed to your score.
 
-#### <u>Please note</u>
+### Please note
 
-<strong>Alignment scores range from 5% to 95%</strong><br>
+* **Alignment scores range from 5% to 95%**    
 They will never be 0% or 100%. This reflects the uncertainty of prospecting. prospie can never be 100% certain of an alignment but it can equally never completely rule out the possibility of a match.
 
-<strong>This tool supports your judgment, it doesn't replace it.</strong><br>
+* **This tool supports your judgment, it doesn't replace it.**      
 prospie is designed to help you make more informed prospecting decisions, not to make those decisions for you.
 
-<strong>The data in this prototype has limitations</strong><br>
+* **The data in this prototype has limitations**     
 The current app only has 996 funders, and many funders have missing or incomplete information.
