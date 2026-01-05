@@ -293,3 +293,5 @@ def build_pair_df(user_data, funder_data, funder_areas, funder_beneficiaries, fu
     }])
 
     return pair_df
+
+#garbage collection code adapted from Shaibu (2024)

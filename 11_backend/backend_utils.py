@@ -264,3 +264,5 @@ def make_data_json_safe(obj):
         return None if (math.isnan(obj) or math.isinf(obj)) else obj
     else:
         return obj
+
+#garbage collection code adapted from Shaibu (2024)
