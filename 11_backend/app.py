@@ -73,9 +73,9 @@ def calculate():
         error_msg = str(e)
         if "not found in database" in error_msg:
             #parse suggestion if present
-            if "Try " in error_msg:
-                parts = error_msg.split("Try ")
-                suggestion = parts[1].replace(" instead", "")
+            if "random one to try:" in error_msg:
+                parts = error_msg.split("random one to try:")
+                suggestion = parts[1].strip().replace("!", "")
                 friendly_msg = f"Sorry, but the funder whose number you entered is not in prospie's database yet! Please try another one. Feeling lucky? Here's a random one to try: {suggestion}!"
             else:
                 friendly_msg = "Sorry, but the funder whose number you entered is not in prospie's database yet! Please try another one."
