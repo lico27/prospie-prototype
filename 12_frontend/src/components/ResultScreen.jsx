@@ -7,6 +7,7 @@ import StatedSemanticReasoning from "./Reasonings/StatedSemanticReasoning";
 import StatedKeywordsReasoning from "./Reasonings/StatedKeywordsReasoning";
 import RevealedGrantsReasoning from "./Reasonings/RevealedGrantsReasoning";
 import RevealedRecipientsReasoning from "./Reasonings/RevealedRecipientsReasoning";
+import RevealedAreasReasoning from "./Reasonings/RevealedAreasReasoning";
 import ReasoningDropdown from "./ReasoningDropdown";
 
 const toTitleCase = (str) => {
@@ -159,6 +160,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
 
               <RevealedGrantsReasoning reasonings={reasonings} funderName={funderName} />
               <RevealedRecipientsReasoning reasonings={reasonings} funderName={funderName} />
+              <RevealedAreasReasoning reasonings={reasonings} />
             </div>
           </div>
           
