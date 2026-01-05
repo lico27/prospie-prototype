@@ -15,6 +15,7 @@ import ResultScreen from "../ResultScreen"
 import { fetchUkcatData, extractClassifications } from "../../utils/keywordExtractor"
 
 function UserInput({ resetTrigger, onOpenInstructions }) {
+  //set form state
   const [currentStep, setCurrentStep] = useState(1)
   const [charityNumber, setCharityNumber] = useState("")
   const [charityData, setCharityData] = useState(null)
@@ -30,6 +31,8 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
   const [loading, setLoading] = useState(false)
   const [isCalculating, setIsCalculating] = useState(false)
   const [confirmedSteps, setConfirmedSteps] = useState([])
+
+  //set results state
   const [alignmentScore, setAlignmentScore] = useState(null)
   const [reasonings, setReasonings] = useState(null)
   const [pairData, setPairData] = useState(null)
@@ -242,6 +245,7 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
     }
   }
 
+  //clear all form data
   const handleReset = () => {
     setCurrentStep(1)
     setCharityNumber("")
@@ -259,6 +263,7 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
     setAlignmentScore(null)
   }
 
+  //reset form when user navigates back from home
   useEffect(() => {
     handleReset()
   }, [resetTrigger])
@@ -277,6 +282,7 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
     setError(null)
   }
 
+  //render loading screen, results screen or form steps
   return (
     <>
       {isCalculating && <LoadingScreen />}
@@ -294,7 +300,16 @@ function UserInput({ resetTrigger, onOpenInstructions }) {
 
       {!isCalculating && alignmentScore === null && (
         <div className="app-view">
-          <div className="app-container">
+          <div className="app-container" style={{ position: "relative" }}>
+            <button
+              type="button"
+              onClick={onOpenInstructions}
+              className="help-button"
+              aria-label="Show instructions"
+              title="Show instructions"
+            >
+              ?
+            </button>
             <h2 className="app-title">Get your prospie score</h2>
 
             <ProgressIndicator

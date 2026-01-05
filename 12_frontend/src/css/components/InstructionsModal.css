@@ -17,7 +17,7 @@
   background: var(--background-color);
   border: 2px solid var(--border-color);
   border-radius: 12px;
-  max-width: 600px;
+  max-width: 1000px;
   width: 100%;
   max-height: 80vh;
   overflow-y: auto;
@@ -65,7 +65,8 @@
 
 .modal-body {
   color: var(--text-color);
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: 0.95rem;
 }
 
 .modal-body p {
@@ -77,8 +78,28 @@
   margin-bottom: 16px;
 }
 
-.modal-body li {
-  margin-bottom: 12px;
+.modal-body ol > li {
+  margin-bottom: 16px;
+}
+
+.modal-body ul {
+  margin-top: 8px;
+  margin-bottom: 0;
+  margin-left: 20px;
+}
+
+.modal-body ol > li > ul li {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.modal-body .modal-section > ul > li {
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.modal-section {
+  margin-bottom: 2rem;
 }
 
 .modal-footer {
