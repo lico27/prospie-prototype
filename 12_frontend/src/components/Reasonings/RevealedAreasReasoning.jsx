@@ -1,7 +1,8 @@
 import React from "react";
 import ReasoningDropdown from "../ReasoningDropdown";
+import "../../css/components/Reasonings/RevealedAreasReasoning.css";
 
-const RevealedAreasReasoning = ({ reasonings }) => {
+const RevealedAreasReasoning = ({ reasonings, userAreas }) => {
   const bonus = reasonings?.areas_rp_bonus;
   const areasReasoning = reasonings?.areas_rp_reasoning;
 
@@ -50,25 +51,55 @@ const RevealedAreasReasoning = ({ reasonings }) => {
         </li>
       </ul>
 
-      {areasReasoning && areasReasoning.length > 0 && (
-        <div className="reasoning-dropdown-wrapper">
-          <ReasoningDropdown
-            title="Geographic breakdown"
-            description="where the funder has given grants (number and % of total)"
-            defaultOpen={false}
-          >
-            <div>
-              <ul className="reasoning-list">
-                {areasReasoning.map((item, index) => (
-                  <li key={index} className="reasoning-item">
-                    <span className="reasoning-text">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </ReasoningDropdown>
-        </div>
-      )}
+      {areasReasoning && areasReasoning.length > 0 && (() => {
+        //parse area names and filter matches
+        const allAreas = areasReasoning;
+        const matchedAreas = userAreas
+          ? allAreas.filter(item => {
+              const areaName = item.split(':')[0].trim();
+              return userAreas.some(userArea =>
+                userArea.toLowerCase() === areaName.toLowerCase()
+              );
+            })
+          : [];
+
+        return (
+          <div className="reasoning-dropdown-wrapper">
+            <ReasoningDropdown
+              title="Geographic breakdown"
+              description="where the funder has given grants"
+              defaultOpen={false}
+            >
+              <div className="areas-columns">
+                <div className="areas-column">
+                  <h4 className="areas-column-title">Top 10 funded areas</h4>
+                  <ul className="reasoning-list">
+                    {allAreas.slice(0, 10).map((item, index) => (
+                      <li key={index} className="reasoning-item">
+                        <span className="reasoning-text">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="areas-column">
+                  <h4 className="areas-column-title">Matches with your areas</h4>
+                  {matchedAreas.length > 0 ? (
+                    <ul className="reasoning-list">
+                      {matchedAreas.map((item, index) => (
+                        <li key={index} className="reasoning-item">
+                          <span className="reasoning-text">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="no-matches">No exact area matches found</p>
+                  )}
+                </div>
+              </div>
+            </ReasoningDropdown>
+          </div>
+        );
+      })()}
     </div>
   );
 };

@@ -160,7 +160,7 @@ const ResultScreen = ({ score, reasonings, userName, funderName, pairData, onRes
 
               <RevealedGrantsReasoning reasonings={reasonings} funderName={funderName} />
               <RevealedRecipientsReasoning reasonings={reasonings} funderName={funderName} />
-              <RevealedAreasReasoning reasonings={reasonings} />
+              <RevealedAreasReasoning reasonings={reasonings} userAreas={pairData?.user_areas} />
             </div>
           </div>
           

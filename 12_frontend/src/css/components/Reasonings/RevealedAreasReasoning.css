@@ -1,0 +1,32 @@
+.areas-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.areas-column {
+  min-width: 0;
+}
+
+.areas-column-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.no-matches {
+  font-style: italic;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .areas-columns {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
