@@ -71,7 +71,7 @@ def calculate():
     except ValueError as e:
         #handle funder not found errors
         error_msg = str(e)
-        if "not found in database" in error_msg:
+        if "list index out of range" in error_msg:
             #parse suggestion if present
             if "Try " in error_msg:
                 parts = error_msg.split("Try ")
