@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import gc
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from supabase import create_client
@@ -202,6 +203,10 @@ def enrich_grants_df(grants_df, funder_number, url, key):
             ben_lookup = dict(zip(beneficiaries_df["ben_id"], beneficiaries_df["ben_name"]))
             cause_lookup = dict(zip(causes_df["cause_id"], causes_df["cause_name"]))
 
+            #cleanup lookup dataframes
+            del beneficiaries_df, causes_df, areas_lookup_df
+            gc.collect()
+
             #group by id
             recipient_areas_map = defaultdict(list)
             recipient_bens_map = defaultdict(list)
@@ -226,6 +231,12 @@ def enrich_grants_df(grants_df, funder_number, url, key):
             recipients_df["recipient_areas"] = recipients_df["recipient_id"].map(lambda x: recipient_areas_map.get(x, []))
             recipients_df["recipient_beneficiaries"] = recipients_df["recipient_id"].map(lambda x: recipient_bens_map.get(x, []))
             recipients_df["recipient_causes"] = recipients_df["recipient_id"].map(lambda x: recipient_causes_map.get(x, []))
+
+            #cleanup temporary lists and maps
+            del recipient_area_joins, recipient_ben_joins, recipient_cause_joins
+            del recipient_areas_map, recipient_bens_map, recipient_causes_map
+            del area_lookup, ben_lookup, cause_lookup
+            gc.collect()
 
         #join recipients to grants
         grants_df["recipient_id"] = grants_df["grant_id"].map(grant_to_recipient)

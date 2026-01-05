@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
+import gc
 from sentence_transformers import SentenceTransformer
 from backend_pipeline import get_backend_data
 from backend_utils import make_data_json_safe
@@ -60,6 +61,10 @@ def calculate():
             "reasonings": reasonings,
             "pair_data": pair_df.iloc[0].to_dict() if not pair_df.empty else {}
         }
+
+        #cleanup memory
+        del grants_df, areas_df, hierarchies_df, pair_df
+        gc.collect()
 
         return jsonify(make_data_json_safe(response_data))
 

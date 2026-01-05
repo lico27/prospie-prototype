@@ -3,6 +3,7 @@ from supabase import create_client
 import time
 import re
 import json
+import gc
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
 import math
@@ -77,6 +78,8 @@ def get_table_from_supabase(url, key, table_name, batch_size=1000, delay=0.2, fi
         time.sleep(delay)
 
     df = pd.DataFrame(all_data)
+    del all_data
+    gc.collect()
 
     return df
 
