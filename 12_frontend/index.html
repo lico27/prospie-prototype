@@ -4,9 +4,132 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🔎 prospie</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #f6fafa 0%, #e8f4f4 50%, #dceef0 100%);
+        color: #2d4a4d;
+        line-height: 1.6;
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        text-align: center;
+        padding: 2rem 1.5rem;
+        max-width: 650px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(74, 134, 140, 0.15), transparent 50%);
+        filter: blur(70px);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #2d4a4d, #8e7db3, #a394c4, #3d7278);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.03em;
+        margin: 0 0 2rem 0;
+        line-height: 1.1;
+      }
+
+      .message-box {
+        background: rgba(210, 235, 235, 0.6);
+        border: 1px solid rgba(74, 134, 140, 0.35);
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .message-box h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #8e7db3;
+        margin: 0 0 1rem 0;
+      }
+
+      .message-box p {
+        font-size: 1.125rem;
+        color: #3d5c60;
+        margin: 0;
+        line-height: 1.8;
+      }
+
+      .divider {
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #8e7db3, #3d7278);
+        margin: 2rem auto;
+        border-radius: 2px;
+        box-shadow: 0 0 20px rgba(111, 163, 168, 0.4);
+      }
+
+      @media (max-width: 640px) {
+        h1 {
+          font-size: 2.5rem;
+        }
+
+        .message-box {
+          padding: 2rem 1.5rem;
+        }
+
+        .message-box h2 {
+          font-size: 1.25rem;
+        }
+
+        .message-box p {
+          font-size: 1rem;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        h1 {
+          font-size: 4.5rem;
+        }
+
+        .container {
+          max-width: 900px;
+          padding: 3rem 4rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="container">
+      <h1>Welcome to prospie</h1>
+
+      <div class="message-box">
+        <h2>Under Construction</h2>
+        <p>prospie is currently undergoing maintenance 🔍🔧🚧 Check back soon!</p>
+      </div>
+
+      <div class="divider"></div>
+    </div>
   </body>
 </html>
